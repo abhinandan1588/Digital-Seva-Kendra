@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% from "_catalogue_macros.html" import cycle_card with context %}
+{% block title %}{{ _t('Examinations & Recruitment', 'परीक्षाएँ एवं भर्ती') }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <h1 class="fw-bold mb-2">{{ _t('Examinations & Recruitment Notifications', 'परीक्षाएँ एवं भर्ती अधिसूचनाएँ') }}</h1>
+  <p class="text-muted mb-4">{{ _t('Every notification below is verified against the official source before publishing. When no dates are announced yet, we say so instead of guessing.',
+      'नीचे दी गई प्रत्येक अधिसूचना प्रकाशन से पहले सरकारी स्रोत से पुष्ट की जाती है। जब तिथियाँ जारी नहीं हुईं, हम अनुमान नहीं लगाते।') }}</p>
+
+  <!-- Filters -->
+  <form method="get" class="card mb-4">
+    <div class="card-body row g-2">
+      <div class="col-6 col-lg-2">
+        <label class="form-label small fw-semibold">{{ _t('Organization', 'संस्था') }}</label>
+        <select name="organization" class="form-select form-select-sm">
+          <option value="">{{ _t('All', 'सभी') }}</option>
+          {% for org in options.organizations %}
+            <option value="{{ org }}" {{ 'selected' if organization == org }}>{{ org }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-lg-2">
+        <label class="form-label small fw-semibold">{{ _t('Education level', 'शैक्षिक स्तर') }}</label>
+        <select name="education_level" class="form-select form-select-sm">
+          <option value="">{{ _t('All', 'सभी') }}</option>
+          {% for lvl in options.education_levels %}
+            <option value="{{ lvl }}" {{ 'selected' if education_level == lvl }}>{{ lvl }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-lg-2">
+        <label class="form-label small fw-semibold">{{ _t('Qualification', 'योग्यता') }}</label>
+        <input name="qualification" class="form-control form-control-sm" value="{{ qualification }}" placeholder="10th, ITI, B.Tech…">
+      </div>
+      <div class="col-6 col-lg-2">
+        <label class="form-label small fw-semibold">{{ _t('Status', 'स्थिति') }}</label>
+        <select name="status" class="form-select form-select-sm">
+          <option value="">{{ _t('All', 'सभी') }}</option>
+          {% set statuses = [('open', 'Applications Open|आवेदन चालू'), ('upcoming', 'Opening Soon|शीघ्र शुरु'), ('closed', 'Closed|बंद')] %}
+          {% for val, lbl in statuses %}
+            <option value="{{ val }}" {{ 'selected' if status == val }}>{{ lbl.split('|')[0] if lang()=='en' else lbl.split('|')[1] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-lg-2">
+        <label class="form-label small fw-semibold">{{ _t('State', 'राज्य') }}</label>
+        <select name="state" class="form-select form-select-sm">
+          <option value="">{{ _t('All', 'सभी') }}</option>
+          {% for st in options.states %}
+            <option value="{{ st }}" {{ 'selected' if state == st }}>{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-lg-2">
+        <label class="form-label small fw-semibold">{{ _t('Deadline within', 'अंतिम तिथि (दिनों में)') }}</label>
+        <div class="d-flex gap-2">
+          <input name="deadline_within" type="number" min="1" class="form-control form-control-sm" value="{{ deadline_within }}" placeholder="7">
+          <button class="btn btn-sm btn-primary px-3" type="submit"><i class="bi bi-funnel"></i></button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  {% if cycles %}
+  <div class="row g-4">
+    {% for cycle in cycles %}
+      {{ cycle_card(cycle, deadline[cycle.id]) }}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center text-muted py-5">
+    <i class="bi bi-megaphone fs-1 d-block mb-2"></i>
+    {{ _t('No published notifications match right now. Recruitment cycles appear here only after the admin verifies the official notification - closed cycles are never shown as open.',
+          'इस समय कोई प्रकाशित अधिसूचना नहीं मिली। भर्ती चक्र यहाँ तभी दिखते हैं जब प्रबंधक सरकारी अधिसूचना पुष्ट करता है - बंद चक्र कभी चालू नहीं दिखाया जाता।') }}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

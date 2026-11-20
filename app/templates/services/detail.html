@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% from "_form_macros.html" import render_field with context %}
+{% block title %}{{ _pick(service.name_en, service.name_hi) }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('services.catalogue') }}">{{ _t('Services', 'सेवाएँ') }}</a></li>
+      {% if service.category %}<li class="breadcrumb-item"><a href="{{ url_for('category.category_page', slug=service.category.slug) }}">{{ _pick(service.category.name_en, service.category.name_hi) }}</a></li>{% endif %}
+      {% if service.subcategory %}<li class="breadcrumb-item">{{ _pick(service.subcategory.name_en, service.subcategory.name_hi) }}</li>{% endif %}
+      <li class="breadcrumb-item active">{{ _pick(service.name_en, service.name_hi) }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <h1 class="h3 fw-bold">{{ _pick(service.name_en, service.name_hi) }}</h1>
+            <div class="d-flex gap-1">
+              {% if service.is_popular %}<span class="badge bg-warning text-dark">{{ _t('Popular', 'लोकप्रिय') }}</span>{% endif %}
+              {% if service.is_featured %}<span class="badge bg-primary-subtle text-primary-emphasis">{{ _t('Featured', 'प्रमुख') }}</span>{% endif %}
+            </div>
+          </div>
+          <p class="text-muted">{{ service.description }}</p>
+
+          <!-- How this service is performed (capability) -->
+          <div class="alert {% if service.is_restricted %}alert-danger{% else %}alert-light border{% endif %} d-flex gap-2">
+            <i class="bi {{ 'bi-lock-fill' if service.is_restricted else 'bi-shield-check' }} fs-5"></i>
+            <div>
+              <strong>{{ ctx.capability_label }}</strong>
+              <div class="small">{{ ctx.capability_description }}</div>
+              {% if service.is_restricted and service.meta and service.meta.get('note') %}
+                <div class="small mt-1">{{ service.meta.get('note') }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if service.eligibility %}
+          <div class="mb-2">
+            <h6 class="fw-bold"><i class="bi bi-person-check me-1"></i>{{ _t('Eligibility', 'पात्रता') }}</h6>
+            <p class="small mb-0">{{ service.eligibility }}</p>
+          </div>
+          {% endif %}
+          {% if service.instructions %}
+          <div class="alert alert-light border d-flex gap-2">
+            <i class="bi bi-info-circle text-primary"></i>
+            <div>{{ service.instructions }}</div>
+          </div>
+          {% endif %}
+          {% if service.processing_time %}
+          <p class="small text-muted mb-0"><i class="bi bi-clock-history me-1"></i>{{ _t('Expected processing time', 'अपेक्षित प्रक्रिया समय') }}: <strong>{{ service.processing_time }}</strong></p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Examination cycles -->
+      {% if service.is_examination %}
+      <div class="card mb-4">
+        <div class="card-header fw-bold"><i class="bi bi-megaphone me-1"></i>{{ _t('Examination cycles (notifications)', 'परीक्षा चक्र (अधिसूचनाएँ)') }}</div>
+        <div class="card-body">
+          {% if ctx.open_cycles %}
+          <p class="small text-success mb-2"><i class="bi bi-check-circle"></i> {{ _t('Currently accepting applications:', 'अभी आवेदन चालू:') }}</p>
+          <div class="table-responsive mb-3">
+            <table class="table table-sm align-middle">
+              <thead><tr>
+                <th>{{ _t('Cycle', 'चक्र') }}</th><th>{{ _t('Last date', 'अंतिम तिथि') }}</th><th>{{ _t('Status', 'स्थिति') }}</th><th></th>
+              </tr></thead>
+              <tbody>
+                {% for cycle in ctx.open_cycles %}
+                {% set info = ctx.deadline[cycle.id] %}
+                <tr>
+                  <td>
+                    <a class="fw-semibold text-decoration-none" href="{{ url_for('exams.exam_detail', cycle_slug=cycle.cycle_slug) }}">{{ cycle.display_name }}</a>
+                    {% if cycle.advertisement_number %}<div class="small text-muted">{{ _t('Advt.', 'विज्ञापन') }}: {{ cycle.advertisement_number }}</div>{% endif %}
+                  </td>
+                  <td>
+                    {% if cycle.application_last_date %}{{ _d(cycle.application_last_date) }}
+                      {% if info.label_key == 'last_date_approaching' %}<span class="badge bg-danger ms-1">{{ _t('Approaching', 'नज़दीक') }}</span>{% endif %}
+                    {% else %}—{% endif %}
+                  </td>
+                  <td><span class="badge bg-success">{{ cycle.status_label }}</span></td>
+                  <td class="text-end">
+                    <form method="post" action="{{ url_for('orders.add_to_cart', service_id=service.id) }}">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                      <input type="hidden" name="exam_cycle_id" value="{{ cycle.id }}">
+                      <button class="btn btn-sm btn-primary">{{ _t('Apply for this cycle', 'इस चक्र हेतु आवेदन') }}</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="alert alert-secondary py-2 small">
+            <i class="bi bi-hourglass-split me-1"></i>{{ _t('No cycle is accepting applications right now. Closed cycles are never shown as available.', 'अभी कोई चक्र आवेदन स्वीकार नहीं कर रहा। बंद चक्र कभी उपलब्ध नहीं दिखाया जाता।') }}
+          </div>
+          {% endif %}
+          {% if ctx.closed_cycles %}
+          <details>
+            <summary class="small text-muted">{{ _t('Previous/closed cycles (for reference)', 'पुराने/बंद चक्र (संदर्भ हेतु)') }}</summary>
+            <ul class="small text-muted mt-2 mb-0">
+              {% for cycle in ctx.closed_cycles %}
+              <li><a class="text-muted" href="{{ url_for('exams.exam_detail', cycle_slug=cycle.cycle_slug) }}">{{ cycle.display_name }}</a> — {{ cycle.status_label }}{% if cycle.application_last_date %} ({{ _t('last date', 'अंतिम तिथि') }}: {{ _d(cycle.application_last_date) }}){% endif %}</li>
+              {% endfor %}
+            </ul>
+          </details>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Application form preview (read-only fields shown; filled after adding) -->
+      {% if fields %}
+      <div class="card mb-4">
+        <div class="card-header fw-bold"><i class="bi bi-form-check me-1"></i>{{ _t('You will fill this form after adding the service', 'सेवा जोड़ने के बाद यह फॉर्म भरना होगा') }}</div>
+        <div class="card-body">
+          {% for field in fields %}
+            {{ render_field(field, form_values={}, errors={}) }}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Document requirements -->
+      <div class="card">
+        <div class="card-header fw-bold"><i class="bi bi-paperclip me-1"></i>{{ _t('Documents required', 'आवश्यक दस्तावेज़') }}</div>
+        <div class="card-body">
+          {% if requirements %}
+          <ul class="list-unstyled mb-0">
+            {% for req in requirements %}
+            <li class="mb-2">
+              <i class="bi bi-file-earmark-arrow-up text-primary me-1"></i>
+              {{ _pick(req.label_en, req.label_hi) }}
+              {% if req.is_required %}<span class="badge bg-danger-subtle text-danger-emphasis">{{ _t('required', 'आवश्यक') }}</span>
+              {% else %}<span class="badge bg-secondary-subtle text-secondary-emphasis">{{ _t('optional', 'वैकल्पिक') }}</span>{% endif %}
+              <span class="text-muted small">({{ (req.allowed_extensions or ['pdf','jpg','jpeg','png']) | join(', ') | upper }}, {{ req.max_file_mb }} MB)</span>
+            </li>
+            {% endfor %}
+          </ul>
+          <p class="small text-muted mt-2 mb-0"><i class="bi bi-shield-exclamation me-1"></i>{{ _t('The official notification always takes priority over this generic list - extra documents are collected when the notification demands them.', 'सरकारी अधिसूचना सदैव इस सामान्य सूची से प्राथमिक है - अधिसूचना अनुसार अतिरिक्त दस्तावेज़ लिए जाते हैं।') }}</p>
+          {% else %}
+          <p class="text-muted small mb-0">{{ _t('No special documents; the form fields cover everything.', 'कोई विशेष दस्तावेज़ नहीं; फॉर्म फ़ील्ड ही पर्याप्त हैं।') }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Price box -->
+    <div class="col-lg-4">
+      <div class="card price-box sticky-top">
+        <div class="card-body">
+          <h5 class="fw-bold mb-3">{{ _t('Price breakdown', 'कीमत विवरण') }}</h5>
+          <ul class="list-unstyled price-breakdown">
+            <li class="d-flex justify-content-between"><span>{{ _t('Service charge', 'सर्विस चार्ज') }}</span><span>{{ _inr(service.service_charge) }}</span></li>
+            {% if service.official_fee %}<li class="d-flex justify-content-between"><span>{{ _t('Official fee', 'सरकारी शुल्क') }}</span><span>{{ _inr(service.official_fee) }}</span></li>{% endif %}
+            {% if service.other_charge %}<li class="d-flex justify-content-between"><span>{{ _t('Other charges', 'अन्य शुल्क') }}</span><span>{{ _inr(service.other_charge) }}</span></li>{% endif %}
+            <li class="d-flex justify-content-between fw-bold fs-5 border-top pt-2 mt-2"><span>{{ _t('Total', 'कुल') }}</span><span class="text-primary">{{ _inr(service.total_price) }}</span></li>
+          </ul>
+          {% if service.official_fee %}
+          <p class="small text-muted mb-3"><i class="bi bi-shield-check me-1"></i>{{ _t('The official fee is passed through at cost. We verify current official fees with you before submission.', 'सरकारी शुल्क लागत मूल्य पर दिया जाता है। जमा से पहले वर्तमान शुल्क आपके साथ पुष्ट किया जाता है।') }}</p>
+          {% endif %}
+          {% if service.is_orderable %}
+          <form method="post" action="{{ url_for('orders.add_to_cart', service_id=service.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-primary w-100 btn-lg fw-semibold">
+              <i class="bi bi-plus-lg me-1"></i>{{ _t('Add to My List', 'मेरी सूची में जोड़ें') }}
+            </button>
+          </form>
+          {% else %}
+          <button class="btn btn-secondary w-100 btn-lg" disabled>
+            <i class="bi bi-lock-fill me-1"></i>{{ _t('Currently unavailable', 'अभी अनुपलब्ध') }}
+          </button>
+          <p class="small text-muted mt-2 mb-0">{{ _t('This service needs a specific authorization or licensed professional. Please contact the shop.', 'इस सेवा के लिए विशेष अधिकृत या लाइसेंसी पेशेवर आवश्यक है। कृपया दुकान से संपर्क करें।') }}</p>
+          {% endif %}
+          <a href="{{ url_for('orders.cart') }}" class="btn btn-outline-secondary w-100 mt-2">
+            <i class="bi bi-cart3 me-1"></i>{{ _t('View My List', 'मेरी सूची देखें') }} ({{ cart_count() }})
+          </a>
+          {% if ctx.portal %}
+          <a href="{{ ctx.portal.url }}" target="_blank" rel="noopener" class="btn btn-outline-primary w-100 mt-2">
+            <i class="bi bi-box-arrow-up-right me-1"></i>{{ _t('Open Official Website', 'सरकारी वेबसाइट खोलें') }}
+          </a>
+          <p class="small text-muted mt-2 mb-0">{{ _t('Official portal', 'सरकारी पोर्टल') }}: {{ ctx.portal.name }}</p>
+          {% elif service.official_info_url %}
+          <a href="{{ service.official_info_url }}" target="_blank" rel="noopener" class="btn btn-outline-primary w-100 mt-2">
+            <i class="bi bi-box-arrow-up-right me-1"></i>{{ _t('Official information', 'सरकारी जानकारी') }}</a>
+          {% endif %}
+          <p class="small text-muted mt-3 mb-0">
+            <i class="bi bi-info-circle me-1"></i>{{ _t('We are a private Digital Seva Kendra (CSC-style centre), not a government website.', 'हम एक निजी डिजिटल सेवा केंद्र हैं (सीएससी-शैली), सरकारी वेबसाइट नहीं।') }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "admin/base.html" %}
+{% block title %}Catalogue Import/Export{% endblock %}
+{% block page_title %}Catalogue import / export{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card mb-4">
+      <div class="card-header fw-bold"><i class="bi bi-magic me-1"></i> Built-in catalogue (one click)</div>
+      <div class="card-body">
+        <p class="small text-muted mb-2">
+          Loads the complete catalogue shipped with the app - categories, subcategories,
+          services, official portals, document templates and search aliases - straight
+          from the data files. Forms and document requirements are pre-filled.
+          If services are already loaded, nothing changes unless you tick the box below.
+        </p>
+        <form method="post" action="{{ url_for('admin.catalogue_load_builtin') }}" class="d-flex gap-2 align-items-center flex-wrap">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="update_existing" id="builtinUpdate">
+            <label class="form-check-label small" for="builtinUpdate">Also update existing services from the data files (overwrites manual edits)</label>
+          </div>
+          <button class="btn btn-success btn-sm ms-auto"><i class="bi bi-cloud-download me-1"></i>Load built-in catalogue</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header fw-bold"><i class="bi bi-upload me-1"></i> Bulk import (CSV or JSON)</div>
+      <div class="card-body">
+        <form method="post" action="{{ url_for('admin.import_preview') }}" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-2">
+            <input type="file" class="form-control" name="file" accept=".csv,.json">
+          </div>
+          <div class="mb-2">
+            <textarea class="form-control form-control-sm" name="json_text" rows="3" placeholder='…or paste JSON: [{"service_name": "…", "category": "…", …}]'></textarea>
+          </div>
+          <button class="btn btn-primary btn-sm"><i class="bi bi-play me-1"></i>Validate & preview</button>
+          <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('admin.import_sample_csv') }}"><i class="bi bi-download me-1"></i>Sample CSV template</a>
+        </form>
+        <div class="small text-muted mt-2">
+          Columns: <code>{{ csv_fields | join(', ') }}</code><br>
+          Update-or-create by service name; nothing is overwritten until you confirm. Rows with errors are skipped.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header fw-bold"><i class="bi bi-download me-1"></i> Export</div>
+      <div class="card-body d-grid gap-2">
+        <a class="btn btn-outline-primary btn-sm" href="{{ url_for('admin.export_csv') }}"><i class="bi bi-filetype-csv me-1"></i>Export CSV ({{ counts.services }} services)</a>
+        <a class="btn btn-outline-primary btn-sm" href="{{ url_for('admin.export_json') }}"><i class="bi bi-filetype-json me-1"></i>Export JSON (full backup incl. forms & documents)</a>
+        <div class="small text-muted">Current catalogue: {{ counts.services }} services, {{ counts.categories }} categories, {{ counts.subcategories }} subcategories.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    {% if preview_rows %}
+    <div class="card">
+      <div class="card-header fw-bold">Import preview ({{ preview_rows | length }} rows)</div>
+      <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+        <table class="table table-sm mb-0">
+          <thead><tr><th>#</th><th>Service</th><th>Category</th><th>Prices</th><th>Action</th><th>Issues</th></tr></thead>
+          <tbody>
+            {% for r in preview_rows %}
+            <tr class="{{ 'table-danger' if r.errors else 'table-success' if r.action == 'create' else 'table-warning' }}">
+              <td>{{ r.line }}</td>
+              <td class="small">{{ r.name }}{% if r.hindi %}<div class="text-muted">{{ r.hindi }}</div>{% endif %}</td>
+              <td class="small">{{ r.category_name or '' }}{% if r.subcategory_name %}<div class="text-muted">{{ r.subcategory_name }}</div>{% endif %}</td>
+              <td class="small">₹{{ r.charge }} + ₹{{ r.fee }}</td>
+              <td>{% if r.errors %}<span class="badge bg-danger">skip</span>{% elif r.action == 'update' %}<span class="badge bg-warning text-dark">update #{{ r.existing_id }}</span>{% else %}<span class="badge bg-success">create</span>{% endif %}</td>
+              <td class="small">
+                {% for e in r.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+                {% for w in r.warnings %}<div class="text-muted">{{ w }}</div>{% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        <form method="post" action="{{ url_for('admin.import_apply') }}" class="d-flex gap-2 align-items-center">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="confirm" id="importConfirm">
+            <label class="form-check-label small" for="importConfirm">I confirm: update the matched services and create the new ones (valid rows only).</label>
+          </div>
+          <button class="btn btn-success btn-sm ms-auto">Apply import</button>
+        </form>
+        <form method="post" action="{{ url_for('admin.import_cancel') }}" class="mt-2">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-outline-secondary btn-sm">Discard preview</button>
+        </form>
+      </div>
+    </div>
+    {% else %}
+    <div class="card">
+      <div class="card-body text-muted small">
+        No preview yet. Upload your CSV/JSON and click <em>Validate & preview</em> - you will see exactly which rows will be created, updated or skipped before anything is saved.
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

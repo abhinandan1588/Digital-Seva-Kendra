@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container py-5 text-center">
+  <h1 class="display-3 fw-bold text-warning">413</h1>
+  <p class="lead">{{ _t('The uploaded files are too large.', 'अपलोड की गई फ़ाइलें बहुत बड़ी हैं।') }}
+     {{ _t('Total upload limit', 'प्रति सबमिशन सीमा') }}: {{ limit_mb }} MB.</p>
+  <a href="javascript:history.back()" class="btn btn-primary">{{ _t('Go Back', 'वापस जाएँ') }}</a>
+</section>
+{% endblock %}

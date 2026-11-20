@@ -1,0 +1,84 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import pagination_nav, status_badge with context %}
+{% block title %}Orders{% endblock %}
+{% block page_title %}Orders{% endblock %}
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body">
+    <form class="row g-2 align-items-end" method="get">
+      <div class="col-md-3">
+        <label class="form-label small">Search (order ID / name / mobile)</label>
+        <input type="text" class="form-control form-control-sm" name="q" value="{{ q }}">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Payment status</label>
+        <select class="form-select form-select-sm" name="payment_status">
+          <option value="">All</option>
+          {% for ps in ['awaiting_payment','submitted','pending_verification','verified','rejected','refunded'] %}
+          <option value="{{ ps }}" {{ 'selected' if payment_status == ps }}>{{ status_label('payment', ps) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Order status</label>
+        <select class="form-select form-select-sm" name="order_status">
+          <option value="">All</option>
+          {% for os in ['submitted','awaiting_payment','payment_verification','confirmed','partially_completed','completed','cancelled'] %}
+          <option value="{{ os }}" {{ 'selected' if order_status == os }}>{{ status_label('order', os) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Service</label>
+        <select class="form-select form-select-sm" name="service_id">
+          <option value="">All</option>
+          {% for s in services %}<option value="{{ s.id }}" {{ 'selected' if service_id == s.id }}>{{ s.name_en }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-md-1">
+        <label class="form-label small">From</label>
+        <input type="date" class="form-control form-control-sm" name="from" value="{{ date_from }}">
+      </div>
+      <div class="col-md-1">
+        <label class="form-label small">To</label>
+        <input type="date" class="form-control form-control-sm" name="to" value="{{ date_to }}">
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-sm btn-primary w-100">Filter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    {% if pagination.items %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table align-middle">
+        <thead>
+          <tr><th>Order ID</th><th>Customer</th><th>Mobile</th><th>Services</th><th>Total</th><th>Payment</th><th>Order Status</th><th>Date</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for o in pagination.items %}
+          <tr>
+            <td><a href="{{ url_for('admin.order_detail', order_id=o.id) }}" class="fw-semibold">{{ o.order_number }}</a></td>
+            <td>{{ o.customer.name }}</td>
+            <td>{{ o.customer.masked_mobile }}</td>
+            <td class="text-truncate" style="max-width:180px" title="{{ o.service_names_snapshot }}">{{ o.service_names_snapshot }}</td>
+            <td>{{ _inr(o.total_amount) }}</td>
+            <td>{{ status_badge('payment', o.payment_status) }}</td>
+            <td>{{ status_badge('order', o.status) }}</td>
+            <td class="small">{{ _dt(o.submitted_at) }}</td>
+            <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.order_detail', order_id=o.id) }}">Open</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3">{{ pagination_nav(pagination, 'admin.orders_list', q=q, payment_status=payment_status, order_status=order_status, service_id=service_id or '', from=date_from, to=date_to) }}</div>
+    {% else %}
+    <div class="p-5 text-center text-muted">No orders match the filters.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

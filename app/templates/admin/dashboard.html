@@ -1,0 +1,167 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<h4 class="fw-bold mb-4">Business Overview</h4>
+
+<div class="row g-3 mb-4">
+  {% set cards = [
+    ('Total Orders', stats.total_orders, 'bi-bag-check', '#1B4B8F', 'EEF3FB'),
+    ('Total Applications', stats.total_applications, 'bi-journal-text', '#0E9F6E', 'E7F7F1'),
+    ('Pending Payments', stats.pending_payments, 'bi-hourglass-split', '#B45309', 'FDF3E7'),
+    ('Verified Payments', stats.verified_payments, 'bi-check2-circle', '#047857', 'E7F7F1'),
+    ('Under Processing', stats.under_processing, 'bi-arrow-repeat', '#6D28D9', 'F1EBFB'),
+    ('Completed Applications', stats.completed_applications, 'bi-clipboard-check', '#047857', 'E7F7F1'),
+    ('Rejected Applications', stats.rejected_applications, 'bi-x-circle', '#B91C1C', 'FBEAEA'),
+    ("Today's Orders", stats.todays_orders, 'bi-calendar-day', '#1B4B8F', 'EEF3FB'),
+  ] %}
+  {% for label, value, icon, color, bg in cards %}
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 d-flex align-items-center gap-3">
+      <div class="stat-icon" style="color:{{ color }}; background:#{{ bg }};"><i class="bi {{ icon }}"></i></div>
+      <div>
+        <div class="stat-value">{{ value }}</div>
+        <div class="small text-muted">{{ label }}</div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-6">
+    <div class="stat-card p-3 d-flex align-items-center justify-content-between">
+      <div>
+        <div class="small text-muted">Today's Verified Collections</div>
+        <div class="stat-value">{{ _inr(stats.todays_verified_collections) }}</div>
+      </div>
+      <i class="bi bi-cash-coin fs-2 text-success"></i>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="stat-card p-3 d-flex align-items-center justify-content-between">
+      <div>
+        <div class="small text-muted">Monthly Verified Collections</div>
+        <div class="stat-value">{{ _inr(stats.monthly_verified_collections) }}</div>
+      </div>
+      <i class="bi bi-safe fs-2 text-primary"></i>
+    </div>
+  </div>
+</div>
+
+{% if pending_uploads %}
+<div class="alert alert-warning d-flex justify-content-between align-items-center">
+  <span><i class="bi bi-cloud-exclamation me-1"></i>{{ pending_uploads }} document upload(s) pending retry (Google Drive or storage was unavailable when submitted).</span>
+  <form method="post" action="{{ url_for('admin.documents_retry_pending') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn btn-sm btn-warning">{{ 'Retry now' }}</button>
+  </form>
+</div>
+{% endif %}
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Daily Orders (last 14 days)</div>
+      <div class="card-body"><canvas id="chartDaily" height="130"></canvas></div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Monthly Verified Collections (last 6 months)</div>
+      <div class="card-body"><canvas id="chartMonthly" height="130"></canvas></div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Service-wise Applications (top 10)</div>
+      <div class="card-body"><canvas id="chartServices" height="150"></canvas></div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Application Status Distribution</div>
+      <div class="card-body"><canvas id="chartStatus" height="150"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Payments Awaiting Verification</div>
+      <div class="card-body p-0">
+        {% if pending_payment_orders %}
+        <table class="table table-sm mb-0 admin-table">
+          <thead><tr><th>Order</th><th>Customer</th><th>Amount</th><th></th></tr></thead>
+          <tbody>
+            {% for o in pending_payment_orders %}
+            <tr>
+              <td><a href="{{ url_for('admin.orders_list') }}?q={{ o.order_number }}">{{ o.order_number }}</a></td>
+              <td>{{ o.customer.name }}</td>
+              <td>{{ _inr(o.total_amount) }}</td>
+              <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.payment_review', payment_id=o.latest_payment.id) }}">Review</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="p-4 text-center text-muted">No payments waiting. <span class="empty-state"></span></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Recent Orders</div>
+      <div class="card-body p-0">
+        {% if recent_orders %}
+        <table class="table table-sm mb-0 admin-table">
+          <thead><tr><th>Order</th><th>Services</th><th>Total</th><th>Status</th></tr></thead>
+          <tbody>
+            {% for o in recent_orders %}
+            <tr>
+              <td><a href="{{ url_for('admin.order_detail', order_id=o.id) }}">{{ o.order_number }}</a></td>
+              <td class="text-truncate" style="max-width:160px" title="{{ o.service_names_snapshot }}">{{ o.service_names_snapshot }}</td>
+              <td>{{ _inr(o.total_amount) }}</td>
+              <td>{{ status_badge('payment', o.payment_status) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="p-4 text-center text-muted">No orders yet - share your website link with customers.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/js/chart.umd.min.js') }}"></script>
+<script>
+const palette = ['#1B4B8F','#0E9F6E','#B45309','#6D28D9','#B91C1C','#0891B2','#4B5563','#7C3AED','#DB2777','#65A30D'];
+new Chart(document.getElementById('chartDaily'), {
+  type: 'line',
+  data: { labels: {{ daily_labels | tojson }}, datasets: [{ label: 'Orders', data: {{ daily_counts | tojson }}, borderColor: '#1B4B8F', backgroundColor: 'rgba(27,75,143,.12)', fill: true, tension: .3 }] },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+});
+new Chart(document.getElementById('chartMonthly'), {
+  type: 'bar',
+  data: { labels: {{ month_labels | tojson }}, datasets: [{ label: 'Collected', data: {{ month_values | tojson }}, backgroundColor: '#0E9F6E' }] },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+});
+new Chart(document.getElementById('chartServices'), {
+  type: 'bar',
+  data: { labels: {{ svc_rows | map(attribute='0') | list | tojson }},
+          datasets: [{ label: 'Applications', data: {{ svc_rows | map(attribute='1') | list | tojson }}, backgroundColor: '#1B4B8F' }] },
+  options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+});
+new Chart(document.getElementById('chartStatus'), {
+  type: 'doughnut',
+  data: { labels: {{ status_rows | map(attribute='0') | list | tojson }},
+          datasets: [{ data: {{ status_rows | map(attribute='1') | list | tojson }}, backgroundColor: palette }] },
+  options: { plugins: { legend: { position: 'right' } } }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block title %}Payment Settings{% endblock %}
+{% block page_title %}Payment Settings (UPI){% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-header fw-bold">UPI payment details (used to generate each order's QR)</div>
+      <div class="card-body">
+        <form method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-3"><label class="form-label small">UPI ID (VPA) *</label>
+            <input class="form-control form-control-sm" name="upi_id" required placeholder="shopname@upi" value="{{ settings.upi_id }}">
+            <div class="form-text">This is where customers pay. Double-check it - a wrong VPA sends money elsewhere.</div></div>
+          <div class="mb-3"><label class="form-label small">Merchant name on QR *</label>
+            <input class="form-control form-control-sm" name="upi_merchant_name" required value="{{ settings.upi_merchant_name }}"></div>
+          <div class="mb-3"><label class="form-label small">Payment instructions (English)</label>
+            <textarea class="form-control form-control-sm" name="payment_instructions" rows="3">{{ settings.payment_instructions }}</textarea></div>
+          <div class="mb-3"><label class="form-label small">भुगतान निर्देश (हिन्दी)</label>
+            <textarea class="form-control form-control-sm" name="payment_instructions_hi" rows="3">{{ settings.payment_instructions_hi }}</textarea></div>
+          <div class="mb-3"><label class="form-label small">Support info (shown under payment page)</label>
+            <input class="form-control form-control-sm" name="payment_support_info" value="{{ settings.payment_support_info }}"></div>
+          <div class="mb-3"><label class="form-label small">सहायता जानकारी (हिन्दी)</label>
+            <input class="form-control form-control-sm" name="payment_support_info_hi" value="{{ settings.payment_support_info_hi }}"></div>
+          <button class="btn btn-primary">Save Payment Settings</button>
+        </form>
+      </div>
+    </div>
+    <div class="alert alert-light border small">
+      <strong>How verification works in v1:</strong> customers scan the per-order QR (amount fixed from the server-calculated total),
+      submit UTR + screenshot, and you approve/reject in <a href="{{ url_for('admin.payments_queue') }}">Payment Verification</a>.
+      A gateway integration with server-side webhooks can replace this later - the payment model already has gateway fields.
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ _t('About Us', 'हमारे बारे में') }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="fw-bold mb-3">{{ _t('About Us', 'हमारे बारे में') }}</h1>
+      <p class="lead">
+        {{ _pick(site_settings.shop_name, site_settings.shop_name_hi) }} {{ _t('is your neighbourhood service centre, now online.',
+        'आपका मोहल्ले का सेवा केंद्र, अब ऑनलाइन।') }}
+      </p>
+      <p class="text-muted">
+        {{ _t('For years, customers had to visit the shop for every small application - forms, photocopies,
+        online submissions and follow-ups. This website brings the same trusted service online: choose your service,
+        fill a simple form, upload your documents and pay by UPI. The shop owner processes your application and you can
+        track its status any time with your order number and tracking code - no account needed.',
+        'वर्षों तक ग्राहकों को हर छोटे आवेदन के लिए दुकान आना पड़ता था - फॉर्म, फोटोकॉपी, ऑनलाइन सबमिशन और फॉलो-अप।
+        यह वेबसाइट वही भरोसेमंद सेवा ऑनलाइन लाती है: सेवा चुनें, सरल फॉर्म भरें, दस्तावेज़ अपलोड करें और UPI से भुगतान करें।
+        दुकान मालिक आपका आवेदन प्रोसेस करता है और आप ऑर्डर नंबर व ट्रैकिंग कोड से कभी भी स्थिति देख सकते हैं - बिना खाते।') }}
+      </p>
+      <div class="row g-4 mt-3">
+        <div class="col-md-6">
+          <div class="card h-100"><div class="card-body">
+            <h5 class="fw-bold"><i class="bi bi-people me-2 text-primary"></i>{{ _t('Who we serve', 'हम किसके लिए हैं') }}</h5>
+            <p class="small text-muted mb-0">{{ _t('Students, job seekers, farmers, small business owners and every citizen who needs government or private application help.',
+            'छात्र, नौकरी तलाशने वाले, किसान, छोटे व्यापारी और वह हर नागरिक जिसे सरकारी या निजी आवेदन में सहायता चाहिए।') }}</p>
+          </div></div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100"><div class="card-body">
+            <h5 class="fw-bold"><i class="bi bi-info-circle me-2 text-primary"></i>{{ _t('Honest disclaimer', 'ईमानदार अस्वीकरण') }}</h5>
+            <p class="small text-muted mb-0">{{ _pick(site_settings.footer_text, site_settings.footer_text_hi) }}</p>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

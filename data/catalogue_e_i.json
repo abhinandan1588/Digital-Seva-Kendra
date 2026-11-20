@@ -1,0 +1,206 @@
+{
+  "categories": [
+    {
+      "slug": "central-government-examinations",
+      "name_en": "Central Government Examinations",
+      "name_hi": "केंद्र सरकार की परीक्षाएँ",
+      "icon": "bi-bank",
+      "group": "exam",
+      "description_en": "UPSC, SSC, Railway, Banking and Defence examination application assistance. A cycle appears here only after the official notification is verified by the admin - closed cycles are never shown as open.",
+      "description_hi": "यूपीएससी, एसएससी, रेलवे, बैंकिंग एवं रक्षा परीक्षा आवेदन सहायता। कोई चक्र तभी दिखता है जब सरकारी अधिसूचना प्रबंधक द्वारा पुष्ट हो - बंद चक्र कभी चालू नहीं दिखाया जाता।",
+      "subcategories": [
+        {"slug": "upsc-examinations", "name_en": "UPSC", "name_hi": "यूपीएससी", "services": [
+          {"n": "UPSC Civil Services Examination", "hi": "यूपीएससी सिविल सेवा परीक्षा", "c": 200, "p": "upsc-online", "kw": "ias ips upsc civil services", "docs": ["photograph", "signature", "class10-certificate", "graduation-certificate"], "pop": true, "org": "UPSC"},
+          {"n": "UPSC Indian Forest Service", "hi": "यूपीएससी भारतीय वन सेवा", "c": 200, "p": "upsc-online", "kw": "ifs forest service", "org": "UPSC"},
+          {"n": "NDA & NA Examination", "hi": "एनडीए एवं एनए परीक्षा", "c": 150, "p": "upsc-online", "kw": "nda national defence academy", "docs": ["photograph", "signature", "class10-certificate", "class12-certificate"], "pop": true, "org": "UPSC"},
+          {"n": "CDS Examination", "hi": "सीडीएस परीक्षा", "c": 150, "p": "upsc-online", "kw": "cds combined defence", "org": "UPSC"},
+          {"n": "UPSC CAPF Assistant Commandant", "hi": "यूपीएससी सीएपीएफ सहायक कमांडेंट", "c": 150, "p": "upsc-online", "kw": "capf ac", "org": "UPSC"},
+          {"n": "UPSC Engineering Services (ESE)", "hi": "यूपीएससी अभियांत्रिकी सेवा", "c": 200, "p": "upsc-online", "kw": "ese ies engineering", "org": "UPSC"},
+          {"n": "UPSC Combined Medical Services (CMS)", "hi": "यूपीएससी संयुक्त चिकित्सा सेवा", "c": 200, "p": "upsc-online", "kw": "cms medical", "org": "UPSC"},
+          {"n": "UPSC Geo-Scientist Examination", "hi": "यूपीएससी भू-वैज्ञानिक परीक्षा", "c": 200, "p": "upsc-online", "kw": "geoscientist", "org": "UPSC"},
+          {"n": "Indian Economic Service (IES)", "hi": "भारतीय आर्थिक सेवा", "c": 200, "p": "upsc-online", "kw": "indian economic service", "org": "UPSC"},
+          {"n": "Indian Statistical Service (ISS)", "hi": "भारतीय सांख्यिकी सेवा", "c": 200, "p": "upsc-online", "kw": "indian statistical service", "org": "UPSC"},
+          {"n": "Other UPSC Recruitments", "hi": "अन्य यूपीएससी भर्तियाँ", "c": 150, "p": "upsc-online", "kw": "upsc other recruitment", "org": "UPSC"}
+        ]},
+        {"slug": "ssc-examinations", "name_en": "SSC", "name_hi": "एसएससी", "services": [
+          {"n": "SSC CGL (Combined Graduate Level)", "hi": "एसएससी सीजीएल", "c": 150, "p": "ssc", "kw": "ssc cgl graduate", "docs": ["photograph", "signature", "class10-certificate", "graduation-certificate"], "pop": true, "org": "SSC"},
+          {"n": "SSC CHSL (12th Level)", "hi": "एसएससी सीएचएसएल", "c": 150, "p": "ssc", "kw": "ssc chsl 12th", "docs": ["photograph", "signature", "class10-certificate", "class12-certificate"], "pop": true, "org": "SSC"},
+          {"n": "SSC MTS (Multi Tasking Staff)", "hi": "एसएससी एमटीएस", "c": 120, "p": "ssc", "kw": "ssc mts", "org": "SSC"},
+          {"n": "SSC GD Constable", "hi": "एसएससी जीडी कांस्टेबल", "c": 120, "p": "ssc", "kw": "ssc gd constable", "docs": ["photograph", "signature", "class10-certificate"], "pop": true, "org": "SSC"},
+          {"n": "SSC CPO (Police)", "hi": "एसएससी सीपीओ", "c": 150, "p": "ssc", "kw": "ssc cpo si", "org": "SSC"},
+          {"n": "SSC JE (Junior Engineer)", "hi": "एसएससी जेई", "c": 150, "p": "ssc", "kw": "ssc je junior engineer", "org": "SSC"},
+          {"n": "SSC Stenographer", "hi": "एसएससी स्टेनोग्राफर", "c": 120, "p": "ssc", "kw": "ssc steno", "org": "SSC"},
+          {"n": "SSC Selection Post", "hi": "एसएससी सिलेक्शन पोस्ट", "c": 120, "p": "ssc", "kw": "ssc selection post phase", "org": "SSC"},
+          {"n": "SSC Hindi Translator (JHT)", "hi": "एसएससी हिंदी अनुवादक", "c": 120, "p": "ssc", "kw": "ssc jht translator", "org": "SSC"},
+          {"n": "SSC Departmental Examinations", "hi": "एसएससी विभागीय परीक्षाएँ", "c": 120, "p": "ssc", "kw": "ssc departmental", "org": "SSC"}
+        ]},
+        {"slug": "railway-recruitment", "name_en": "Railway (RRB / RPF)", "name_hi": "रेलवे भर्ती", "services": [
+          {"n": "RRB NTPC (Graduate)", "hi": "आरआरबी एनटीपीसी (स्नातक)", "c": 150, "p": "rrb", "kw": "rrb ntpc graduate", "docs": ["photograph", "signature", "class10-certificate", "graduation-certificate"], "pop": true, "org": "RRB"},
+          {"n": "RRB NTPC (Undergraduate)", "hi": "आरआरबी एनटीपीसी (अंडरग्रेजुएट)", "c": 120, "p": "rrb", "kw": "rrb ntpc undergraduate 12th", "org": "RRB"},
+          {"n": "RRB Group D (Level 1)", "hi": "आरआरबी ग्रुप डी", "c": 120, "p": "rrb", "kw": "rrb group d level 1", "docs": ["photograph", "signature", "class10-certificate"], "pop": true, "org": "RRB"},
+          {"n": "RRB ALP (Assistant Loco Pilot)", "hi": "आरआरबी एएलपी", "c": 150, "p": "rrb", "kw": "rrb alp loco pilot", "org": "RRB"},
+          {"n": "RRB Technician", "hi": "आरआरबी टेक्नीशियन", "c": 150, "p": "rrb", "kw": "rrb technician", "org": "RRB"},
+          {"n": "RRB JE (Junior Engineer)", "hi": "आरआरबी जेई", "c": 150, "p": "rrb", "kw": "rrb je", "org": "RRB"},
+          {"n": "RPF Constable", "hi": "आरपीएफ कांस्टेबल", "c": 120, "p": "rrb", "kw": "rpf constable", "org": "RPF"},
+          {"n": "RPF Sub-Inspector", "hi": "आरपीएफ सब-इंस्पेक्टर", "c": 120, "p": "rrb", "kw": "rpf si", "org": "RPF"},
+          {"n": "Railway Paramedical Staff", "hi": "रेलवे पैरामेडिकल", "c": 120, "p": "rrb", "kw": "railway paramedical", "org": "RRB"},
+          {"n": "Railway Ministerial & Isolated Categories", "hi": "रेलवे मंत्रिमंडलीय एवं विलगित श्रेणी", "c": 120, "p": "rrb", "kw": "railway ministerial isolated", "org": "RRB"}
+        ]},
+        {"slug": "banking-recruitment", "name_en": "Banking", "name_hi": "बैंकिंग भर्ती", "services": [
+          {"n": "IBPS PO (Probationary Officer)", "hi": "आईबीपीएस पीओ", "c": 150, "p": "ibps", "kw": "ibps po", "docs": ["photograph", "signature", "graduation-certificate"], "pop": true, "org": "IBPS"},
+          {"n": "IBPS Clerk / CSA", "hi": "आईबीपीएस क्लर्क", "c": 150, "p": "ibps", "kw": "ibps clerk csa", "org": "IBPS"},
+          {"n": "IBPS RRB Officer Scale I/II/III", "hi": "आईबीपीएस आरआरबी अधिकारी", "c": 150, "p": "ibps", "kw": "ibps rrb officer", "org": "IBPS"},
+          {"n": "IBPS RRB Office Assistant", "hi": "आईबीपीएस आरआरबी सहायक", "c": 150, "p": "ibps", "kw": "ibps rrb assistant", "org": "IBPS"},
+          {"n": "SBI PO", "hi": "एसबीआई पीओ", "c": 150, "p": "sbi", "kw": "sbi po", "org": "SBI"},
+          {"n": "SBI Clerk (Junior Associate)", "hi": "एसबीआई क्लर्क", "c": 150, "p": "sbi", "kw": "sbi clerk junior associate", "org": "SBI"},
+          {"n": "RBI Grade B Officer", "hi": "आरबीआई ग्रेड बी", "c": 150, "p": "rbi", "kw": "rbi grade b", "org": "RBI"},
+          {"n": "RBI Assistant", "hi": "आरबीआई सहायक", "c": 150, "p": "rbi", "kw": "rbi assistant", "org": "RBI"},
+          {"n": "NABARD Recruitment", "hi": "नाबार्ड भर्ती", "c": 150, "p": "nabard", "kw": "nabard grade a b", "org": "NABARD"},
+          {"n": "Other Banking Recruitments", "hi": "अन्य बैंकिंग भर्तियाँ", "c": 150, "p": "ibps", "kw": "bank recruitment other", "org": "IBPS"}
+        ]},
+        {"slug": "defence-recruitment", "name_en": "Defence", "name_hi": "रक्षा भर्ती", "services": [
+          {"n": "Army Agniveer (GD/Tech/Trades)", "hi": "आर्मी अग्निवीर", "c": 150, "p": "joinindianarmy", "kw": "agniveer army gd technical", "docs": ["photograph", "signature", "class10-certificate", "class12-certificate"], "pop": true, "org": "Indian Army"},
+          {"n": "Navy Agniveer (SSR/MR/AA)", "hi": "नेवी अग्निवीर", "c": 150, "p": "joinindiannavy", "kw": "agniveer navy ssr mr", "org": "Indian Navy"},
+          {"n": "Air Force Agniveervayu", "hi": "एयर फोर्स अग्निवीरवायु", "c": 150, "p": "agniveervayu", "kw": "agniveervayu airforce", "org": "IAF"},
+          {"n": "AFCAT (Air Force Common Admission Test)", "hi": "एएफसीएटी", "c": 150, "p": "afcat", "kw": "afcat", "org": "IAF"},
+          {"n": "Indian Coast Guard Recruitment", "hi": "भारतीय तटरक्षक भर्ती", "c": 150, "p": "indiancoastguard", "kw": "coast guard navik gd", "org": "ICG"},
+          {"n": "Other Defence Recruitments", "hi": "अन्य रक्षा भर्तियाँ", "c": 150, "p": "joinindianarmy", "kw": "defence other jcc tes", "org": "Indian Army"}
+        ]}
+      ]
+    },
+    {
+      "slug": "bihar-government-examinations",
+      "name_en": "Bihar Government Examinations",
+      "name_hi": "बिहार सरकार की परीक्षाएँ",
+      "icon": "bi-buildings",
+      "group": "exam",
+      "description_en": "BPSC, Bihar Police, BSSC, BTSC and other Bihar government recruitment application assistance, with verified notification cycles.",
+      "description_hi": "बीपीएससी, बिहार पुलिस, बीएसएससी, बीटीएससी तथा अन्य बिहार सरकार भर्ती आवेदन सहायता, पुष्ट अधिसूचना चक्रों के साथ।",
+      "subcategories": [
+        {"slug": "bpsc-recruitment", "name_en": "BPSC", "name_hi": "बीपीएससी", "services": [
+          {"n": "BPSC Combined Competitive Examination (CCE)", "hi": "बीपीएससी संयुक्त प्रतियोगिता परीक्षा", "c": 200, "p": "bihar-bpsc", "kw": "bpsc cce 69 70", "docs": ["photograph", "signature", "graduation-certificate", "caste-certificate-doc", "domicile-certificate-doc"], "pop": true, "org": "BPSC"},
+          {"n": "BPSC Teacher Recruitment (TRE)", "hi": "बीपीएससी शिक्षक भर्ती (टीआरई)", "c": 200, "p": "bihar-bpsc", "kw": "bpsc tre teacher", "pop": true, "org": "BPSC"},
+          {"n": "BPSC Assistant Public Prosecutor (APO)", "hi": "बीपीएससी सहायक लोक अभियोजक", "c": 200, "p": "bihar-bpsc", "kw": "bpsc apo", "org": "BPSC"},
+          {"n": "BPSC Assistant Professor", "hi": "बीपीएससी सहायक प्रोफेसर", "c": 200, "p": "bihar-bpsc", "kw": "bpsc assistant professor", "org": "BPSC"},
+          {"n": "BPSC Assistant Engineer (AE)", "hi": "बीपीएससी सहायक अभियंता", "c": 200, "p": "bihar-bpsc", "kw": "bpsc ae engineer", "org": "BPSC"},
+          {"n": "BPSC AEDO (Assistant Education Development Officer)", "hi": "बीपीएससी एडीओ", "c": 200, "p": "bihar-bpsc", "kw": "bpsc aedo", "org": "BPSC"},
+          {"n": "Other BPSC Recruitments", "hi": "अन्य बीपीएससी भर्तियाँ", "c": 200, "p": "bihar-bpsc", "kw": "bpsc other", "org": "BPSC"}
+        ]},
+        {"slug": "bihar-police-recruitment", "name_en": "Bihar Police", "name_hi": "बिहार पुलिस", "services": [
+          {"n": "Bihar Police Constable (CSBC)", "hi": "बिहार पुलिस कांस्टेबल", "c": 150, "p": "bihar-csbc", "kw": "bihar police constable csbc", "docs": ["photograph", "signature", "class10-certificate", "class12-certificate"], "pop": true, "org": "CSBC"},
+          {"n": "Bihar Police Sub-Inspector (BPSSC)", "hi": "बिहार पुलिस दरोगा", "c": 150, "p": "bihar-bpssc", "kw": "bihar police si daroga", "org": "BPSSC"},
+          {"n": "Bihar Police Driver Constable", "hi": "बिहार पुलिस ड्राइवर कांस्टेबल", "c": 150, "p": "bihar-csbc", "kw": "bihar police driver", "org": "CSBC"},
+          {"n": "Bihar Home Guard Recruitment", "hi": "बिहार होम गार्ड भर्ती", "c": 120, "p": "bihar-csbc", "kw": "bihar home guard", "org": "CSBC"},
+          {"n": "Bihar Forest Guard Recruitment", "hi": "बिहार वन रक्षक भर्ती", "c": 120, "p": "bihar-csbc", "kw": "bihar forest guard van rakshak", "org": "CSBC"}
+        ]},
+        {"slug": "bssc-recruitment", "name_en": "BSSC", "name_hi": "बीएसएससी", "services": [
+          {"n": "BSSC Inter Level Recruitment", "hi": "बीएसएससी इंटर लेवल भर्ती", "c": 150, "p": "bihar-bssc", "kw": "bssc inter level", "pop": true, "org": "BSSC"},
+          {"n": "BSSC Graduate Level (CGL)", "hi": "बीएसएससी ग्रेजुएट लेवल", "c": 150, "p": "bihar-bssc", "kw": "bssc graduate cgl", "org": "BSSC"},
+          {"n": "BSSC Stenographer", "hi": "बीएसएससी स्टेनोग्राफर", "c": 120, "p": "bihar-bssc", "kw": "bssc steno", "org": "BSSC"}
+        ]},
+        {"slug": "other-bihar-recruitment", "name_en": "Other Bihar Recruitment", "name_hi": "अन्य बिहार भर्तियाँ", "services": [
+          {"n": "BTSC Technical Recruitment", "hi": "बीटीएससी तकनीकी भर्ती", "c": 150, "p": "bihar-btsc", "kw": "btsc bihar technical", "org": "BTSC"},
+          {"n": "Bihar Health Department Recruitment", "hi": "बिहार स्वास्थ्य विभाग भर्ती", "c": 150, "p": "bihar-serviceplus", "kw": "bihar health recruitment", "org": "Bihar Health"},
+          {"n": "Bihar Teacher Eligibility Tests (STET/CTET as applicable)", "hi": "बिहार शिक्षक पात्रता परीक्षा", "c": 150, "p": "bihar-bseb", "kw": "stet tet bihar teacher eligibility", "org": "BSEB"},
+          {"n": "Bihar Panchayati Raj Recruitment", "hi": "बिहार पंचायती राज भर्ती", "c": 120, "p": "bihar-serviceplus", "kw": "panchayat recruitment bihar", "org": "Panchayati Raj"},
+          {"n": "Bihar Cooperative Department Recruitment", "hi": "बिहार सहकारिता विभाग भर्ती", "c": 120, "p": "bihar-serviceplus", "kw": "cooperative sahkarita", "org": "Cooperation Dept"},
+          {"n": "Bihar Secretariat Recruitment", "hi": "बिहार सचिवालय भर्ती", "c": 150, "p": "bihar-serviceplus", "kw": "secretariat sachivalaya", "org": "Bihar Secretariat"},
+          {"n": "District-level Government Recruitment", "hi": "जिला स्तरीय सरकारी भर्ती", "c": 100, "p": "bihar-serviceplus", "kw": "district zila recruitment", "org": "District"}
+        ]}
+      ]
+    },
+    {
+      "slug": "national-entrance-examinations",
+      "name_en": "National Entrance Examinations",
+      "name_hi": "राष्ट्रीय प्रवेश परीक्षाएँ",
+      "icon": "bi-pencil-square",
+      "group": "exam",
+      "description_en": "JEE, NEET, CUET, UGC NET, GATE, CAT, CLAT and other national entrance application assistance with verified NTA/board cycles.",
+      "description_hi": "जेईई, नीट, क्यूईटी, यूजीसी नेट, गेट, कैट, क्लैट एवं अन्य राष्ट्रीय प्रवेश परीक्षा आवेदन सहायता।",
+      "subcategories": [
+        {"slug": "engineering-entrance", "name_en": "Engineering & Technology", "name_hi": "इंजीनियरिंग एवं तकनीकी", "services": [
+          {"n": "JEE Main Application", "hi": "जेईई मेन आवेदन", "c": 150, "p": "jeemain", "kw": "jee main nta engineering", "docs": ["photograph", "signature", "class10-certificate", "class12-certificate"], "pop": true, "org": "NTA"},
+          {"n": "JEE Advanced Application", "hi": "जेईई एडवांस्ड आवेदन", "c": 150, "p": "nta", "kw": "jee advanced iit", "org": "IIT"},
+          {"n": "GATE Application", "hi": "गेट आवेदन", "c": 200, "p": "nta", "kw": "gate mtech psu", "docs": ["photograph", "signature", "graduation-certificate"], "org": "IIT"},
+          {"n": "NATA Application", "hi": "नाटा आवेदन", "c": 150, "p": "nata", "kw": "nata architecture", "org": "CoA"}
+        ]},
+        {"slug": "medical-entrance", "name_en": "Medical", "name_hi": "चिकित्सा", "services": [
+          {"n": "NEET UG Application", "hi": "नीट यूजी आवेदन", "c": 150, "p": "neet", "kw": "neet ug mbbs", "docs": ["photograph", "signature", "class10-certificate", "class12-certificate"], "pop": true, "org": "NTA"},
+          {"n": "NEET PG Application", "hi": "नीट पीजी आवेदन", "c": 200, "p": "neet", "kw": "neet pg md", "org": "NBEMS"}
+        ]},
+        {"slug": "university-entrance", "name_en": "University & Academic", "name_hi": "विश्वविद्यालय", "services": [
+          {"n": "CUET UG Application", "hi": "क्यूईटी यूजी आवेदन", "c": 150, "p": "cuet", "kw": "cuet ug central university", "pop": true, "org": "NTA"},
+          {"n": "CUET PG Application", "hi": "क्यूईटी पीजी आवेदन", "c": 150, "p": "cuet", "kw": "cuet pg", "org": "NTA"},
+          {"n": "UGC NET Application", "hi": "यूजीसी नेट आवेदन", "c": 150, "p": "ugcnet", "kw": "ugc net jrf", "docs": ["photograph", "signature", "graduation-certificate"], "org": "NTA"},
+          {"n": "CSIR NET Application", "hi": "सीएसआईआर नेट आवेदन", "c": 150, "p": "ugcnet", "kw": "csir net jrf", "org": "NTA"}
+        ]},
+        {"slug": "management-entrance", "name_en": "Management & Law", "name_hi": "प्रबंधन एवं कानून", "services": [
+          {"n": "CAT Application", "hi": "कैट आवेदन", "c": 150, "p": "cat", "kw": "cat iim mba", "org": "IIM"},
+          {"n": "MAT Application", "hi": "मैट आवेदन", "c": 120, "p": "nta", "kw": "mat aima mba", "org": "AIMA"},
+          {"n": "CMAT Application", "hi": "सीमैट आवेदन", "c": 120, "p": "nta", "kw": "cmat nta", "org": "NTA"},
+          {"n": "CLAT Application", "hi": "क्लैट आवेदन", "c": 150, "p": "clat", "kw": "clat law nlu", "org": "NLUs"},
+          {"n": "AILET Application", "hi": "एआईएलईटी आवेदन", "c": 150, "p": "clat", "kw": "ailet nlu delhi", "org": "NLU Delhi"},
+          {"n": "JIPMAT Application", "hi": "जिपमैट आवेदन", "c": 120, "p": "nta", "kw": "jipmat iim jammu bodh gaya", "org": "NTA"}
+        ]},
+        {"slug": "design-entrance", "name_en": "Design", "name_hi": "डिज़ाइन", "services": [
+          {"n": "NIFT Entrance Application", "hi": "एनआईएफटी आवेदन", "c": 150, "p": "nta", "kw": "nift fashion design", "org": "NIFT"},
+          {"n": "NID Entrance Application", "hi": "एनआईडी आवेदन", "c": 150, "p": "nta", "kw": "nid design", "org": "NID"},
+          {"n": "Other National Entrance Examinations", "hi": "अन्य राष्ट्रीय प्रवेश परीक्षाएँ", "c": 150, "p": "nta", "kw": "other entrance exam", "org": "NTA"}
+        ]}
+      ]
+    },
+    {
+      "slug": "bihar-entrance-examinations",
+      "name_en": "Bihar Entrance Examinations",
+      "name_hi": "बिहार प्रवेश परीक्षाएँ",
+      "icon": "bi-door-open",
+      "group": "exam",
+      "description_en": "BCECEB examinations and counselling: BCECE, DCECE, ITICAT, UGEAC, UGMAC, PGMAC, nursing and paramedical admissions.",
+      "description_hi": "बीसीईसीईबी परीक्षाएँ एवं काउंसलिंग: बीसीईसीई, डीसीईसीई, आईटीआईकैट, यूजीईएसी, यूजीमैक, पीजीमैक, नर्सिंग एवं पैरामेडिकल प्रवेश।",
+      "subcategories": [
+        {"slug": "bceceb-examinations", "name_en": "BCECEB Examinations", "name_hi": "बीसीईसीईबी परीक्षाएँ", "services": [
+          {"n": "BCECE Application", "hi": "बीसीईसीई आवेदन", "c": 150, "p": "bihar-bceceboard", "kw": "bcece bihar", "docs": ["photograph", "signature", "class10-certificate", "class12-certificate", "domicile-certificate-doc"], "pop": true, "org": "BCECEB"},
+          {"n": "BCECE Lateral Entry Application", "hi": "बीसीईसीई लेटरल एंट्री आवेदन", "c": 150, "p": "bihar-bceceboard", "kw": "bcece lateral entry le", "org": "BCECEB"},
+          {"n": "DCECE (Polytechnic) Application", "hi": "डीसीईसीई (पॉलिटेक्निक) आवेदन", "c": 150, "p": "bihar-bceceboard", "kw": "dcece polytechnic pe pmat", "org": "BCECEB"},
+          {"n": "DECE (Lateral Entry) Application", "hi": "डीईसीई (लेटरल एंट्री) आवेदन", "c": 150, "p": "bihar-bceceboard", "kw": "dece lateral", "org": "BCECEB"},
+          {"n": "ITICAT Application", "hi": "आईटीआईकैट आवेदन", "c": 120, "p": "bihar-bceceboard", "kw": "iticat iti", "org": "BCECEB"},
+          {"n": "UGEAC Application (Engineering)", "hi": "यूजीईएसी (इंजीनियरिंग) आवेदन", "c": 150, "p": "bihar-bcece-admissions", "kw": "ugeac jee counselling", "org": "BCECEB"},
+          {"n": "UGMAC Application (Medical)", "hi": "यूजीमैक (मेडिकल) आवेदन", "c": 150, "p": "bihar-bceceboard", "kw": "ugmac neet counselling", "org": "BCECEB"},
+          {"n": "PGMAC Application (Medical PG)", "hi": "पीजीमैक (मेडिकल पीजी) आवेदन", "c": 150, "p": "bihar-bceceboard", "kw": "pgmac", "org": "BCECEB"},
+          {"n": "Bihar Nursing Admission (DCECE-PM/PMM)", "hi": "बिहार नर्सिंग प्रवेश", "c": 150, "p": "bihar-bceceboard", "kw": "nursing dcece pm pmm gnm", "org": "BCECEB"},
+          {"n": "Bihar Paramedical Admission", "hi": "बिहार पैरामेडिकल प्रवेश", "c": 150, "p": "bihar-bceceboard", "kw": "paramedical bihar", "org": "BCECEB"},
+          {"n": "Other BCECEB Examinations & Counselling", "hi": "अन्य बीसीईसीईबी परीक्षा एवं काउंसलिंग", "c": 120, "p": "bihar-bceceboard", "kw": "bceceb other", "org": "BCECEB"}
+        ]}
+      ]
+    },
+    {
+      "slug": "examination-support-services",
+      "name_en": "Examination Support Services",
+      "name_hi": "परीक्षा सहायता सेवाएँ",
+      "icon": "bi-clipboard-check",
+      "group": "exam",
+      "description_en": "Admit cards, results, answer keys, counselling, choice filling, document verification and application corrections - for any examination.",
+      "description_hi": "प्रवेश पत्र, परिणाम, उत्तर कुंजी, काउंसलिंग, चॉइस फिलिंग, दस्तावेज़ सत्यापन एवं आवेदन सुधार - किसी भी परीक्षा हेतु।",
+      "subcategories": [
+        {"slug": "admit-card-result", "name_en": "Admit Card & Results", "name_hi": "प्रवेश पत्र एवं परिणाम", "services": [
+          {"n": "Admit Card Download Assistance", "hi": "प्रवेश पत्र डाउनलोड सहायता", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "admit card pravesh patra download", "pop": true, "cap": "internal_service"},
+          {"n": "Examination City Slip Download", "hi": "परीक्षा नगर स्लिप डाउनलोड", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "city slip", "cap": "internal_service"},
+          {"n": "Result Checking Assistance", "hi": "परिणाम देखने में सहायता", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "result parinam", "cap": "internal_service"},
+          {"n": "Answer Key Download", "hi": "उत्तर कुंजी डाउनलोड", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "answer key uttar", "cap": "internal_service"},
+          {"n": "Answer Key Objection Assistance", "hi": "उत्तर कुंजी आपत्ति सहायता", "c": 80, "kw": "objection aapatti"},
+          {"n": "Merit List Checking", "hi": "मेरिट सूची जाँच", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "merit list", "cap": "internal_service"},
+          {"n": "Cut-off Checking", "hi": "कट-ऑफ जाँच", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "cut off", "cap": "internal_service"}
+        ]},
+        {"slug": "counselling-dv", "name_en": "Counselling & Document Verification", "name_hi": "काउंसलिंग एवं सत्यापन", "services": [
+          {"n": "Counselling Registration Assistance", "hi": "काउंसलिंग पंजीकरण सहायता", "c": 150, "kw": "counselling registration"},
+          {"n": "Choice Filling Assistance", "hi": "चॉइस फिलिंग सहायता", "c": 100, "kw": "choice filling"},
+          {"n": "Interview Letter Download", "hi": "इंटरव्यू लेटर डाउनलोड", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "interview letter", "cap": "internal_service"},
+          {"n": "Document Verification Assistance", "hi": "दस्तावेज़ सत्यापन सहायता", "c": 100, "kw": "dv document verification"},
+          {"n": "Application Correction Assistance", "hi": "आवेदन सुधार सहायता", "c": 80, "kw": "application correction sudhaar"},
+          {"n": "Acknowledgement Download Assistance", "hi": "पावती डाउनलोड सहायता", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "acknowledgement pavati", "cap": "internal_service"},
+          {"n": "Application Status Checking", "hi": "आवेदन स्थिति जाँच", "c": 30, "t_en": "Same day", "t_hi": "उसी दिन", "kw": "application status", "cap": "internal_service"}
+        ]}
+      ]
+    }
+  ]
+}

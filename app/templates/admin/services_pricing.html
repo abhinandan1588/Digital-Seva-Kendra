@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block title %}Service Pricing{% endblock %}
+{% block page_title %}Service pricing{% endblock %}
+{% block content %}
+<p class="text-muted small">Shop charge + official fee + other charges are shown to customers as a full breakdown. Official fees must be verified from the official portal - never guess. Changing prices never alters historical orders (checkout snapshots).</p>
+<form class="d-flex gap-2 mb-3">
+  <input class="form-control form-control-sm" name="q" value="{{ q }}" placeholder="Search services…">
+  <select name="category_id" class="form-select form-select-sm" onchange="this.form.submit()">
+    <option value="">All categories</option>
+    {% for c in categories %}<option value="{{ c.id }}" {{ 'selected' if category_id == c.id }}>{{ c.name_en }}</option>{% endfor %}
+  </select>
+  <button class="btn btn-sm btn-outline-primary">Search</button>
+</form>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0 align-middle">
+      <thead><tr><th>Service</th><th>Service charge ₹</th><th>Official fee ₹</th><th>Other ₹</th><th>Total ₹</th><th></th></tr></thead>
+      <tbody>
+        {% for s in services %}
+        <tr>
+          <td class="small"><strong>{{ s.name_en }}</strong>{% if s.name_hi %}<div class="text-muted">{{ s.name_hi }}</div>{% endif %}</td>
+          <form method="post" action="{{ url_for('admin.service_pricing_update', service_id=s.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <td style="min-width:110px"><input type="number" step="0.01" min="0" class="form-control form-control-sm" name="service_charge" value="{{ s.service_charge }}"></td>
+          <td style="min-width:110px"><input type="number" step="0.01" min="0" class="form-control form-control-sm" name="official_fee" value="{{ s.official_fee }}"></td>
+          <td style="min-width:110px"><input type="number" step="0.01" min="0" class="form-control form-control-sm" name="other_charge" value="{{ s.other_charge }}"></td>
+          <td class="fw-bold">{{ _inr(s.total_price) }}</td>
+          <td><button class="btn btn-sm btn-outline-primary">Save</button></td>
+          </form>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1305 @@
+{
+  "categories": [
+    {
+      "slug": "government-welfare-schemes",
+      "name_en": "Government Welfare Schemes",
+      "name_hi": "सरकारी कल्याणकारी योजनाएँ",
+      "icon": "bi-heart-pulse",
+      "group": "scheme",
+      "description_en": "Central and Bihar welfare scheme registrations - pensions, Ayushman, e-Shram, ration cards, housing, SVANidhi and farmer schemes. Enrollment windows and eligibility are verified on official portals before applying.",
+      "description_hi": "केंद्र व बिहार की कल्याणकारी योजनाएँ - पेंशन, आयुष्मान, ई-श्रम, राशन कार्ड, आवास, स्वनिधि एवं किसान योजनाएँ। आवेदन से पहले योजना की पात्रता सरकारी पोर्टल पर पुष्ट की जाती है।",
+      "subcategories": [
+        {
+          "slug": "farmer-schemes",
+          "name_en": "Farmer Schemes",
+          "name_hi": "किसान योजनाएँ",
+          "services": [
+            {
+              "n": "PM-KISAN Registration / e-KYC",
+              "hi": "पीएम-किसान पंजीकरण / ई-केवाईसी",
+              "c": 60,
+              "p": "pmkisan",
+              "kw": "pmkisan kisan ekyc",
+              "docs": [
+                "aadhaar",
+                "bank-passbook",
+                "rc-document"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Kisan Credit Card (KCC) Assistance",
+              "hi": "किसान क्रेडिट कार्ड सहायता",
+              "c": 100,
+              "p": "pmkisan",
+              "kw": "kcc kisan credit card"
+            },
+            {
+              "n": "Crop Insurance (PMFBY) Application",
+              "hi": "फसल बीमा (पीएमएफबीवाई) आवेदन",
+              "c": 80,
+              "p": "pmfby",
+              "kw": "crop insurance pmfby fasal"
+            },
+            {
+              "n": "Farmer Welfare Schemes Assistance",
+              "hi": "किसान कल्याण योजनाएँ सहायता",
+              "c": 80,
+              "p": "pmkisan",
+              "kw": "farmer kisan yojana"
+            }
+          ]
+        },
+        {
+          "slug": "health-housing-schemes",
+          "name_en": "Health & Housing",
+          "name_hi": "स्वास्थ्य एवं आवास",
+          "services": [
+            {
+              "n": "Ayushman Bharat Card (PM-JAY)",
+              "hi": "आयुष्मान भारत कार्ड",
+              "c": 60,
+              "p": "nha",
+              "kw": "ayushman pmjay card sehat",
+              "docs": [
+                "aadhaar",
+                "ration-card-doc",
+                "bank-passbook"
+              ],
+              "pop": true
+            },
+            {
+              "n": "PM Awas Yojana (Gramin) Application",
+              "hi": "पीएम आवास योजना (ग्रामीण) आवेदन",
+              "c": 80,
+              "p": "pmayg",
+              "kw": "pmay awas housing gramin"
+            },
+            {
+              "n": "PM Awas Yojana (Urban) Application",
+              "hi": "पीएम आवास योजना (शहरी) आवेदन",
+              "c": 80,
+              "p": "pmay-urban",
+              "kw": "pmay urban awas"
+            },
+            {
+              "n": "PM SVANidhi (Street Vendors) Loan Assistance",
+              "hi": "पीएम स्वनिधि (स्ट्रीट वेंडर) ऋण सहायता",
+              "c": 80,
+              "p": "pmsvanidhi",
+              "kw": "svanidhi street vendor loan"
+            },
+            {
+              "n": "PM Ujjwala Yojana (LPG) Connection",
+              "hi": "प्रधानमंत्री उज्ज्वला योजना (एलपीजी)",
+              "c": 60,
+              "p": "pmuy",
+              "kw": "ujjwala lpg connection",
+              "docs": [
+                "aadhaar",
+                "bank-passbook",
+                "ration-card-doc"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "labour-social-security",
+          "name_en": "Labour & Social Security",
+          "name_hi": "श्रम एवं सामाजिक सुरक्षा",
+          "services": [
+            {
+              "n": "e-Shram Card Registration",
+              "hi": "ई-श्रम कार्ड पंजीकरण",
+              "c": 60,
+              "p": "eshram",
+              "kw": "eshram card shramik",
+              "docs": [
+                "aadhaar",
+                "bank-passbook"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Bihar Labour Card Registration",
+              "hi": "बिहार लेबर कार्ड पंजीकरण",
+              "c": 80,
+              "p": "eshram",
+              "kw": "labour card bihar majdoor"
+            },
+            {
+              "n": "Old Age Pension Application (Bihar)",
+              "hi": "वृद्धावस्था पेंशन आवेदन (बिहार)",
+              "c": 80,
+              "p": "bihar-ssp",
+              "kw": "old age pension vriddha",
+              "docs": [
+                "aadhaar",
+                "dob-proof",
+                "bank-passbook"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Widow Pension Application (Bihar)",
+              "hi": "विधवा पेंशन आवेदन (बिहार)",
+              "c": 80,
+              "p": "bihar-ssp",
+              "kw": "widow pension vidhwa",
+              "docs": [
+                "aadhaar",
+                "death-certificate-doc",
+                "bank-passbook"
+              ]
+            },
+            {
+              "n": "Disability Pension Application (Bihar)",
+              "hi": "दिव्यांग पेंशन आवेदन (बिहार)",
+              "c": 80,
+              "p": "bihar-ssp",
+              "kw": "disability pension",
+              "docs": [
+                "aadhaar",
+                "disability-certificate-doc",
+                "bank-passbook"
+              ]
+            },
+            {
+              "n": "Jeevan Pramaan (Life Certificate)",
+              "hi": "जीवन प्रमाण (जीवन प्रमाणपत्र)",
+              "c": 50,
+              "p": "jeevanpramaan",
+              "kw": "jeevan pramaan pension life certificate"
+            },
+            {
+              "n": "Atal Pension Yojana (APY) Assistance",
+              "hi": "अटल पेंशन योजना सहायता",
+              "c": 60,
+              "p": "npscra",
+              "kw": "atal pension apy"
+            }
+          ]
+        },
+        {
+          "slug": "ration-other-schemes",
+          "name_en": "Ration Card & Other Schemes",
+          "name_hi": "राशन कार्ड एवं अन्य योजनाएँ",
+          "services": [
+            {
+              "n": "Ration Card Services (New/Correction)",
+              "hi": "राशन कार्ड सेवाएँ (नया/सुधार)",
+              "c": 80,
+              "p": "bihar-epds",
+              "kw": "ration card rashan eepds",
+              "docs": [
+                "aadhaar",
+                "address-proof"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Other Eligible Government Schemes",
+              "hi": "अन्य पात्र सरकारी योजनाएँ",
+              "c": 60,
+              "p": "umang",
+              "kw": "other yojana scheme"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "business-taxation-services",
+      "name_en": "Business & Taxation Assistance",
+      "name_hi": "व्यापार एवं कर सहायता",
+      "icon": "bi-briefcase",
+      "group": "business",
+      "description_en": "GST, income tax, MSME/Udyam, FSSAI, EPFO/ESIC and trade licence assistance. Services that legally require qualified professionals (returns, DSC, trademark) are activated only after the shop engages an authorised professional.",
+      "description_hi": "जीएसटी, आयकर, एमएसएमई/उद्यम, एफएसएसएआई, ईपीएफओ/ईएसआईसी एवं ट्रेड लाइसेंस सहायता। जिन सेवाओं हेतु योग्य पेशेवर आवश्यक है (रिटर्न, डीएससी, ट्रेडमार्क) वे अधिकृत पेशेवर के बाद ही सक्रिय होती हैं।",
+      "subcategories": [
+        {
+          "slug": "gst-services",
+          "name_en": "GST Services",
+          "name_hi": "जीएसटी सेवाएँ",
+          "services": [
+            {
+              "n": "GST Registration Assistance",
+              "hi": "जीएसटी पंजीकरण सहायता",
+              "c": 500,
+              "p": "gst",
+              "kw": "gst registration panji",
+              "docs": [
+                "photograph",
+                "aadhaar",
+                "pan-reprint",
+                "address-proof",
+                "bank-passbook"
+              ],
+              "pop": true
+            },
+            {
+              "n": "GST Return Filing Assistance",
+              "hi": "जीएसटी रिटर्न फाइलिंग सहायता",
+              "c": 300,
+              "p": "gst",
+              "kw": "gst return gstr filing",
+              "cap": "restricted_authorization_required",
+              "note": "Requires an authorised tax professional; activated only when one is engaged."
+            },
+            {
+              "n": "GST Certificate Download Assistance",
+              "hi": "जीएसटी प्रमाणपत्र डाउनलोड",
+              "c": 80,
+              "p": "gst",
+              "kw": "gst certificate"
+            },
+            {
+              "n": "GST Amendment Assistance",
+              "hi": "जीएसटी संशोधन सहायता",
+              "c": 300,
+              "p": "gst",
+              "kw": "gst amendment"
+            }
+          ]
+        },
+        {
+          "slug": "income-tax-services",
+          "name_en": "Income Tax Services",
+          "name_hi": "आयकर सेवाएँ",
+          "services": [
+            {
+              "n": "Income Tax Return (ITR) Filing Assistance",
+              "hi": "आयकर रिटर्न (आईटीआर) फाइलिंग सहायता",
+              "c": 300,
+              "p": "incometax",
+              "kw": "itr income tax return",
+              "cap": "restricted_authorization_required",
+              "note": "Requires an authorised tax professional; activated only when one is engaged."
+            },
+            {
+              "n": "PAN/TAN Application Assistance",
+              "hi": "पैन/टैन आवेदन सहायता",
+              "c": 200,
+              "p": "protean-pan",
+              "kw": "tan pan firm company"
+            },
+            {
+              "n": "TDS Return Assistance",
+              "hi": "टीडीएस रिटर्न सहायता",
+              "c": 300,
+              "p": "incometax",
+              "kw": "tds 26q traces",
+              "cap": "restricted_authorization_required",
+              "note": "Requires an authorised tax professional."
+            }
+          ]
+        },
+        {
+          "slug": "msme-business-registration",
+          "name_en": "MSME & Business Registration",
+          "name_hi": "एमएसएमई एवं व्यापार पंजीकरण",
+          "services": [
+            {
+              "n": "Udyam Registration (MSME)",
+              "hi": "उद्यम पंजीकरण (एमएसएमई)",
+              "c": 200,
+              "p": "udyam",
+              "kw": "udyam msme registration",
+              "docs": [
+                "aadhaar",
+                "bank-passbook"
+              ],
+              "pop": true
+            },
+            {
+              "n": "MSME Certificate Download Assistance",
+              "hi": "एमएसएमई प्रमाणपत्र डाउनलोड",
+              "c": 80,
+              "p": "udyam",
+              "kw": "msme certificate"
+            },
+            {
+              "n": "FSSAI Registration Assistance",
+              "hi": "एफएसएसएआई पंजीकरण सहायता",
+              "c": 300,
+              "p": "foscos",
+              "kw": "fssai food license foscos"
+            },
+            {
+              "n": "Trade Licence Assistance",
+              "hi": "ट्रेड लाइसेंस सहायता",
+              "c": 200,
+              "p": "bihar-serviceplus",
+              "kw": "trade licence vyapar"
+            },
+            {
+              "n": "Shop & Establishment Registration",
+              "hi": "दुकान एवं प्रतिष्ठान पंजीकरण",
+              "c": 200,
+              "p": "bihar-serviceplus",
+              "kw": "shop establishment"
+            }
+          ]
+        },
+        {
+          "slug": "professional-services",
+          "name_en": "Professional & Compliance",
+          "name_hi": "पेशेवर एवं अनुपालन सेवाएँ",
+          "services": [
+            {
+              "n": "Digital Signature Certificate (DSC)",
+              "hi": "डिजिटल हस्ताक्षर प्रमाणपत्र (डीएससी)",
+              "c": 400,
+              "p": "cca",
+              "kw": "dsc digital signature",
+              "cap": "restricted_authorization_required",
+              "note": "Issued only by licensed certifying authorities; activated after tie-up."
+            },
+            {
+              "n": "EPFO Assistance (PF)",
+              "hi": "ईपीएफओ सहायता (पीएफ)",
+              "c": 100,
+              "p": "epfo",
+              "kw": "epfo pf uan"
+            },
+            {
+              "n": "ESIC Assistance",
+              "hi": "ईएसआईसी सहायता",
+              "c": 100,
+              "p": "esic",
+              "kw": "esic"
+            },
+            {
+              "n": "Labour Registration Assistance",
+              "hi": "श्रम पंजीकरण सहायता",
+              "c": 100,
+              "p": "eshram",
+              "kw": "labour registration"
+            },
+            {
+              "n": "Trademark Registration Assistance",
+              "hi": "ट्रेडमार्क पंजीकरण सहायता",
+              "c": 1000,
+              "p": "ipindia",
+              "kw": "trademark tm",
+              "cap": "restricted_authorization_required",
+              "note": "Requires an IP professional; activated only when one is engaged."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "transport-vehicle-services",
+      "name_en": "Transport & Vehicle Services",
+      "name_hi": "परिवहन एवं वाहन सेवाएँ",
+      "icon": "bi-truck",
+      "group": "transport",
+      "description_en": "Sarathi/VAHAN transport services: learner and driving licences, RC, transfer, tax, challan and FASTag assistance.",
+      "description_hi": "सारथी/वाहन परिवहन सेवाएँ: लर्नर व ड्राइविंग लाइसेंस, आरसी, ट्रांसफर, कर, चालान एवं फास्टैग सहायता।",
+      "subcategories": [
+        {
+          "slug": "licence-services-transport",
+          "name_en": "Licence Services",
+          "name_hi": "लाइसेंस सेवाएँ",
+          "services": [
+            {
+              "n": "Learner Licence (Transport)",
+              "hi": "लर्नर लाइसेंस",
+              "c": 150,
+              "p": "sarathi",
+              "kw": "learner licence transport",
+              "docs": [
+                "photograph",
+                "signature",
+                "aadhaar",
+                "dob-proof",
+                "address-proof"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Driving Licence (Transport)",
+              "hi": "ड्राइविंग लाइसेंस",
+              "c": 200,
+              "p": "sarathi",
+              "kw": "driving licence transport",
+              "docs": [
+                "driving-licence-doc",
+                "photograph",
+                "signature",
+                "aadhaar"
+              ]
+            },
+            {
+              "n": "Driving Licence Renewal (Transport)",
+              "hi": "ड्राइविंग लाइसेंस नवीनीकरण",
+              "c": 150,
+              "p": "sarathi",
+              "kw": "dl renewal transport",
+              "docs": [
+                "driving-licence-doc",
+                "medical-certificate"
+              ]
+            },
+            {
+              "n": "Duplicate Driving Licence (Transport)",
+              "hi": "डुप्लीकेट ड्राइविंग लाइसेंस",
+              "c": 150,
+              "p": "sarathi",
+              "kw": "duplicate dl transport",
+              "docs": [
+                "driving-licence-doc"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "vehicle-services",
+          "name_en": "Vehicle Services",
+          "name_hi": "वाहन सेवाएँ",
+          "services": [
+            {
+              "n": "RC Download Assistance",
+              "hi": "आरसी डाउनलोड सहायता",
+              "c": 50,
+              "p": "vahan",
+              "kw": "rc download smart card",
+              "docs": [
+                "rc-document"
+              ]
+            },
+            {
+              "n": "Vehicle Registration Assistance",
+              "hi": "वाहन पंजीकरण सहायता",
+              "c": 200,
+              "p": "vahan",
+              "kw": "vehicle registration",
+              "docs": [
+                "rc-document",
+                "insurance-document",
+                "aadhaar"
+              ]
+            },
+            {
+              "n": "Vehicle Ownership Transfer Assistance",
+              "hi": "वाहन स्वामित्व ट्रांसफर सहायता",
+              "c": 200,
+              "p": "vahan",
+              "kw": "ownership transfer naam transfer",
+              "docs": [
+                "rc-document",
+                "insurance-document",
+                "aadhaar",
+                "identity-proof"
+              ]
+            },
+            {
+              "n": "Duplicate RC Assistance",
+              "hi": "डुप्लीकेट आरसी सहायता",
+              "c": 150,
+              "p": "vahan",
+              "kw": "duplicate rc",
+              "docs": [
+                "rc-document",
+                "insurance-document"
+              ]
+            },
+            {
+              "n": "Vehicle Tax Payment Assistance",
+              "hi": "वाहन कर भुगतान सहायता",
+              "c": 80,
+              "p": "vahan",
+              "kw": "vehicle tax road kar"
+            },
+            {
+              "n": "Challan Checking & Payment Assistance",
+              "hi": "चालान जाँच एवं भुगतान सहायता",
+              "c": 50,
+              "p": "echallan",
+              "kw": "challan check echallan"
+            },
+            {
+              "n": "FASTag Assistance",
+              "hi": "फास्टैग सहायता",
+              "c": 80,
+              "p": "nhai",
+              "kw": "fastag recharge kyc"
+            },
+            {
+              "n": "Pollution Certificate (PUC) Assistance",
+              "hi": "प्रदूषण प्रमाणपत्र (पीयूसी) सहायता",
+              "c": 50,
+              "p": "parivahan",
+              "kw": "puc pollution"
+            },
+            {
+              "n": "Vehicle Information Checking",
+              "hi": "वाहन सूचना जाँच",
+              "c": 30,
+              "p": "vahan",
+              "kw": "vehicle info number plate",
+              "cap": "internal_service"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "digital-document-computer-services",
+      "name_en": "Digital Document & Computer Services",
+      "name_hi": "डिजिटल दस्तावेज़ एवं कंप्यूटर सेवाएँ",
+      "icon": "bi-printer",
+      "group": "digital",
+      "description_en": "Typing, document preparation, PDF tools, photo/signature work, scanning, printing, lamination and online form filling - completed within our centre, usually the same day.",
+      "description_hi": "टाइपिंग, दस्तावेज़ तैयारी, पीडीएफ टूल, फोटो/हस्ताक्षर कार्य, स्कैनिंग, प्रिंटिंग, लेमिनेशन एवं ऑनलाइन फॉर्म भरना - हमारे केंद्र में ही, प्रायः उसी दिन।",
+      "subcategories": [
+        {
+          "slug": "document-preparation",
+          "name_en": "Document Preparation & Typing",
+          "name_hi": "दस्तावेज़ तैयारी एवं टाइपिंग",
+          "services": [
+            {
+              "n": "Hindi Typing",
+              "hi": "हिंदी टाइपिंग",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "hindi typing kanyan",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "English Typing",
+              "hi": "इंग्लिश टाइपिंग",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "english typing",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Application Writing",
+              "hi": "आवेदन पत्र लेखन",
+              "c": 40,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "application likhen pray",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Resume Creation",
+              "hi": "रिज़्यूमे बनाना",
+              "c": 60,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "resume cv",
+              "cap": "internal_service"
+            },
+            {
+              "n": "CV Creation",
+              "hi": "सीवी बनाना",
+              "c": 60,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "cv biodata",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Biodata Creation (Marriage/Job)",
+              "hi": "बायोडाटा बनाना (विवाह/नौकरी)",
+              "c": 50,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "biodata",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Affidavit Typing",
+              "hi": "शपथ पत्र टाइपिंग",
+              "c": 50,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "affidavit shapath",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Declaration Preparation",
+              "hi": "घोषणा पत्र तैयारी",
+              "c": 40,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "declaration ghoshna",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Undertaking Preparation",
+              "hi": "प्रतिज्ञा पत्र तैयारी",
+              "c": 40,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "undertaking",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Complaint Letter Writing",
+              "hi": "शिकायत पत्र लेखन",
+              "c": 40,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "complaint shikayat",
+              "cap": "internal_service"
+            },
+            {
+              "n": "RTI Application Drafting Assistance",
+              "hi": "आरटीआई आवेदन प्रारूप सहायता",
+              "c": 60,
+              "kw": "rti draft",
+              "cap": "assisted_application"
+            },
+            {
+              "n": "Formal Letter Preparation",
+              "hi": "औपचारिक पत्र तैयारी",
+              "c": 40,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "formal letter",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Document Formatting",
+              "hi": "दस्तावेज़ फॉर्मेटिंग",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "formatting",
+              "cap": "internal_service"
+            }
+          ]
+        },
+        {
+          "slug": "pdf-tools",
+          "name_en": "PDF Tools",
+          "name_hi": "पीडीएफ टूल",
+          "services": [
+            {
+              "n": "Image to PDF Conversion",
+              "hi": "इमेज से पीडीएफ",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "image to pdf jpg",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "PDF to Image Conversion",
+              "hi": "पीडीएफ से इमेज",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf to image",
+              "cap": "internal_service"
+            },
+            {
+              "n": "PDF Merge",
+              "hi": "पीडीएफ मर्ज (जोड़ना)",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf merge jodna",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "PDF Split",
+              "hi": "पीडीएफ स्प्लिट (अलग करना)",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf split alag",
+              "cap": "internal_service"
+            },
+            {
+              "n": "PDF Compress",
+              "hi": "पीडीएफ कंप्रेस (छोटा करना)",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf compress chhota",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "PDF Resize",
+              "hi": "पीडीएफ रिसाइज़",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf resize",
+              "cap": "internal_service"
+            },
+            {
+              "n": "PDF Rotate",
+              "hi": "पीडीएफ रोटेट",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf rotate",
+              "cap": "internal_service"
+            },
+            {
+              "n": "PDF Page Extraction",
+              "hi": "पीडीएफ पेज निकालना",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf page extract",
+              "cap": "internal_service"
+            },
+            {
+              "n": "PDF Password Protection",
+              "hi": "पीडीएफ पासवर्ड लगाना",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf password",
+              "cap": "internal_service"
+            },
+            {
+              "n": "PDF Printing",
+              "hi": "पीडीएफ प्रिंटिंग",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf print",
+              "cap": "internal_service"
+            },
+            {
+              "n": "PDF Form Filling",
+              "hi": "पीडीएफ फॉर्म भरना",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf form filling",
+              "cap": "internal_service"
+            },
+            {
+              "n": "PDF to Word Conversion",
+              "hi": "पीडीएफ से वर्ड",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "pdf to word",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Word to PDF Conversion",
+              "hi": "वर्ड से पीडीएफ",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "word to pdf",
+              "cap": "internal_service"
+            }
+          ]
+        },
+        {
+          "slug": "photo-signature",
+          "name_en": "Photo & Signature",
+          "name_hi": "फोटो एवं हस्ताक्षर",
+          "services": [
+            {
+              "n": "Passport Size Photo Making",
+              "hi": "पासपोर्ट साइज़ फोटो",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "passport photo",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "Photograph Resizing",
+              "hi": "फोटो रिसाइज़",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "photo resize piksel",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "Photograph Compression",
+              "hi": "फोटो कंप्रेस",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "photo compress",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Photo Background Adjustment",
+              "hi": "फोटो बैकग्राउंड सुधार",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "background change",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Signature Scanning",
+              "hi": "हस्ताक्षर स्कैनिंग",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "signature scan",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Signature Resizing",
+              "hi": "हस्ताक्षर रिसाइज़",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "signature resize",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Signature Compression",
+              "hi": "हस्ताक्षर कंप्रेस",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "signature compress",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Custom Pixel Size Photo/Signature",
+              "hi": "कस्टम पिक्सेल साइज़ फोटो/हस्ताक्षर",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "custom pixel size",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Recruitment Photo Preparation",
+              "hi": "भर्ती फोटो तैयारी",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "recruitment photo exam photo",
+              "cap": "internal_service"
+            }
+          ]
+        },
+        {
+          "slug": "computer-services",
+          "name_en": "Computer Services",
+          "name_hi": "कंप्यूटर सेवाएँ",
+          "services": [
+            {
+              "n": "Document Scanning",
+              "hi": "दस्तावेज़ स्कैनिंग",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "scan scanning",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "Printing (A4)",
+              "hi": "प्रिंटिंग (ए4)",
+              "c": 10,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "print printout",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Colour Printing",
+              "hi": "कलर प्रिंटिंग",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "colour color print",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Black & White Printing",
+              "hi": "सादा (काला-सफेद) प्रिंटिंग",
+              "c": 5,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "bw print",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Photocopy",
+              "hi": "फोटोकॉपी",
+              "c": 5,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "photocopy xerox",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Lamination",
+              "hi": "लेमिनेशन",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "lamination",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Document Binding",
+              "hi": "बाइंडिंग",
+              "c": 30,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "binding",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Data Entry Service",
+              "hi": "डेटा एंट्री सेवा",
+              "c": 50,
+              "kw": "data entry",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Email Assistance",
+              "hi": "ईमेल सहायता",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "email",
+              "cap": "internal_service"
+            },
+            {
+              "n": "File Conversion",
+              "hi": "फ़ाइल कन्वर्ज़न",
+              "c": 20,
+              "t_en": "Same day",
+              "t_hi": "उसी दिन",
+              "kw": "file convert",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Online Form Filling",
+              "hi": "ऑनलाइन फॉर्म भरना",
+              "c": 50,
+              "kw": "online form filling",
+              "cap": "internal_service",
+              "pop": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "legal-civic-services",
+      "name_en": "Legal & Civic Services",
+      "name_hi": "कानूनी एवं नागरिक सेवाएँ",
+      "icon": "bi-bank2",
+      "group": "legal",
+      "description_en": "e-Court case status, e-stamp, property registration, land records, mutation, grievances, RTI and police verification assistance.",
+      "description_hi": "ई-कोर्ट केस स्थिति, ई-स्टाम्प, संपत्ति पंजीकरण, भू-अभिलेख, दाखिला, शिकायत, आरटीआई एवं पुलिस सत्यापन सहायता।",
+      "subcategories": [
+        {
+          "slug": "court-legal",
+          "name_en": "Court & Legal",
+          "name_hi": "न्यायालय एवं कानूनी",
+          "services": [
+            {
+              "n": "e-Court Case Status Checking",
+              "hi": "ई-कोर्ट केस स्थिति जाँच",
+              "c": 50,
+              "p": "ecourts",
+              "kw": "court case status kanoon",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Court Order Download Assistance",
+              "hi": "न्यायालय आदेश डाउनलोड सहायता",
+              "c": 50,
+              "p": "ecourts",
+              "kw": "court order download"
+            },
+            {
+              "n": "e-Challan (Legal) Checking",
+              "hi": "ई-चालान जाँच",
+              "c": 50,
+              "p": "echallan",
+              "kw": "echallan traffic"
+            },
+            {
+              "n": "e-Stamp Facilitation (Bihar)",
+              "hi": "ई-स्टाम्प सुविधा (बिहार)",
+              "c": 80,
+              "p": "bihar-regd",
+              "kw": "e-stamp stamp rupashray"
+            }
+          ]
+        },
+        {
+          "slug": "land-property",
+          "name_en": "Land & Property",
+          "name_hi": "भूमि एवं संपत्ति",
+          "services": [
+            {
+              "n": "Property Registration Assistance (Bihar)",
+              "hi": "संपत्ति पंजीकरण सहायता (बिहार)",
+              "c": 200,
+              "p": "bihar-regd",
+              "kw": "property registration regd"
+            },
+            {
+              "n": "Land Record Search (Bihar Bhumi)",
+              "hi": "भू-अभिलेख खोज",
+              "c": 50,
+              "p": "bihar-biharbhumi",
+              "kw": "land record search bhulekh",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Jamabandi Download (Bihar)",
+              "hi": "जमाबंदी डाउनलोड (बिहार)",
+              "c": 50,
+              "p": "bihar-biharbhumi",
+              "kw": "jamabandi download",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Mutation (Dakhil-Kharij) Assistance",
+              "hi": "दाखिला-खारिज (म्यूटेशन) सहायता",
+              "c": 100,
+              "p": "bihar-biharbhumi",
+              "kw": "mutation dakhil kharij"
+            },
+            {
+              "n": "Land Map (Amin) Download Assistance",
+              "hi": "भू-नक्शा डाउनलोड सहायता",
+              "c": 50,
+              "p": "bihar-biharbhumi",
+              "kw": "land map naksha amin"
+            }
+          ]
+        },
+        {
+          "slug": "civic-police",
+          "name_en": "Civic & Police",
+          "name_hi": "नागरिक एवं पुलिस",
+          "services": [
+            {
+              "n": "Public Grievance Application (CPGRAMS/Bihar)",
+              "hi": "जन शिकायत आवेदन",
+              "c": 60,
+              "p": "pgportal",
+              "kw": "grievance shikayat cpgrams"
+            },
+            {
+              "n": "RTI Application Assistance",
+              "hi": "आरटीआई आवेदन सहायता",
+              "c": 80,
+              "p": "rtionline",
+              "kw": "rti suchna",
+              "cap": "external_portal",
+              "note": "You file on the official RTI portal yourself; we prepare and guide you step by step."
+            },
+            {
+              "n": "Police Verification Assistance",
+              "hi": "पुलिस सत्यापन सहायता",
+              "c": 100,
+              "kw": "police verification"
+            },
+            {
+              "n": "Character Certificate Assistance (Legal)",
+              "hi": "चरित्र प्रमाणपत्र सहायता",
+              "c": 80,
+              "kw": "character certificate"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "other-digital-services",
+      "name_en": "Other Digital & Utility Services",
+      "name_hi": "अन्य डिजिटल एवं यूटिलिटी सेवाएँ",
+      "icon": "bi-globe2",
+      "group": "utility",
+      "description_en": "Bookings, recharges, bill payments, insurance, telemedicine, skill registration and other authorized CSC-style services. Partner-dependent services are activated only after the required authorization.",
+      "description_hi": "बुकिंग, रिचार्ज, बिल भुगतान, बीमा, टेलीमेडिसिन, स्किल पंजीकरण एवं अन्य अधिकृत सीएससी-शैली सेवाएँ। पार्टनर-आधारित सेवाएँ आवश्यक अधिकृत होने पर ही सक्रिय होती हैं।",
+      "subcategories": [
+        {
+          "slug": "booking-services",
+          "name_en": "Bookings",
+          "name_hi": "बुकिंग सेवाएँ",
+          "services": [
+            {
+              "n": "Train Ticket Booking Assistance",
+              "hi": "ट्रेन टिकट बुकिंग सहायता",
+              "c": 40,
+              "p": "irctc",
+              "kw": "train ticket irctc booking",
+              "cap": "restricted_authorization_required",
+              "note": "Ticketing requires an authorised IRCA/CSC agent licence; activated after authorization."
+            },
+            {
+              "n": "Bus Ticket Booking Assistance",
+              "hi": "बस टिकट बुकिंग सहायता",
+              "c": 30,
+              "kw": "bus ticket",
+              "cap": "restricted_authorization_required"
+            },
+            {
+              "n": "Flight Booking Assistance",
+              "hi": "फ्लाइट बुकिंग सहायता",
+              "c": 50,
+              "kw": "flight ticket",
+              "cap": "restricted_authorization_required"
+            },
+            {
+              "n": "Hotel Booking Assistance",
+              "hi": "होटल बुकिंग सहायता",
+              "c": 40,
+              "kw": "hotel booking",
+              "cap": "restricted_authorization_required"
+            },
+            {
+              "n": "Online Appointment Booking Assistance",
+              "hi": "ऑनलाइन अपॉइंटमेंट बुकिंग सहायता",
+              "c": 30,
+              "kw": "appointment booking",
+              "cap": "assisted_application"
+            }
+          ]
+        },
+        {
+          "slug": "health-insurance-services",
+          "name_en": "Health & Insurance",
+          "name_hi": "स्वास्थ्य एवं बीमा",
+          "services": [
+            {
+              "n": "Telemedicine Appointment Assistance (eSanjeevani)",
+              "hi": "टेलीमेडिसिन अपॉइंटमेंट सहायता",
+              "c": 30,
+              "p": "esanjeevani",
+              "kw": "telemedicine esanjeevani doctor"
+            },
+            {
+              "n": "Insurance Premium Payment Assistance",
+              "hi": "बीमा प्रीमियम भुगतान सहायता",
+              "c": 30,
+              "kw": "insurance premium bima",
+              "cap": "restricted_authorization_required"
+            },
+            {
+              "n": "Authorized Banking Correspondent (BC) Services",
+              "hi": "अधिकृत बैंकिंग कॉरrespंडेंट (बीसी) सेवाएँ",
+              "c": 0,
+              "kw": "banking correspondent bc",
+              "cap": "restricted_authorization_required",
+              "note": "BC services need bank authorization and integration; kept disabled until verified."
+            }
+          ]
+        },
+        {
+          "slug": "education-digital",
+          "name_en": "Education & Skill",
+          "name_hi": "शिक्षा एवं कौशल",
+          "services": [
+            {
+              "n": "Digital Literacy Course Registration",
+              "hi": "डिजिटल साक्षरता कोर्स पंजीकरण",
+              "c": 50,
+              "p": "skillindia",
+              "kw": "digital literacy course"
+            },
+            {
+              "n": "NIOS/IGNOU Assignment & Exam Services",
+              "hi": "एनआईओएस/इग्नू असाइनमेंट एवं परीक्षा सेवाएँ",
+              "c": 80,
+              "p": "ignou",
+              "kw": "nios ignou assignment"
+            },
+            {
+              "n": "Skill Development Registration (Skill India)",
+              "hi": "स्किल डेवलपमेंट पंजीकरण",
+              "c": 50,
+              "p": "skillindia",
+              "kw": "skill development kaushal"
+            }
+          ]
+        },
+        {
+          "slug": "bill-payment-services",
+          "name_en": "Recharge & Bill Payments",
+          "name_hi": "रिचार्ज एवं बिल भुगतान",
+          "services": [
+            {
+              "n": "Mobile Recharge",
+              "hi": "मोबाइल रिचार्ज",
+              "c": 10,
+              "t_en": "Instant",
+              "t_hi": "तुरंत",
+              "kw": "mobile recharge",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "DTH Recharge",
+              "hi": "डीटीएच रिचार्ज",
+              "c": 10,
+              "t_en": "Instant",
+              "t_hi": "तुरंत",
+              "kw": "dth recharge",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Electricity Bill Payment (NBPDCL/SBPDCL)",
+              "hi": "बिजली बिल भुगतान",
+              "c": 10,
+              "t_en": "Instant",
+              "t_hi": "तुरंत",
+              "kw": "electricity bill bijli nbpdcl sbpdcl",
+              "cap": "internal_service",
+              "pop": true
+            },
+            {
+              "n": "Water Bill Payment",
+              "hi": "पानी बिल भुगतान",
+              "c": 10,
+              "t_en": "Instant",
+              "t_hi": "तुरंत",
+              "kw": "water bill pani",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Gas Bill/Booking Payment",
+              "hi": "गैस बिल/बुकिंग भुगतान",
+              "c": 10,
+              "t_en": "Instant",
+              "t_hi": "तुरंत",
+              "kw": "gas bill booking",
+              "cap": "internal_service"
+            },
+            {
+              "n": "Other Utility Bill Payments",
+              "hi": "अन्य यूटिलिटी बिल भुगतान",
+              "c": 10,
+              "t_en": "Instant",
+              "t_hi": "तुरंत",
+              "kw": "utility bill umang",
+              "cap": "internal_service"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

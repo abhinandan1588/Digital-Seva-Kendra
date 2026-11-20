@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="fw-bold mb-4">{{ title }}</h1>
+      <div class="card">
+        <div class="card-body legal-body">
+          {% if body %}
+            {% for paragraph in body.split('\n\n') %}
+              <p>{{ paragraph | replace('\n', '<br>') | safe }}</p>
+            {% endfor %}
+          {% else %}
+            <p>{{ _t('This policy has not been configured yet. Please contact the shop for details.',
+            'यह नीति अभी कॉन्फ़िगर नहीं की गई है। कृपया विवरण के लिए दुकान से संपर्क करें।') }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

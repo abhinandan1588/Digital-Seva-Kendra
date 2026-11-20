@@ -1,0 +1,29 @@
+{% extends "admin/base.html" %}
+{% block title %}Staff Management{% endblock %}
+{% block page_title %}Staff Management (future-ready){% endblock %}
+{% block content %}
+<div class="alert alert-info">
+  <i class="bi bi-info-circle me-1"></i>
+  Multi-staff accounts with per-permission roles are planned for a future release. Today the shop has one owner/admin account
+  (change its password in <strong>Profile &rarr; Change Password</strong>). No customer accounts exist by design.
+</div>
+<div class="card">
+  <div class="card-header fw-bold">Current admin accounts</div>
+  <div class="card-body p-0">
+    <table class="table admin-table mb-0">
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last login</th></tr></thead>
+      <tbody>
+        {% for a in admins %}
+        <tr>
+          <td>{{ a.name }}</td>
+          <td>{{ a.email }}</td>
+          <td>{{ a.role }}</td>
+          <td>{% if a.is_active %}<span class="badge bg-success-subtle text-success-emphasis">active</span>{% else %}<span class="badge bg-secondary-subtle">disabled</span>{% endif %}</td>
+          <td class="small">{{ _dt(a.last_login_at) if a.last_login_at else 'never' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

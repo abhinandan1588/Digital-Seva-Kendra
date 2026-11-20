@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+{% block title %}Notification Templates{% endblock %}
+{% block page_title %}Notification Templates & Provider Status{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card">
+      <div class="card-header fw-bold">Message templates (editable, bilingual)</div>
+      <div class="card-body">
+        <form method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          {% set rows = [
+            ('ntf_order_submitted_en', 'ntf_order_submitted_hi', 'Order submitted'),
+            ('ntf_payment_verified_en', 'ntf_payment_verified_hi', 'Payment verified'),
+            ('ntf_payment_rejected_en', 'ntf_payment_rejected_hi', 'Payment rejected'),
+            ('ntf_documents_required_en', 'ntf_documents_required_hi', 'Documents required'),
+            ('ntf_application_completed_en', 'ntf_application_completed_hi', 'Application completed'),
+          ] %}
+          {% for en_key, hi_key, label in rows %}
+          <div class="border rounded p-2 mb-2">
+            <div class="fw-semibold small mb-1">{{ label }}</div>
+            <input class="form-control form-control-sm mb-1" name="{{ en_key }}" placeholder="English message" value="{{ settings.get(en_key, '') }}">
+            <input class="form-control form-control-sm" name="{{ hi_key }}" placeholder="हिन्दी संदेश" value="{{ settings.get(hi_key, '') }}">
+          </div>
+          {% endfor %}
+          <button class="btn btn-primary btn-sm">Save Templates</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-header fw-bold">Delivery provider status</div>
+      <div class="card-body small">
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2"><i class="bi {{ 'bi-check-circle-fill text-success' if providers.whatsapp else 'bi-x-circle text-secondary' }}"></i>
+            WhatsApp: {{ 'configured via WHATSAPP_PROVIDER_URL' if providers.whatsapp else 'not configured' }}</li>
+          <li class="mb-2"><i class="bi {{ 'bi-check-circle-fill text-success' if providers.sms else 'bi-x-circle text-secondary' }}"></i>
+            SMS: {{ 'configured via SMS_PROVIDER_URL' if providers.sms else 'not configured' }}</li>
+          <li><i class="bi {{ 'bi-check-circle-fill text-success' if providers.email else 'bi-x-circle text-secondary' }}"></i>
+            Email: {{ 'configured via SMTP_*' if providers.email else 'not configured' }}</li>
+        </ul>
+        <div class="alert alert-light border mt-3 mb-0">
+          In-app tracking updates always work. When no provider is configured, delivery rows are recorded as
+          <em>skipped (no provider)</em> - the system never falsely claims a message was sent.
+          Set the provider URL/key in the server .env to activate a channel (adapter code: <code>app/notifications/service.py</code>).
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

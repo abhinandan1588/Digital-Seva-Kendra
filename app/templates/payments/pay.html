@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}{{ _t('Pay', 'भुगतान') }} {{ order.order_number }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="stepper d-flex justify-content-between mb-4">
+    <div class="step done"><span class="step-circle"><i class="bi bi-check"></i></span>{{ _t('Select', 'चयन') }}</div>
+    <div class="step done"><span class="step-circle"><i class="bi bi-check"></i></span>{{ _t('Forms', 'फॉर्म') }}</div>
+    <div class="step done"><span class="step-circle"><i class="bi bi-check"></i></span>{{ _t('Checkout', 'चेकआउट') }}</div>
+    <div class="step active"><span class="step-circle">4</span>{{ _t('Pay by UPI', 'UPI भुगतान') }}</div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card text-center">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0 fw-bold">{{ _t('Pay by UPI QR', 'UPI QR से भुगतान करें') }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-6">
+              <div class="small text-muted">{{ _t('Order ID', 'ऑर्डर आईडी') }}</div>
+              <div class="fw-bold">{{ order.order_number }}</div>
+            </div>
+            <div class="col-6">
+              <div class="small text-muted">{{ _t('Total payable', 'कुल देय') }}</div>
+              <div class="fw-bold fs-4 text-primary">{{ _inr(order.total_amount) }}</div>
+            </div>
+          </div>
+
+          {% if payment and payment.status == 'verified' %}
+            <div class="alert alert-success">
+              <i class="bi bi-check-circle me-1"></i>{{ _t('Payment already verified. Thank you!', 'भुगतान पहले ही सत्यापित हो गया। धन्यवाद!') }}
+            </div>
+          {% else %}
+          <div class="qr-wrap my-3">
+            <img src="{{ qr_url }}" alt="UPI QR code" class="qr-img img-fluid border rounded-3 p-2 bg-white" width="280" height="280">
+          </div>
+          <p class="mb-1">{{ _t('Scan with any UPI app', 'किसी भी UPI ऐप से स्कैन करें') }}</p>
+          <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+            <code class="fs-5">{{ upi_id }}</code>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="copyUpiId('{{ upi_id }}')">
+              <i class="bi bi-clipboard"></i> {{ _t('Copy UPI ID', 'UPI आईडी कॉपी करें') }}
+            </button>
+          </div>
+          <div class="alert alert-light border text-start small">
+            <i class="bi bi-info-circle text-primary me-1"></i>{{ instructions }}
+          </div>
+
+          <form method="post" action="{{ url_for('payments.submit_proof', order_number=order.order_number) }}" enctype="multipart/form-data" class="text-start mt-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="token" value="{{ token }}">
+            <h5 class="fw-bold">{{ _t('After paying, submit your payment proof', 'भुगतान के बाद अपना प्रमाण जमा करें') }}</h5>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">{{ _t('UPI Transaction ID / UTR', 'UPI ट्रांज़ैक्शन आईडी / UTR') }} <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="utr" required minlength="8" maxlength="60"
+                     placeholder="{{ _t('12-digit number shown in your UPI app', 'आपके UPI ऐप में दिखा 12-अंकीय नंबर') }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">{{ _t('Payment screenshot', 'भुगतान स्क्रीनशॉट') }} <span class="text-danger">*</span></label>
+              <input type="file" class="form-control" name="screenshot" required accept=".jpg,.jpeg,.png,.pdf">
+              <div class="form-text">{{ _t('JPG/PNG/PDF, max 5 MB. This is verified manually by the shop - uploading never auto-verifies payment.', 'JPG/PNG/PDF, अधिकतम 5 MB। दुकान इसे मैन्युअल जाँचती है - अपलोड से भुगतान स्वतः सत्यापित नहीं होता।') }}</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ _t('Remarks (optional)', 'टिप्पणी (वैकल्पिक)') }}</label>
+              <textarea class="form-control" name="remarks" rows="2" maxlength="300"></textarea>
+            </div>
+            <button type="submit" class="btn btn-accent btn-lg w-100 fw-semibold">{{ _t('Submit Payment for Verification', 'सत्यापन हेतु भुगतान जमा करें') }}</button>
+          </form>
+          {% endif %}
+
+          {% if support_info %}
+          <p class="small text-muted mt-3 mb-0">{{ support_info }}</p>
+          {% endif %}
+          <a href="{{ url_for('orders.order_status_by_token', order_number=order.order_number, token=token) }}" class="btn btn-outline-secondary mt-3">
+            {{ _t('Check status', 'स्थिति देखें') }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+function copyUpiId(v) {
+  navigator.clipboard.writeText(v).then(function () {
+    alert({{ _t('"UPI ID copied."', '"UPI आईडी कॉपी हो गई।"') }});
+  });
+}
+</script>
+{% endblock %}

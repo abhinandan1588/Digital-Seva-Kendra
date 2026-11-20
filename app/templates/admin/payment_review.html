@@ -1,0 +1,104 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import status_badge with context %}
+{% block title %}Review Payment{% endblock %}
+{% block page_title %}Payment Review - {{ payment.order.order_number }}{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Payment Submission</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5 small text-muted">Order</dt>
+          <dd class="col-7"><a href="{{ url_for('admin.order_detail', order_id=payment.order_id) }}">{{ payment.order.order_number }}</a></dd>
+          <dt class="col-5 small text-muted">Customer</dt>
+          <dd class="col-7">{{ payment.order.customer.name }} ({{ payment.order.customer.masked_mobile }})</dd>
+          <dt class="col-5 small text-muted">Expected amount</dt>
+          <dd class="col-7 fw-bold">{{ _inr(payment.amount_expected) }}</dd>
+          <dt class="col-5 small text-muted">Transaction ID (UTR)</dt>
+          <dd class="col-7"><code>{{ payment.upi_transaction_id or '-' }}</code></dd>
+          <dt class="col-5 small text-muted">Customer remarks</dt>
+          <dd class="col-7 small">{{ payment.customer_remarks or '-' }}</dd>
+          <dt class="col-5 small text-muted">Submitted</dt>
+          <dd class="col-7 small">{{ _dt(payment.updated_at) }}</dd>
+          <dt class="col-5 small text-muted">Current status</dt>
+          <dd class="col-7">{{ status_badge('payment', payment.status) }}</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Actions</div>
+      <div class="card-body">
+        {% if payment.status != 'verified' %}
+        <form method="post" action="{{ url_for('admin.payment_approve', payment_id=payment.id) }}" data-confirm="Approve this payment as VERIFIED? This starts application processing.">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-success w-100 fw-semibold mb-3"><i class="bi bi-check2-circle me-1"></i>Approve Payment</button>
+        </form>
+        {% else %}
+        <div class="alert alert-success py-2"><i class="bi bi-check2-circle me-1"></i>Verified {{ _dt(payment.verified_at) }} by {{ payment.verified_by.email if payment.verified_by else 'admin' }}</div>
+        {% endif %}
+
+        {% if payment.status in ('pending_verification', 'submitted') %}
+        <form method="post" action="{{ url_for('admin.payment_request_proof', payment_id=payment.id) }}" class="border-top pt-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <label class="form-label small fw-semibold">Request corrected proof</label>
+          <textarea class="form-control form-control-sm mb-2" name="reason" rows="2" placeholder="e.g. Amount mismatch, unclear screenshot" required></textarea>
+          <button class="btn btn-outline-warning btn-sm w-100">Ask Customer for Corrected Proof</button>
+        </form>
+        <form method="post" action="{{ url_for('admin.payment_reject', payment_id=payment.id) }}" class="border-top pt-3 mt-3" data-confirm="Reject this payment?">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <label class="form-label small fw-semibold text-danger">Reject payment (reason is mandatory)</label>
+          <textarea class="form-control form-control-sm mb-2" name="reason" rows="2" required></textarea>
+          <button class="btn btn-danger btn-sm w-100">Reject Payment</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Payment Screenshot</div>
+      <div class="card-body text-center">
+        {% if screenshot %}
+          {% if screenshot.mime_type == 'application/pdf' %}
+            <i class="bi bi-file-earmark-pdf display-3"></i>
+            <div>{{ screenshot.original_name }}</div>
+            <a class="btn btn-outline-secondary btn-sm mt-2" target="_blank" href="{{ url_for('admin.document_preview', doc_id=screenshot.id) }}">Open PDF</a>
+          {% else %}
+            <a href="{{ url_for('admin.document_preview', doc_id=screenshot.id) }}" target="_blank">
+              <img src="{{ url_for('admin.document_preview', doc_id=screenshot.id) }}" class="img-fluid rounded border" alt="Payment screenshot">
+            </a>
+          {% endif %}
+          <div class="small text-muted mt-2">{{ screenshot.original_name }} &middot; {{ screenshot.size_display }} &middot; {{ screenshot.storage_provider }}</div>
+          <a class="btn btn-sm btn-outline-secondary mt-2" href="{{ url_for('admin.document_download', doc_id=screenshot.id) }}"><i class="bi bi-download"></i> Download</a>
+          {% if screenshot.web_view_link %}<a class="btn btn-sm btn-outline-secondary mt-2" href="{{ url_for('admin.document_open_drive', doc_id=screenshot.id) }}" target="_blank"><i class="bi bi-google"></i> Open in Drive</a>{% endif %}
+        {% else %}
+          <p class="text-muted small mb-0">No screenshot attached.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header fw-bold">Verification History</div>
+      <div class="card-body">
+        {% if history %}
+        <ul class="timeline">
+          {% for h in history %}
+          <li class="timeline-item">
+            <span class="timeline-dot"></span>
+            <div class="d-flex flex-wrap justify-content-between">
+              <div><strong>{{ h.previous_status or '•' }} → {{ status_label('payment', h.new_status) }}</strong></div>
+              <small class="text-muted">{{ _dt(h.created_at) }}</small>
+            </div>
+            {% if h.customer_remark %}<div class="small">{{ h.customer_remark }}</div>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}<p class="text-muted small mb-0">No history yet.</p>{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% block title %}Exam Templates{% endblock %}
+{% block page_title %}Examination service templates{% endblock %}
+{% block content %}
+<form class="d-flex gap-2 mb-3">
+  <input class="form-control form-control-sm" name="q" value="{{ q }}" placeholder="Search exam services…">
+  <button class="btn btn-sm btn-outline-primary">Search</button>
+</form>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0 align-middle">
+      <thead><tr><th>Exam service</th><th>Category</th><th>Cycles</th><th>Active</th><th></th></tr></thead>
+      <tbody>
+        {% for t in templates %}
+        <tr>
+          <td><strong>{{ t.name_en }}</strong>{% if t.name_hi %}<div class="small text-muted">{{ t.name_hi }}</div>{% endif %}</td>
+          <td class="small text-muted">{{ t.category.name_en if t.category }}</td>
+          <td>{{ cycle_counts[t.id] }}</td>
+          <td>{% if t.is_active %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</td>
+          <td class="text-end d-flex gap-1 justify-content-end">
+            <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.service_edit', service_id=t.id) }}">Edit service</a>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.exam_cycle_new', service_id=t.id) }}">Add cycle</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

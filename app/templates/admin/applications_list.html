@@ -1,0 +1,63 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import pagination_nav, status_badge with context %}
+{% block title %}Applications{% endblock %}
+{% block page_title %}Applications{% endblock %}
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body row g-2 align-items-end">
+    <div class="col-md-4">
+      <label class="form-label small">Search (application no / service)</label>
+      <input class="form-control form-control-sm" name="q" value="{{ q }}" form="none" id="appSearch">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label small">Status</label>
+      <select class="form-select form-select-sm" id="appStatus">
+        <option value="">All</option>
+        {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if status == s }}>{{ status_label('application', s) }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-sm btn-primary" onclick="goApplications()">Filter</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    {% if pagination.items %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table align-middle">
+        <thead><tr><th>Application No</th><th>Service</th><th>Order</th><th>Status</th><th>Updated</th><th></th></tr></thead>
+        <tbody>
+          {% for app in pagination.items %}
+          <tr>
+            <td class="fw-semibold">{{ app.application_number }}</td>
+            <td>{{ app.service_name_snapshot }}</td>
+            <td>{{ app.order.order_number }}</td>
+            <td>{{ status_badge('application', app.status) }}</td>
+            <td class="small">{{ _dt(app.updated_at) }}</td>
+            <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.application_detail', app_id=app.id) }}">Open</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3">{{ pagination_nav(pagination, 'admin.applications_list', q=q, status=status) }}</div>
+    {% else %}
+    <div class="p-5 text-center text-muted">No applications found.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function goApplications() {
+  const q = document.getElementById('appSearch').value;
+  const s = document.getElementById('appStatus').value;
+  const params = new URLSearchParams();
+  if (q) params.set('q', q);
+  if (s) params.set('status', s);
+  window.location = '/admin/applications?' + params.toString();
+}
+</script>
+{% endblock %}

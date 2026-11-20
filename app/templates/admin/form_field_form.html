@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block title %}Form Field{% endblock %}
+{% block page_title %}{{ 'Edit Field' if field else 'Add Field' }} - {{ service.name_en }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header fw-bold">{{ 'Edit Field: ' ~ field.label_en if field else 'New Field' }}</div>
+      <div class="card-body">
+        <form method="post"
+              action="{{ url_for('admin.form_field_edit', service_id=service.id, field_id=field.id) if field else url_for('admin.form_field_add', service_id=service.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="row">
+            <div class="col-md-6 mb-2"><label class="form-label small">Label (English) *</label>
+              <input class="form-control form-control-sm" name="label_en" required value="{{ field.label_en if field else '' }}"></div>
+            <div class="col-md-6 mb-2"><label class="form-label small">लेबल (हिन्दी)</label>
+              <input class="form-control form-control-sm" name="label_hi" value="{{ field.label_hi or '' if field else '' }}"></div>
+            <div class="col-md-4 mb-2"><label class="form-label small">Field type</label>
+              <select class="form-select form-select-sm" name="field_type" id="fieldTypeSelect">
+                {% for ft in field_types %}<option value="{{ ft }}" {{ 'selected' if field and field.field_type == ft }}>{{ ft }}</option>{% endfor %}
+              </select></div>
+            <div class="col-md-8 mb-2"><label class="form-label small">Placeholder</label>
+              <input class="form-control form-control-sm" name="placeholder" value="{{ field.placeholder or '' if field else '' }}"></div>
+            <div class="col-md-6 mb-2"><label class="form-label small">Help text (English)</label>
+              <input class="form-control form-control-sm" name="help_text_en" value="{{ field.help_text_en or '' if field else '' }}"></div>
+            <div class="col-md-6 mb-2"><label class="form-label small">सहायक पाठ (हिन्दी)</label>
+              <input class="form-control form-control-sm" name="help_text_hi" value="{{ field.help_text_hi or '' if field else '' }}"></div>
+            <div class="col-12 mb-2">
+              <label class="form-label small">Options <span class="text-muted">(for dropdown / radio / checkbox - one per line: English | Hindi)</span></label>
+              <textarea class="form-control form-control-sm" name="options" rows="3" placeholder="Male | पुरुष&#10;Female | महिला">{% if field and field.options %}{% for o in field.options %}{{ o.en }}{% if o.hi and o.hi != o.en %} | {{ o.hi }}{% endif %}{{ '\n' }}{% endfor %}{% endif %}</textarea>
+            </div>
+            <div class="col-md-3 mb-2"><label class="form-label small">Min length</label>
+              <input type="number" class="form-control form-control-sm" name="min_length" value="{{ field.min_length if field and field.min_length else '' }}"></div>
+            <div class="col-md-3 mb-2"><label class="form-label small">Max length</label>
+              <input type="number" class="form-control form-control-sm" name="max_length" value="{{ field.max_length if field and field.max_length else '' }}"></div>
+            <div class="col-md-3 mb-2"><label class="form-label small">Min value (number)</label>
+              <input type="number" step="any" class="form-control form-control-sm" name="min_value" value="{{ field.min_value if field and field.min_value is not none else '' }}"></div>
+            <div class="col-md-3 mb-2"><label class="form-label small">Max value (number)</label>
+              <input type="number" step="any" class="form-control form-control-sm" name="max_value" value="{{ field.max_value if field and field.max_value is not none else '' }}"></div>
+            <div class="col-md-8 mb-2"><label class="form-label small">Allowed file extensions <span class="text-muted">(comma separated, for file/image fields)</span></label>
+              <input class="form-control form-control-sm" name="allowed_extensions" placeholder="pdf, jpg, jpeg, png" value="{{ (field.allowed_extensions or []) | join(', ') if field else '' }}"></div>
+            <div class="col-md-4 mb-2"><label class="form-label small">Max file size (MB)</label>
+              <input type="number" class="form-control form-control-sm" name="max_file_mb" value="{{ field.max_file_mb if field and field.max_file_mb else '' }}"></div>
+          </div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="is_required" id="fRequired" {{ 'checked' if not field or field.is_required }}><label class="form-check-label small" for="fRequired">Required field</label></div>
+          <div class="form-check mb-3"><input class="form-check-input" type="checkbox" name="is_active" id="fActive" {{ 'checked' if not field or field.is_active }}><label class="form-check-label small" for="fActive">Active</label></div>
+          <button class="btn btn-primary btn-sm">{{ 'Save Field' if field else 'Add Field' }}</button>
+          <a class="btn btn-link btn-sm" href="{{ url_for('admin.form_builder', service_id=service.id) }}">Back to builder</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

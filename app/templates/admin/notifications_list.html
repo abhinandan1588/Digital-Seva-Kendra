@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import pagination_nav with context %}
+{% block title %}Notifications{% endblock %}
+{% block page_title %}Notifications{% endblock %}
+{% block content %}
+<div class="alert alert-light border small mb-3">
+  <i class="bi bi-info-circle me-1"></i>Every customer-facing event is recorded here and shown on the customer's tracking page.
+  External delivery (WhatsApp/SMS/email) activates only when a provider is configured in the environment - otherwise rows show <em>skipped (no provider)</em>, honestly.
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    {% if pagination.items %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table align-middle">
+        <thead><tr><th>When</th><th>Event</th><th>Order</th><th>Message</th><th>Delivery</th></tr></thead>
+        <tbody>
+          {% for n in pagination.items %}
+          <tr>
+            <td class="small">{{ _dt(n.created_at) }}</td>
+            <td><span class="badge bg-primary-subtle text-primary-emphasis">{{ n.event_type | replace('_',' ') }}</span></td>
+            <td class="small">{% if n.order %}<a href="{{ url_for('admin.order_detail', order_id=n.order_id) }}">{{ n.order.order_number }}</a>{% else %}-{% endif %}</td>
+            <td class="small">{{ n.title_en }}{% if n.message_en %}<div class="text-muted">{{ n.message_en | truncate(80) }}</div>{% endif %}</td>
+            <td class="small">
+              {% if n.delivery_status == 'sent' %}<span class="badge bg-success">{{ n.channel }}</span>
+              {% elif n.delivery_status == 'skipped' %}<span class="badge bg-secondary">{{ n.channel }} (no provider)</span>
+              {% else %}<span class="badge bg-warning text-dark">{{ n.delivery_status }} / {{ n.channel }}</span>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3">{{ pagination_nav(pagination, 'admin.notifications_list') }}</div>
+    {% else %}
+    <div class="p-5 text-center text-muted">No notifications yet.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

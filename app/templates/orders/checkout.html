@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}{{ _t('Checkout', 'चेकआउट') }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="stepper d-flex justify-content-between mb-4">
+    <div class="step done"><span class="step-circle"><i class="bi bi-check"></i></span>{{ _t('Select Services', 'सेवाएँ चुनें') }}</div>
+    <div class="step done"><span class="step-circle"><i class="bi bi-check"></i></span>{{ _t('Fill Forms', 'फॉर्म भरें') }}</div>
+    <div class="step active"><span class="step-circle">3</span>{{ _t('Checkout', 'चेकआउट') }}</div>
+    <div class="step"><span class="step-circle">4</span>{{ _t('Pay by UPI', 'UPI भुगतान') }}</div>
+  </div>
+
+  <h1 class="fw-bold mb-4">{{ _t('Checkout', 'चेकआउट') }}</h1>
+
+  {% if missing_forms %}
+  <div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle me-1"></i>
+    {{ _t('Some applications still need their forms filled:', 'कुछ आवेदनों के फॉर्म अभी बाकी हैं:') }}
+    <ul class="mb-0 mt-2">
+      {% for line in lines %}{% if line.item.key in missing_forms %}
+      <li><a href="{{ url_for('applications.fill_form', item_key=line.item.key) }}">{{ _pick(line.service.name_en, line.service.name_hi) }}</a></li>
+      {% endif %}{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card">
+        <div class="card-header fw-bold">{{ _t('Your details', 'आपकी जानकारी') }}</div>
+        <div class="card-body">
+          <form method="post" action="{{ url_for('orders.checkout') }}" id="checkout-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="checkout_token" value="{{ checkout_token }}">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">{{ _t('Full Name', 'पूरा नाम') }} <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="name" required minlength="2" maxlength="120" placeholder="{{ _t('e.g. Rahul Kumar', 'जैसे राहुल कुमार') }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">{{ _t('Mobile Number', 'मोबाइल नंबर') }} <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" name="mobile" required pattern="[0-9]{10,13}" inputmode="numeric" placeholder="9000000000">
+              <div class="form-text">{{ _t('Used only for order updates. No account is created.', 'केवल ऑर्डर अपडेट के लिए। कोई खाता नहीं बनता।') }}</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ _t('Email (optional)', 'ईमेल (वैकल्पिक)') }}</label>
+              <input type="email" class="form-control" name="email" maxlength="255">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ _t('Address (only if the service needs it)', 'पता (केवल यदि सेवा में ज़रूरी हो)') }}</label>
+              <textarea class="form-control" name="address" rows="2" maxlength="500"></textarea>
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" name="consent" value="1" id="consentCheck" required>
+              <label class="form-check-label small" for="consentCheck">
+                {{ _t('I give consent for my documents and information to be processed for these applications.',
+                'मैं अपने दस्तावेज़ों और जानकारी के इन आवेदनों हेतु प्रोसेसिंग की सहमति देता/देती हूँ।') }}
+              </label>
+            </div>
+            <div class="alert alert-light border small">
+              <strong>{{ _t('Important instructions', 'महत्वपूर्ण निर्देश') }}</strong>
+              <ul class="mb-0 mt-1 ps-3">
+                <li>{{ _t('Pay the exact amount shown by UPI after confirmation.', 'पुष्टि के बाद दिखाई गई सटीक राशि UPI से चुकाएँ।') }}</li>
+                <li>{{ _t('Payment is verified manually by the shop before processing starts.', 'प्रक्रिया शुरू होने से पहले दुकान भुगतान का मैन्युअल सत्यापन करती है।') }}</li>
+                <li>{{ _t('You will receive a tracking code - keep it safe.', 'आपको ट्रैकिंग कोड मिलेगा - इसे सुरक्षित रखें।') }}</li>
+              </ul>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold" {% if missing_forms %}disabled{% endif %}>
+              {{ _t('Confirm & Proceed to Payment', 'पुष्टि करें और भुगतान करें') }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-header fw-bold">{{ _t('Your applications', 'आपके आवेदन') }}</div>
+        <div class="card-body">
+          {% for line in lines %}
+          <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+            <div class="small">
+              <div class="fw-semibold">{{ _pick(line.service.name_en, line.service.name_hi) }}</div>
+              <div class="text-muted">
+                {{ _t('Service charge', 'सर्विस चार्ज') }} {{ _inr(line.service_charge) }}
+                {% if line.official_fee %}+ {{ _t('official fee', 'सरकारी शुल्क') }} {{ _inr(line.official_fee) }}{% endif %}
+                {% if line.other_charge %}+ {{ _t('other', 'अन्य') }} {{ _inr(line.other_charge) }}{% endif %}
+              </div>
+            </div>
+            <span class="fw-semibold">{{ _inr(line.line_total) }}</span>
+          </div>
+          {% endfor %}
+          <ul class="list-unstyled mt-2 mb-0 price-breakdown">
+            <li class="d-flex justify-content-between"><span>{{ _t('Service charges', 'सर्विस चार्ज') }}</span><span>{{ _inr(totals.service_charges_total) }}</span></li>
+            <li class="d-flex justify-content-between"><span>{{ _t('Official fees', 'सरकारी शुल्क') }}</span><span>{{ _inr(totals.official_fees_total) }}</span></li>
+            <li class="d-flex justify-content-between"><span>{{ _t('Other charges', 'अन्य शुल्क') }}</span><span>{{ _inr(totals.other_charges_total) }}</span></li>
+            <li class="d-flex justify-content-between fw-bold fs-5 border-top pt-2 mt-2"><span>{{ _t('Total payable', 'कुल देय') }}</span><span class="text-primary">{{ _inr(totals.total) }}</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  // Prevent accidental double-submit (server also guards with a token).
+  document.getElementById('checkout-form').addEventListener('submit', function () {
+    var btn = this.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + {{ _t('"Please wait..."', '"कृपया प्रतीक्षा करें..."') }};
+  });
+</script>
+{% endblock %}

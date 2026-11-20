@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% from "_catalogue_macros.html" import service_card, cycle_card with context %}
+{% block content %}
+
+<!-- Hero -->
+<section class="hero-section text-white py-5">
+  <div class="container py-4">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <h1 class="display-6 fw-bold">{{ _pick(site_settings.homepage_banner_title, site_settings.homepage_banner_title_hi) }}</h1>
+        <p class="lead mb-4">{{ _pick(site_settings.homepage_banner_subtitle, site_settings.homepage_banner_subtitle_hi) }}</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="{{ url_for('services.catalogue') }}" class="btn btn-light btn-lg px-4 fw-semibold">
+            <i class="bi bi-grid-3x3-gap me-1"></i>{{ _t('Explore Services', 'सेवाएँ देखें') }}
+          </a>
+          <a href="{{ url_for('services.catalogue') }}" class="btn btn-accent btn-lg px-4 fw-semibold">
+            <i class="bi bi-pencil-square me-1"></i>{{ _t('Apply Now', 'आवेदन करें') }}
+          </a>
+          <a href="{{ url_for('orders.track') }}" class="btn btn-outline-light btn-lg px-4 fw-semibold">
+            <i class="bi bi-search me-1"></i>{{ _t('Track Your Application', 'आवेदन ट्रैक करें') }}
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center">
+        <i class="bi bi-phone-fill hero-icon" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured services -->
+<section class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h3 fw-bold mb-0">{{ _t('Featured Services', 'प्रमुख सेवाएँ') }}</h2>
+    <a href="{{ url_for('services.catalogue') }}" class="text-decoration-none">{{ _t('View all', 'सभी देखें') }} <i class="bi bi-arrow-right"></i></a>
+  </div>
+  {% if featured_services %}
+  <div class="row g-4">
+    {% for service in featured_services %}
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card h-100 service-card">
+        <div class="card-body d-flex flex-column">
+          <div class="service-icon mb-2"><i class="bi {{ service.category.icon or 'bi-file-earmark-text' }}"></i></div>
+          <h5 class="card-title">{{ _pick(service.name_en, service.name_hi) }}</h5>
+          <p class="card-text small text-muted flex-grow-1">{{ (service.description or '') | truncate(90) }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-primary">{{ _inr(service.total_price) }}</span>
+            <form method="post" action="{{ url_for('orders.add_to_cart', service_id=service.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-primary">{{ _t('Apply', 'आवेदन') }} <i class="bi bi-plus-lg"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center text-muted py-4">{{ _t('Services will appear here once the shop adds them.', 'दुकान द्वारा सेवाएँ जोड़े जाने पर यहाँ दिखेंगी।') }}</div>
+  {% endif %}
+</section>
+
+<!-- Catalogue sections (data-driven: documents, RTPS, jobs, notifications, schemes…) -->
+{% for sec in sections if sec.cards %}
+<section class="{{ 'bg-light py-5' if loop.index is even else 'container py-4' }}">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="h3 fw-bold mb-0"><i class="bi {{ sec.icon }} me-2"></i>{{ _pick(sec.title_en, sec.title_hi) }}</h2>
+      <a href="{{ sec.url }}" class="text-decoration-none">{{ _t('View all', 'सभी देखें') }} <i class="bi bi-arrow-right"></i></a>
+    </div>
+    {% if sec.kind == 'cycles' %}
+    <div class="row g-4">
+      {% for item in sec.cards %}{{ cycle_card(item.cycle, item.info) }}{% endfor %}
+    </div>
+    {% else %}
+    <div class="row g-4">
+      {% for service in sec.cards %}{{ service_card(service) }}{% endfor %}
+    </div>
+    {% endif %}
+    {% if sec.key == 'latest_notifications' and not has_notifications %}
+    <p class="small text-muted mt-3 mb-0"><i class="bi bi-info-circle me-1"></i>{{ _t('Notifications appear here as soon as the admin verifies them on the official portal.', 'अधिसूचनाएँ यहाँ तभी दिखती हैं जब प्रबंधक उन्हें सरकारी पोर्टल पर पुष्ट करता है।') }}</p>
+    {% endif %}
+  </div>
+</section>
+{% endfor %}
+
+<!-- Popular categories -->
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">{{ _t('Popular Categories', 'लोकप्रिय श्रेणियाँ') }}</h2>
+    {% if categories %}
+    <div class="row g-3">
+      {% for category in categories %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="{{ url_for('category.category_page', slug=category.slug) }}" class="text-decoration-none">
+          <div class="card category-card h-100 text-center p-3">
+            <i class="bi {{ category.icon or 'bi-folder2' }} category-icon"></i>
+            <div class="fw-semibold mt-2">{{ _pick(category.name_en, category.name_hi) }}</div>
+            <div class="small text-muted">{{ category.active_service_count }} {{ _t('services', 'सेवाएँ') }}</div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center text-muted py-3">{{ _t('Categories will appear here.', 'श्रेणियाँ यहाँ दिखेंगी।') }}</div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="container py-5">
+  <h2 class="h3 fw-bold text-center mb-4">{{ _t('How It Works', 'यह कैसे काम करता है') }}</h2>
+  <div class="row g-4 text-center">
+    {% set steps = [
+      (_t('1. Choose Services', '1. सेवाएँ चुनें'), _t('Browse services and add the applications you need - one or many.', 'सेवाएँ देखें और अपनी ज़रूरत के आवेदन जोड़ें - एक या अनेक।'), 'bi-cart-check'),
+      (_t('2. Fill Forms & Upload', '2. फॉर्म भरें और अपलोड करें'), _t('Fill each service\'s short form and upload the required documents.', 'हर सेवा का छोटा फॉर्म भरें और आवश्यक दस्तावेज़ अपलोड करें।'), 'bi-pencil-square'),
+      (_t('3. Pay by UPI', '3. UPI से भुगतान करें'), _t('Scan the order QR with any UPI app and submit your transaction ID.', 'किसी भी UPI ऐप से QR स्कैन करें और ट्रांज़ैक्शन आईडी भरें।'), 'bi-qr-code'),
+      (_t('4. Track Online', '4. ऑनलाइन ट्रैक करें'), _t('Track your application status anytime - no account needed.', 'अपने आवेदन की स्थिति कभी भी देखें - खाता बनाने की ज़रूरत नहीं।'), 'bi-clipboard-check')
+    ] %}
+    {% for title, text, icon in steps %}
+    <div class="col-6 col-lg-3">
+      <div class="how-card p-4 h-100">
+        <i class="bi {{ icon }} how-icon"></i>
+        <h6 class="fw-bold mt-3">{{ title }}</h6>
+        <p class="small text-muted mb-0">{{ text }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Why choose us -->
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="h3 fw-bold text-center mb-4">{{ _t('Why Choose Us', 'हमें क्यों चुनें') }}</h2>
+    <div class="row g-4">
+      {% set reasons = [
+        (_t('No login needed', 'लॉगिन की ज़रूरत नहीं'), _t('Start your application immediately - no registration, no passwords.', 'तुरंत आवेदन शुरू करें - न रजिस्ट्रेशन, न पासवर्ड।'), 'bi-unlock'),
+        (_t('Clear price breakdown', 'स्पष्ट कीमत विवरण'), _t('Shop service charge and official government fee shown separately.', 'दुकान का सर्विस चार्ज और सरकारी शुल्क अलग-अलग दिखाए जाते हैं।'), 'bi-receipt'),
+        (_t('Secure document handling', 'सुरक्षित दस्तावेज़ प्रबंधन'), _t('Your documents stay private - only the shop owner can view them.', 'आपके दस्तावेज़ निजी रहते हैं - केवल दुकान मालिक देख सकता है।'), 'bi-shield-lock'),
+        (_t('Real-time status', 'रीयल-टाइम स्थिति'), _t('Every status update appears on your tracking page with remarks.', 'हर स्थिति परिवर्तन ट्रैकिंग पेज पर टिप्पणी के साथ दिखता है।'), 'bi-activity')
+      ] %}
+      {% for title, text, icon in reasons %}
+      <div class="col-md-6 col-lg-3">
+        <div class="d-flex gap-3">
+          <i class="bi {{ icon }} fs-3 text-primary"></i>
+          <div>
+            <h6 class="fw-bold">{{ title }}</h6>
+            <p class="small text-muted mb-0">{{ text }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="container py-5">
+  <h2 class="h3 fw-bold text-center mb-4">{{ _t('Frequently Asked Questions', 'अक्सर पूछे जाने वाले प्रश्न') }}</h2>
+  <div class="accordion accordion-flush mx-auto faq-accordion" id="faqAccordion">
+    {% set faqs = [
+      (_t('Do I need to create an account?', 'क्या खाता बनाना ज़रूरी है?'), _t('No. Just give your name and mobile number at checkout. Your order number and tracking code let you track the application.', 'नहीं। चेकआउट पर अपना नाम और मोबाइल नंबर दें। ऑर्डर नंबर और ट्रैकिंग कोड से आवेदन ट्रैक करें।')),
+      (_t('How do I pay?', 'भुगतान कैसे करें?'), _t('Scan the UPI QR generated for your order with any UPI app, then submit the UPI transaction ID and a payment screenshot for verification.', 'अपने ऑर्डर का UPI QR किसी भी UPI ऐप से स्कैन करें, फिर UPI ट्रांज़ैक्शन आईडी और भुगतान का स्क्रीनशॉट जमा करें।')),
+      (_t('When does processing start?', 'प्रक्रिया कब शुरू होती है?'), _t('After the shop verifies your payment (usually within a few working hours).', 'दुकान द्वारा भुगतान सत्यापन के बाद (आमतौर पर कुछ कार्य-घंटों में)।')),
+      (_t('Is my payment verified automatically?', 'क्या भुगतान स्वतः सत्यापित होता है?'), _t('No. Payment screenshots are checked manually by the shop owner; only then is payment marked verified.', 'नहीं। भुगतान स्क्रीनशॉट की दुकान मालिक द्वारा मैन्युअल जाँच होती है; तभी भुगतान सत्यापित चिह्नित होता है।')),
+      (_t('What if I lost my tracking code?', 'ट्रैकिंग कोड खो गया तो?'), _t('Call the shop with your order number and mobile number; the owner can verify you and help.', 'अपने ऑर्डर नंबर और मोबाइल नंबर के साथ दुकान पर कॉल करें; मालिक पुष्टि करके सहायता करेंगे।'))
+    ] %}
+    {% for q, a in faqs %}
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq-{{ loop.index }}">
+          {{ q }}
+        </button>
+      </h2>
+      <div id="faq-{{ loop.index }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" data-bs-parent="#faqAccordion">
+        <div class="accordion-body text-muted">{{ a }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Contact strip -->
+<section class="contact-strip py-4 text-white">
+  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div>
+      <h5 class="mb-1 fw-bold">{{ _t('Need help? Visit or call us', 'सहायता चाहिए? आएँ या कॉल करें') }}</h5>
+      <div class="small">
+        {% if site_settings.shop_address %}<span class="me-3"><i class="bi bi-geo-alt"></i> {{ site_settings.shop_address }}</span>{% endif %}
+        {% if site_settings.working_hours %}<span><i class="bi bi-clock"></i> {{ site_settings.working_hours }}</span>{% endif %}
+      </div>
+    </div>
+    <a href="{{ url_for('public.contact') }}" class="btn btn-light fw-semibold">{{ _t('Contact Us', 'संपर्क करें') }}</a>
+  </div>
+</section>
+
+{% endblock %}

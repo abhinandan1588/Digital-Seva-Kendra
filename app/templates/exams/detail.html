@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %}{{ cycle.display_name }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('exams.exam_list') }}">{{ _t('Examinations', 'परीक्षाएँ') }}</a></li>
+      <li class="breadcrumb-item active">{{ cycle.display_name }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+            <h1 class="h3 fw-bold mb-0">{{ cycle.display_name }}</h1>
+            <span class="badge fs-6 {{ 'bg-success' if cycle.exam_status == 'open' else 'bg-info text-dark' if cycle.exam_status == 'upcoming' else 'bg-secondary' }}">{{ cycle.status_label }}</span>
+          </div>
+          <p class="text-muted mb-1">
+            <i class="bi bi-building me-1"></i>{{ cycle.organization }}
+            {% if cycle.advertisement_number %} &middot; {{ _t('Advt. No.', 'विज्ञापन सं.') }}: {{ cycle.advertisement_number }}{% endif %}
+            {% if cycle.exam_year %} &middot; {{ cycle.exam_year }}{% endif %}
+            &middot; {{ cycle.state }}
+          </p>
+          {% if cycle.officially_extended %}
+          <div class="alert alert-warning py-2 small mt-2">
+            <i class="bi bi-clock-history me-1"></i>{{ _t('Deadline officially extended (verified by our admin).', 'अंतिम तिथि सरकारी पुष्टि के बाद बढ़ाई गई (प्रबंधक द्वारा सत्यापित)।') }}
+            {% if cycle.extension_note %}{{ cycle.extension_note }}{% endif %}
+          </div>
+          {% endif %}
+          {% if cycle.exam_status == 'closed' %}
+          <div class="alert alert-secondary py-2 small mt-2">
+            <i class="bi bi-lock me-1"></i>{{ _t('The application deadline has passed. This cycle cannot be ordered. Watch for the next cycle here.', 'आवेदन की अंतिम तिथि निकल चुकी है। यह चक्र ऑर्डर नहीं किया जा सकता। अगले चक्र की जानकारी यहीं मिलेगी।') }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Dates -->
+      <div class="card mb-4">
+        <div class="card-header fw-bold"><i class="bi bi-calendar3 me-1"></i>{{ _t('Important dates (verified)', 'महत्वपूर्ण तिथियाँ (पुष्ट)') }}</div>
+        <div class="table-responsive">
+          <table class="table table-sm mb-0">
+            <tbody>
+              <tr><td class="text-muted">{{ _t('Notification date', 'अधिसूचना तिथि') }}</td><td>{{ _d(cycle.notification_date) }}</td></tr>
+              <tr><td class="text-muted">{{ _t('Application start', 'आवेदन शुरु') }}</td><td>{{ _d(cycle.application_start_date) }}</td></tr>
+              <tr><td class="text-muted">{{ _t('Application last date', 'आवेदन अंतिम तिथि') }}</td>
+                <td>{{ _d(cycle.application_last_date) }}
+                  {% if deadline.label_key == 'last_date_approaching' %}<span class="badge bg-danger">{{ _t('Approaching', 'नज़दीक') }}</span>{% endif %}
+                </td></tr>
+              <tr><td class="text-muted">{{ _t('Late fee last date', 'विलंब शुल्क अंतिम तिथि') }}</td><td>{{ _d(cycle.late_fee_last_date) }}</td></tr>
+              <tr><td class="text-muted">{{ _t('Correction window', 'सुधार अवधि') }}</td>
+                <td>{% if cycle.correction_window_start %}{{ _d(cycle.correction_window_start) }} – {{ _d(cycle.correction_window_end) }}{% else %}—{% endif %}</td></tr>
+              <tr><td class="text-muted">{{ _t('Exam date', 'परीक्षा तिथि') }}</td><td>{{ _d(cycle.exam_date) }}</td></tr>
+              <tr><td class="text-muted">{{ _t('Admit card date', 'प्रवेश पत्र तिथि') }}</td><td>{{ _d(cycle.admit_card_date) }}</td></tr>
+              <tr><td class="text-muted">{{ _t('Result date', 'परिणाम तिथि') }}</td><td>{{ _d(cycle.result_date) }}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer small text-muted">
+          <i class="bi bi-shield-check me-1"></i>
+          {% if cycle.last_verified_at %}{{ _t('Last verified from the official source', 'सरकारी स्रोत से अंतिम सत्यापन') }}: {{ _dt(cycle.last_verified_at) }}
+          {% else %}{{ _t('Dates pending official verification.', 'तिथियाँ सरकारी सत्यापन लंबित।') }}{% endif %}
+        </div>
+      </div>
+
+      <!-- Eligibility & fees -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header fw-bold"><i class="bi bi-person-check me-1"></i>{{ _t('Eligibility', 'पात्रता') }}</div>
+            <div class="card-body small">
+              {% if cycle.qualification %}<p class="mb-1"><strong>{{ _t('Qualification', 'योग्यता') }}:</strong> {{ cycle.qualification }}</p>{% endif %}
+              {% if cycle.education_level %}<p class="mb-1"><strong>{{ _t('Education level', 'शैक्षिक स्तर') }}:</strong> {{ cycle.education_level }}</p>{% endif %}
+              {% if cycle.min_age or cycle.max_age %}
+              <p class="mb-1"><strong>{{ _t('Age', 'आयु') }}:</strong>
+                {{ cycle.min_age or '–' }} – {{ cycle.max_age or '–' }} {{ _t('years', 'वर्ष') }}</p>{% endif %}
+              {% if cycle.age_relaxation_info %}<p class="mb-1 text-muted">{{ cycle.age_relaxation_info }}</p>{% endif %}
+              {% if cycle.gender_eligibility %}<p class="mb-1"><strong>{{ _t('Gender eligibility', 'लिंग पात्रता') }}:</strong> {{ cycle.gender_eligibility }}</p>{% endif %}
+              {% if not (cycle.qualification or cycle.min_age or cycle.max_age) %}
+                <p class="text-muted mb-0">{{ _t('Eligibility details are added after official verification.', 'पात्रता विवरण सरकारी सत्यापन के बाद जोड़े जाएँगे।') }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header fw-bold"><i class="bi bi-cash-coin me-1"></i>{{ _t('Application fee (by category)', 'आवेदन शुल्क (वर्ग अनुसार)') }}</div>
+            <div class="card-body small">
+              {% if cycle.fee_note %}
+                {{ cycle.fee_note }}
+                <p class="text-muted mt-2 mb-0">{{ _t('The official fee is passed through at cost and shown separately in your price breakdown. Verify the latest fee in the official notification.', 'सरकारी शुल्क लागत पर अलग से दिखाया जाता है। नवीनतम शुल्क सरकारी अधिसूचना में देखें।') }}</p>
+              {% else %}
+                <p class="text-muted mb-0">{{ _t('Official fees are confirmed from the notification before publishing.', 'सरकारी शुल्क प्रकाशन से पहले अधिसूचना से पुष्ट किया जाता है।') }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extra documents -->
+      {% if cycle.required_documents_extra %}
+      <div class="card mb-4">
+        <div class="card-header fw-bold"><i class="bi bi-file-earmark-check me-1"></i>{{ _t('Extra documents per this notification', 'इस अधिसूचना के अनुसार अतिरिक्त दस्तावेज़') }}</div>
+        <div class="card-body small">
+          <ul class="mb-0">
+            {% for doc in cycle.required_documents_extra %}<li>{{ doc }}</li>{% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Apply box -->
+    <div class="col-lg-4">
+      <div class="card price-box sticky-top">
+        <div class="card-body">
+          <h5 class="fw-bold mb-2">{{ _t('Apply through our centre', 'हमारे केंद्र से आवेदन') }}</h5>
+          {% set service = cycle.service %}
+          {% if open_now and service and service.is_orderable %}
+            <ul class="list-unstyled price-breakdown small mb-3">
+              <li class="d-flex justify-content-between"><span>{{ _t('Service charge', 'सर्विस चार्ज') }}</span><span>{{ _inr(service.service_charge) }}</span></li>
+              {% if service.official_fee %}<li class="d-flex justify-content-between"><span>{{ _t('Official fee', 'सरकारी शुल्क') }}</span><span>{{ _inr(service.official_fee) }}</span></li>{% endif %}
+              <li class="d-flex justify-content-between fw-bold border-top pt-2 mt-2"><span>{{ _t('Total', 'कुल') }}</span><span class="text-primary fs-5">{{ _inr(service.total_price) }}</span></li>
+            </ul>
+            <form method="post" action="{{ url_for('orders.add_to_cart', service_id=service.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="exam_cycle_id" value="{{ cycle.id }}">
+              <button class="btn btn-primary w-100 btn-lg fw-semibold"><i class="bi bi-plus-lg me-1"></i>{{ _t('Apply Now', 'आवेदन करें') }}</button>
+            </form>
+          {% elif open_now and service and service.is_restricted %}
+            <p class="small text-muted mb-2">{{ _t('This service currently needs authorization and cannot be ordered online.', 'इस सेवा को अभी अधिकृत आवश्यक है; ऑनलाइन ऑर्डर नहीं हो सकता।') }}</p>
+          {% else %}
+            <p class="text-muted small">{{ _t('Applications are closed for this cycle. You can still view the notification for reference.', 'इस चक्र के लिए आवेदन बंद है। आप अधिसूचना संदर्भ हेतु देख सकते हैं।') }}</p>
+          {% endif %}
+          {% if cycle.official_notification_url %}
+            <a href="{{ cycle.official_notification_url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary w-100 mt-2">
+              <i class="bi bi-box-arrow-up-right me-1"></i>{{ _t('Open Official Website', 'सरकारी वेबसाइट खोलें') }}</a>
+          {% endif %}
+          {% if cycle.notification_pdf_path %}
+            <a href="{{ url_for('static', filename=cycle.notification_pdf_path) }}" target="_blank" class="btn btn-outline-secondary w-100 mt-2">
+              <i class="bi bi-file-pdf me-1"></i>{{ _t('Notification PDF', 'अधिसूचना PDF') }}</a>
+          {% endif %}
+          {% if cycle.official_application_url %}
+            <a href="{{ cycle.official_application_url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary w-100 mt-2">
+              <i class="bi bi-pencil-square me-1"></i>{{ _t('Official application link', 'सरकारी आवेदन लिंक') }}</a>
+          {% endif %}
+        </div>
+        <div class="card-footer small text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          {{ _t('We are a private service centre, not a government portal. Assisted applications are submitted on the official portal after your review and consent.',
+                'हम एक निजी सेवा केंद्र हैं, सरकारी पोर्टल नहीं। सहायता प्राप्त आवेदन आपकी समीक्षा और सहमति के बाद सरकारी पोर्टल पर जमा होते हैं।') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

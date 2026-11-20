@@ -1,0 +1,99 @@
+{% extends "admin/base.html" %}
+{% block title %}Services{% endblock %}
+{% block page_title %}{{ ('Popular Services' if mode == 'popular' else 'Featured Services') if mode is defined and mode else 'All Services' }}{% endblock %}
+{% block content %}
+{% if mode is not defined or not mode %}
+<div class="card mb-4">
+  <div class="card-body row g-2 align-items-end">
+    <div class="col-md-3"><label class="form-label small">Search</label>
+      <input class="form-control form-control-sm" id="svcSearch" value="{{ q }}"></div>
+    <div class="col-md-2"><label class="form-label small">Category</label>
+      <select class="form-select form-select-sm" id="svcCat">
+        <option value="">All</option>
+        {% for c in categories %}<option value="{{ c.id }}" {{ 'selected' if category_id == c.id }}>{{ c.name_en }}</option>{% endfor %}
+      </select></div>
+    <div class="col-md-2"><label class="form-label small">Subcategory</label>
+      <select class="form-select form-select-sm" id="svcSub">
+        <option value="">All</option>
+        {% for sub in subcategories %}<option value="{{ sub.id }}" {{ 'selected' if subcategory_id == sub.id }}>{{ sub.name_en }}</option>{% endfor %}
+      </select></div>
+    <div class="col-md-2"><label class="form-label small">Capability</label>
+      <select class="form-select form-select-sm" id="svcCap">
+        <option value="">All</option>
+        {% for v in ['internal_service','assisted_application','authorized_integration','external_portal','restricted_authorization_required'] %}
+        <option value="{{ v }}" {{ 'selected' if capability == v }}>{{ v.replace('_',' ') }}</option>
+        {% endfor %}
+      </select></div>
+    <div class="col-md-2"><label class="form-label small">Show</label>
+      <select class="form-select form-select-sm" id="svcShow">
+        <option value="active" {{ 'selected' if show == 'active' }}>Active (not archived)</option>
+        <option value="archived" {{ 'selected' if show == 'archived' }}>Archived</option>
+        <option value="all" {{ 'selected' if show == 'all' }}>All</option>
+      </select></div>
+    <div class="col-md-1"><button class="btn btn-sm btn-primary w-100" onclick="goServices()">Go</button></div>
+    <div class="col-md-12 text-end"><a class="btn btn-sm btn-success" href="{{ url_for('admin.service_create') }}"><i class="bi bi-plus-lg"></i> New Service</a></div>
+  </div>
+</div>
+{% endif %}
+
+<div class="card">
+  <div class="card-body p-0">
+    {% if services %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table align-middle">
+        <thead><tr><th>Service</th><th>Category</th><th>Charge</th><th>Official</th><th>Total</th><th>Capability</th><th>Form</th><th>Docs</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          {% for s in services %}
+          <tr>
+            <td><div class="fw-semibold">{{ s.name_en }}</div>{% if s.name_hi %}<div class="small text-muted">{{ s.name_hi }}</div>{% endif %}
+              {% if s.is_examination %}<span class="badge bg-dark">exam</span>{% endif %}</td>
+            <td class="small">{{ s.category.name_en if s.category else '-' }}</td>
+            <td>{{ _inr(s.service_charge) }}</td>
+            <td>{{ _inr(s.official_fee) }}</td>
+            <td class="fw-bold">{{ _inr(s.total_price) }}</td>
+            <td class="small">{{ s.capability_type.replace('_', ' ') if s.capability_type }}</td>
+            <td><a class="badge bg-info-subtle text-info-emphasis text-decoration-none" href="{{ url_for('admin.form_builder', service_id=s.id) }}">{{ s.form_fields.count() }} fields</a></td>
+            <td><a class="badge bg-secondary-subtle text-secondary-emphasis text-decoration-none" href="{{ url_for('admin.doc_requirements', service_id=s.id) }}">{{ s.document_requirements.count() }} docs</a></td>
+            <td>{% if s.is_active %}<span class="badge bg-success-subtle text-success-emphasis">active</span>{% else %}<span class="badge bg-secondary-subtle">inactive</span>{% endif %}
+              {% if s.is_archived %}<span class="badge bg-danger-subtle text-danger-emphasis">archived</span>{% endif %}
+              {% if s.is_featured %}<span class="badge bg-warning-subtle text-warning-emphasis">featured</span>{% endif %}
+              {% if s.is_popular %}<span class="badge bg-primary-subtle text-primary-emphasis">popular</span>{% endif %}</td>
+            <td class="text-nowrap">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.service_edit', service_id=s.id) }}"><i class="bi bi-pencil"></i></a>
+              <form method="post" action="{{ url_for('admin.service_toggle', service_id=s.id) }}" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-secondary" title="Toggle active"><i class="bi bi-toggle-{{ 'on' if s.is_active else 'off' }}"></i></button>
+              </form>
+              {% if mode is defined and mode %}
+              <form method="post" action="{{ url_for('admin.service_toggle_popular' if mode == 'popular' else 'admin.service_toggle_featured', service_id=s.id) }}" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-warning" title="Remove from {{ mode }}"><i class="bi bi-x-lg"></i></button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="p-5 text-center text-muted">
+      {% if mode is defined and mode %}No {{ mode }} services yet. Toggle services as {{ mode }} from the All Services list or their edit page.{% else %}No services match. Create your first service or adjust filters.{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function goServices() {
+  const params = new URLSearchParams();
+  if (document.getElementById('svcSearch').value) params.set('q', document.getElementById('svcSearch').value);
+  if (document.getElementById('svcCat').value) params.set('category_id', document.getElementById('svcCat').value);
+  if (document.getElementById('svcSub').value) params.set('subcategory_id', document.getElementById('svcSub').value);
+  if (document.getElementById('svcCap').value) params.set('capability', document.getElementById('svcCap').value);
+  params.set('show', document.getElementById('svcShow').value);
+  window.location = '/admin/services?' + params.toString();
+}
+</script>
+{% endblock %}

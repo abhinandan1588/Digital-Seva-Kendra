@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% from "_catalogue_macros.html" import service_card with context %}
+{% block title %}{{ _t('All Services', 'सभी सेवाएँ') }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <h1 class="fw-bold mb-2">{{ _t('All Services', 'सभी सेवाएँ') }}</h1>
+  <p class="text-muted mb-4">{{ _t('Choose a service and add it to your list. You can combine several services in one order.',
+  'सेवा चुनें और अपनी सूची में जोड़ें। आप एक ही ऑर्डर में कई सेवाएँ मिला सकते हैं।') }}</p>
+
+  <!-- Search + category filter -->
+  <form method="get" class="d-flex gap-2 mb-3">
+    {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category.slug }}">{% endif %}
+    {% if selected_subcategory %}<input type="hidden" name="subcategory" value="{{ selected_subcategory.slug }}">{% endif %}
+    <input class="form-control form-control-lg" type="search" name="q" value="{{ query }}"
+           placeholder="{{ _t('Search services in Hindi or English…', 'हिंदी या अंग्रेज़ी में सेवाएँ खोजें…') }}" autocomplete="off" id="serviceSearch">
+    <button class="btn btn-primary px-4" type="submit"><i class="bi bi-search"></i></button>
+  </form>
+  <div id="searchSuggestions" class="list-group position-absolute d-none shadow" style="z-index:1050; max-width: 600px;"></div>
+
+  {% if popular_terms and not query %}
+  <div class="mb-3 d-flex flex-wrap align-items-center gap-2">
+    <span class="small text-muted"><i class="bi bi-fire text-danger"></i> {{ _t('Popular searches', 'लोकप्रिय खोजें') }}:</span>
+    {% for term in popular_terms %}
+      <a class="badge bg-light text-dark border text-decoration-none" href="{{ url_for('services.catalogue', q=term) }}">{{ term }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="row g-4">
+    <!-- Sidebar categories -->
+    <div class="col-lg-3">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">{{ _t('Categories', 'श्रेणियाँ') }}</h6>
+          <div class="list-group list-group-flush category-list">
+            <a href="{{ url_for('services.catalogue') }}"
+               class="list-group-item list-group-item-action {{ 'active' if not selected_category }}">
+              {{ _t('All services', 'सभी सेवाएँ') }}
+            </a>
+            {% for category in categories %}
+            <a href="{{ url_for('category.category_page', slug=category.slug) }}"
+               class="list-group-item list-group-item-action {{ 'active' if selected_category and selected_category.id == category.id }}">
+              <i class="bi {{ category.icon or 'bi-folder2' }} me-1"></i> {{ _pick(category.name_en, category.name_hi) }}
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% if recent_services and not query %}
+      <div class="card mt-4 d-none d-lg-block">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3"><i class="bi bi-clock me-1"></i>{{ _t('Recently added', 'हाल में जोड़ी गई') }}</h6>
+          <ul class="list-unstyled small mb-0">
+            {% for s in recent_services %}
+            <li class="mb-1"><a class="text-decoration-none" href="{{ url_for('services.detail', slug=s.slug) }}">{{ _pick(s.name_en, s.name_hi) }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Services grid -->
+    <div class="col-lg-9">
+      {% if selected_subcategory %}
+      <div class="mb-3 d-flex justify-content-between align-items-center">
+        <span class="badge bg-primary-subtle text-primary-emphasis">{{ _pick(selected_subcategory.name_en, selected_subcategory.name_hi) }}</span>
+        <a class="small" href="{{ url_for('services.catalogue') if not selected_category else url_for('services.catalogue', category=selected_category.slug) }}">{{ _t('Clear subcategory', 'उपश्रेणी हटाएँ') }}</a>
+      </div>
+      {% elif selected_category and subcategories %}
+      <div class="mb-3 d-flex flex-wrap gap-2">
+        {% for sub in subcategories %}
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('services.catalogue', category=selected_category.slug, subcategory=sub.slug) }}">{{ _pick(sub.name_en, sub.name_hi) }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if query %}
+      <p class="small text-muted">{{ _t('Search results for', 'खोज परिणाम') }}: <strong>{{ query }}</strong> ({{ services | length }})</p>
+      {% endif %}
+      {% if services %}
+      <div class="row g-4">
+        {% for service in services %}
+          {{ service_card(service, show_docs=True) }}
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="text-center text-muted py-5">
+        <i class="bi bi-search fs-1 d-block mb-2"></i>
+        {{ _t('No services found. Try a different search or category.', 'कोई सेवा नहीं मिली। दूसरी खोज या श्रेणी आज़माएँ।') }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+// Bilingual search suggestions (JSON /services/suggest)
+(function () {
+  const input = document.getElementById('serviceSearch');
+  const box = document.getElementById('searchSuggestions');
+  if (!input || !box) return;
+  let timer = null;
+  input.addEventListener('input', function () {
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 2) { box.classList.add('d-none'); return; }
+    timer = setTimeout(() => {
+      fetch('/services/suggest?q=' + encodeURIComponent(q))
+        .then(r => r.json())
+        .then(data => {
+          const items = data.suggestions || [];
+          if (!items.length) { box.classList.add('d-none'); return; }
+          box.innerHTML = items.map(s =>
+            '<a class="list-group-item list-group-item-action py-2" href="/services/' + s.slug + '">' +
+            '<div class="fw-semibold">' + s.name + '</div>' +
+            '<div class="small text-muted">' + (s.category || '') + '</div></a>').join('');
+          box.classList.remove('d-none');
+        }).catch(() => {});
+    }, 250);
+  });
+  document.addEventListener('click', e => { if (!box.contains(e.target) && e.target !== input) box.classList.add('d-none'); });
+})();
+</script>
+{% endblock %}

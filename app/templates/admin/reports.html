@@ -1,0 +1,72 @@
+{% extends "admin/base.html" %}
+{% block title %}Reports{% endblock %}
+{% block page_title %}Reports & Analytics{% endblock %}
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body row g-2 align-items-end">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-md-3"><label class="form-label small">From</label>
+        <input type="date" class="form-control form-control-sm" name="from" value="{{ date_from }}"></div>
+      <div class="col-md-3"><label class="form-label small">To</label>
+        <input type="date" class="form-control form-control-sm" name="to" value="{{ date_to }}"></div>
+      <div class="col-md-2"><button class="btn btn-sm btn-primary">Apply</button></div>
+      <div class="col-md-2"><a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.reports_csv') }}"><i class="bi bi-download me-1"></i>Export CSV</a></div>
+    </form>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-4">
+    <div class="stat-card p-3"><div class="small text-muted">Orders in period</div><div class="stat-value">{{ orders | length }}</div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card p-3"><div class="small text-muted">Verified collections in period</div><div class="stat-value">{{ _inr(verified_total) }}</div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card p-3"><div class="small text-muted">Applications in period</div>
+      <div class="stat-value">{{ svc_counts | sum(attribute='1') }}</div></div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Service-wise demand (period)</div>
+      <div class="card-body p-0">
+        <table class="table admin-table mb-0">
+          <thead><tr><th>Service</th><th>Applications</th></tr></thead>
+          <tbody>
+            {% for name, count in svc_counts %}
+            <tr><td>{{ name }}</td><td>{{ count }}</td></tr>
+            {% endfor %}
+            {% if not svc_counts %}<tr><td colspan="2" class="text-muted text-center py-3">No data in this period.</td></tr>{% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Orders (period)</div>
+      <div class="card-body p-0" style="max-height:420px; overflow:auto;">
+        <table class="table admin-table mb-0">
+          <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Payment</th><th>Date</th></tr></thead>
+          <tbody>
+            {% for o in orders %}
+            <tr>
+              <td><a href="{{ url_for('admin.order_detail', order_id=o.id) }}">{{ o.order_number }}</a></td>
+              <td>{{ o.customer.name }}</td>
+              <td>{{ _inr(o.total_amount) }}</td>
+              <td>{{ o.payment_status | replace('_',' ') }}</td>
+              <td class="small">{{ _d(o.submitted_at) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-muted text-center py-3">No orders in this period.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block title %}Service Availability{% endblock %}
+{% block page_title %}Service availability & compliance capability{% endblock %}
+{% block content %}
+<div class="row g-2 mb-3">
+  {% for value, count in counts.items() %}
+  <div class="col-6 col-md-2">
+    <a class="card text-center p-2 text-decoration-none {{ 'border-primary' if capability == value }}" href="{{ url_for('admin.services_availability', capability=value) }}">
+      <div class="fw-bold">{{ count }}</div>
+      <div class="small text-muted text-truncate" title="{{ value }}">{{ capability_label(value) }}</div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+<div class="alert alert-light border small">
+  <strong>Rules:</strong> only <em>restricted</em> services are never orderable - they stay visible with an "authorization required" badge until you activate them. Change a service's full details (incl. capability) on its edit page.
+</div>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0 align-middle">
+      <thead><tr><th>Service</th><th>Capability</th><th>Orderable</th><th>Set capability</th></tr></thead>
+      <tbody>
+        {% for s in services %}
+        <tr>
+          <td class="small"><strong>{{ s.name_en }}</strong>{% if s.name_hi %}<div class="text-muted">{{ s.name_hi }}</div>{% endif %}</td>
+          <td><span class="badge {{ 'bg-danger-subtle text-danger-emphasis' if s.is_restricted else 'bg-success-subtle text-success-emphasis' }}">{{ capability_label(s.capability_type) }}</span></td>
+          <td>{% if s.is_orderable %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</td>
+          <td>
+            <form method="post" action="{{ url_for('admin.service_capability_update', service_id=s.id) }}" class="d-flex gap-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <select name="capability_type" class="form-select form-select-sm" style="max-width:260px">
+                {% for value in ['internal_service', 'assisted_application', 'authorized_integration', 'external_portal', 'restricted_authorization_required'] %}
+                <option value="{{ value }}" {{ 'selected' if s.capability_type == value }}>{{ value }}</option>
+                {% endfor %}
+              </select>
+              <button class="btn btn-sm btn-outline-primary">Set</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

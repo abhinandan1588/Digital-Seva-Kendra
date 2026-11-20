@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% block title %}Document Templates{% endblock %}
+{% block page_title %}Document templates (reusable){% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+  <span class="text-muted small">Define standard documents once and attach them to any service. Attaching creates a per-service copy you can customise.</span>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.doc_template_create') }}"><i class="bi bi-plus-lg"></i> New template</a>
+</div>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0 align-middle">
+      <thead><tr><th>Template</th><th>Group</th><th>Files</th><th>Max MB</th><th>Required</th><th>Expiry</th><th></th></tr></thead>
+      <tbody>
+        {% for t in templates %}
+        <tr>
+          <td><strong>{{ t.name_en }}</strong>{% if t.name_hi %}<div class="small text-muted">{{ t.name_hi }}</div>{% endif %}</td>
+          <td><span class="badge bg-light text-dark border">{{ t.template_group }}</span></td>
+          <td class="small">{{ (t.allowed_extensions or []) | join(', ') | upper }}</td>
+          <td>{{ t.max_file_mb }}</td>
+          <td>{% if t.is_required %}<span class="badge bg-danger-subtle text-danger-emphasis">required</span>{% else %}<span class="badge bg-secondary-subtle text-secondary-emphasis">optional</span>{% endif %}</td>
+          <td class="small">{{ (t.expires_after_days ~ ' days') if t.expires_after_days else '—' }}</td>
+          <td class="text-end d-flex gap-1 justify-content-end">
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.doc_template_edit', template_id=t.id) }}"><i class="bi bi-pencil"></i></a>
+            <form method="post" action="{{ url_for('admin.doc_template_delete', template_id=t.id) }}" onsubmit="return confirm('Delete template? Services keep their attached copies.')">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

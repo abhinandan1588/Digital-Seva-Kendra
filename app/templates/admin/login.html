@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login - {{ site_settings.shop_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/css/bootstrap-icons.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body d-flex align-items-center justify-content-center">
+  <div class="card login-card shadow">
+    <div class="card-body p-4">
+      <div class="text-center mb-4">
+        <i class="bi bi-shop login-icon"></i>
+        <h4 class="fw-bold mt-2 mb-0">{{ site_settings.shop_name }}</h4>
+        <div class="text-muted small">Admin Panel</div>
+      </div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category=='error' else category }} py-2 small">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+      <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+            <input type="email" class="form-control" name="email" required autofocus autocomplete="username">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Password</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" name="password" required autocomplete="current-password">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 fw-semibold">Sign In</button>
+      </form>
+      <p class="text-muted small text-center mt-3 mb-0">Only the shop owner/admin logs in here.<br>Customers never need an account.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import status_badge with context %}
+{% block title %}{{ application.application_number }}{% endblock %}
+{% block page_title %}Application {{ application.application_number }}{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card mb-4">
+      <div class="card-header fw-bold d-flex justify-content-between">
+        <span>{{ application.service_name_snapshot }}</span>
+        {{ status_badge('application', application.status) }}
+      </div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-4 small text-muted">Order</dt>
+          <dd class="col-8"><a href="{{ url_for('admin.order_detail', order_id=application.order_id) }}">{{ application.order.order_number }}</a></dd>
+          <dt class="col-4 small text-muted">Customer</dt>
+          <dd class="col-8">{{ application.order.customer.name }} ({{ application.order.customer.masked_mobile }})</dd>
+          <dt class="col-4 small text-muted">Submitted</dt>
+          <dd class="col-8">{{ _dt(application.submitted_at) }}</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Submitted form data -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Submitted Form Information</div>
+      <div class="card-body p-0">
+        {% if field_values %}
+        <table class="table admin-table mb-0">
+          <tbody>
+            {% for v in field_values %}
+            <tr>
+              <th class="w-25 small text-muted">{{ v.field_label_snapshot }}</th>
+              <td>{{ v.display_value or '-' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}<div class="p-3 text-muted small">No form data submitted.</div>{% endif %}
+      </div>
+    </div>
+
+    <!-- Uploaded documents -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Uploaded Documents</div>
+      <div class="card-body p-0">
+        {% if documents %}
+        <table class="table admin-table align-middle mb-0">
+          <thead><tr><th>Document</th><th>File</th><th>Size</th><th>Storage</th><th></th></tr></thead>
+          <tbody>
+            {% for d in documents %}
+            <tr>
+              <td>{{ d.label_snapshot }} {% if d.upload_status == 'pending' %}<span class="badge bg-warning text-dark">pending</span>{% endif %}</td>
+              <td class="text-truncate" style="max-width:150px">{{ d.original_name }}</td>
+              <td class="small">{{ d.size_display }}</td>
+              <td class="small">{{ d.storage_provider }}</td>
+              <td class="text-nowrap">
+                <a class="btn btn-sm btn-outline-secondary" target="_blank" href="{{ url_for('admin.document_preview', doc_id=d.id) }}"><i class="bi bi-eye"></i></a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.document_download', doc_id=d.id) }}"><i class="bi bi-download"></i></a>
+                {% if d.web_view_link %}<a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.document_open_drive', doc_id=d.id) }}" target="_blank" title="Open in Google Drive"><i class="bi bi-google"></i></a>{% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}<div class="p-3 text-muted small">No documents uploaded.</div>{% endif %}
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="card">
+      <div class="card-header fw-bold">Application History</div>
+      <div class="card-body">
+        {% if history %}
+        <ul class="timeline">
+          {% for h in history %}
+          <li class="timeline-item">
+            <span class="timeline-dot"></span>
+            <div class="d-flex flex-wrap justify-content-between">
+              <div><strong>{{ h.previous_status or '•' }} → {{ status_label('application', h.new_status) }}</strong> <span class="text-muted small">by {{ h.updated_by_label }}</span></div>
+              <small class="text-muted">{{ _dt(h.created_at) }}</small>
+            </div>
+            {% if h.customer_remark %}<div class="small"><span class="text-muted">Customer remark:</span> {{ h.customer_remark }}</div>{% endif %}
+            {% if h.internal_note %}<div class="small"><span class="text-muted">Internal note:</span> {{ h.internal_note }}</div>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}<p class="text-muted small mb-0">No changes recorded yet.</p>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <!-- Update status -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Update Application Status</div>
+      <div class="card-body">
+        <form method="post" action="{{ url_for('admin.application_set_status', app_id=application.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-2">
+            <select class="form-select form-select-sm" name="status">
+              {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if application.status == s }}>{{ status_label('application', s) }}</option>{% endfor %}
+            </select>
+          </div>
+          <input class="form-control form-control-sm mb-2" name="customer_remark"
+                 placeholder="Customer-visible remark (shows on tracking page)">
+          <input class="form-control form-control-sm mb-2" name="internal_note"
+                 placeholder="Internal note (admin only)">
+          <button class="btn btn-warning btn-sm w-100">Save Status</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Request documents -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Request Additional Documents</div>
+      <div class="card-body">
+        <form method="post" action="{{ url_for('admin.request_documents', app_id=application.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <textarea class="form-control form-control-sm mb-2" name="detail" rows="2"
+                    placeholder="e.g. Please upload a clear photograph and address proof" required></textarea>
+          <button class="btn btn-outline-warning btn-sm w-100">Send Document Request</button>
+          <div class="form-text">Marks the application 'Documents Required' and shows the request on the customer's tracking page.</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Upload output document -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Upload Final / Completed Document</div>
+      <div class="card-body">
+        <form method="post" action="{{ url_for('admin.upload_output_document', app_id=application.id) }}" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input class="form-control form-control-sm mb-2" name="label" placeholder="Label e.g. PAN Acknowledgement" value="Completed Document">
+          <input class="form-control form-control-sm mb-2" type="file" name="output_file" accept=".pdf,.jpg,.jpeg,.png" required>
+          <button class="btn btn-success btn-sm w-100">Upload to Final_Documents</button>
+          <div class="form-text">Stored privately; customer can download it from tracking once completed.</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Document requirements of this service -->
+    {% if requirements %}
+    <div class="card">
+      <div class="card-header fw-bold">Service Document Requirements</div>
+      <div class="card-body small">
+        <ul class="mb-0 ps-3">
+          {% for r in requirements %}
+          <li>{{ r.label_en }} {% if r.is_required %}<span class="badge bg-danger-subtle text-danger-emphasis">required</span>{% else %}<span class="badge bg-secondary-subtle">optional</span>{% endif %}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

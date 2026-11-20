@@ -1,0 +1,182 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import status_badge with context %}
+{% block title %}Order {{ order.order_number }}{% endblock %}
+{% block page_title %}Order {{ order.order_number }}{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <!-- Customer & order meta -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        Order Information
+        <span>{{ status_badge('order', order.status) }} {{ status_badge('payment', order.payment_status) }}</span>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <dl class="row mb-0">
+              <dt class="col-5 small text-muted">Customer</dt><dd class="col-7">{{ order.customer.name }}</dd>
+              <dt class="col-5 small text-muted">Mobile</dt><dd class="col-7">{{ order.customer.masked_mobile }}</dd>
+              <dt class="col-5 small text-muted">Email</dt><dd class="col-7">{{ order.customer.email or '-' }}</dd>
+            </dl>
+          </div>
+          <div class="col-md-6">
+            <dl class="row mb-0">
+              <dt class="col-5 small text-muted">Submitted</dt><dd class="col-7">{{ _dt(order.submitted_at) }}</dd>
+              <dt class="col-5 small text-muted">Total</dt><dd class="col-7 fw-bold">{{ _inr(order.total_amount) }}</dd>
+              <dt class="col-5 small text-muted">Tracking</dt><dd class="col-7"><form method="post" action="{{ url_for('admin.regenerate_tracking', order_id=order.id) }}" data-confirm="Generate a new tracking token? The old one stops working."><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-sm btn-outline-secondary">Regenerate</button></form></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Applications -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Applications ({{ order.applications | length }})</div>
+      <div class="card-body p-0">
+        <table class="table admin-table align-middle mb-0">
+          <thead><tr><th>#</th><th>Application</th><th>Service</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            {% for app in order.applications %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td class="fw-semibold">{{ app.application_number }}</td>
+              <td>{{ app.service_name_snapshot }}</td>
+              <td>{{ status_badge('application', app.status) }}</td>
+              <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.application_detail', app_id=app.id) }}">Manage</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Items & amounts -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Price Snapshot (frozen at checkout)</div>
+      <div class="card-body p-0">
+        <table class="table admin-table mb-0">
+          <thead><tr><th>Service</th><th>Service Charge</th><th>Official Fee</th><th>Other</th><th>Line Total</th></tr></thead>
+          <tbody>
+            {% for item in order.items %}
+            <tr>
+              <td>{{ item.service_name_snapshot }}</td>
+              <td>{{ _inr(item.service_charge_snapshot) }}</td>
+              <td>{{ _inr(item.official_fee_snapshot) }}</td>
+              <td>{{ _inr(item.other_charge_snapshot) }}</td>
+              <td class="fw-semibold">{{ _inr(item.line_total_snapshot) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Status history (full, incl. internal notes) -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Status History</div>
+      <div class="card-body">
+        {% if history %}
+        <ul class="timeline">
+          {% for h in history %}
+          <li class="timeline-item">
+            <span class="timeline-dot"></span>
+            <div class="d-flex flex-wrap justify-content-between">
+              <div>
+                <span class="badge bg-secondary me-1">{{ h.entity_type }}</span>
+                <strong>{{ h.previous_status or '•' }} → {{ h.new_status }}</strong>
+                <span class="text-muted small">by {{ h.updated_by_label }}</span>
+                {% if not h.visible_to_customer %}<span class="badge bg-dark">internal</span>{% endif %}
+              </div>
+              <small class="text-muted">{{ _dt(h.created_at) }}</small>
+            </div>
+            {% if h.customer_remark %}<div class="small"><span class="text-muted">Customer remark:</span> {{ h.customer_remark }}</div>{% endif %}
+            {% if h.internal_note %}<div class="small"><span class="text-muted">Internal note:</span> {{ h.internal_note }}</div>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}<p class="text-muted small mb-0">No status changes yet.</p>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <!-- Payment card -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Payment</div>
+      <div class="card-body">
+        {% if payment %}
+          <dl class="row mb-0">
+            <dt class="col-5 small text-muted">Status</dt><dd class="col-7">{{ status_badge('payment', payment.status) }}</dd>
+            <dt class="col-5 small text-muted">Expected</dt><dd class="col-7">{{ _inr(payment.amount_expected) }}</dd>
+            <dt class="col-5 small text-muted">Transaction ID</dt><dd class="col-7"><code>{{ payment.upi_transaction_id or '-' }}</code></dd>
+            <dt class="col-5 small text-muted">Remarks</dt><dd class="col-7 small">{{ payment.customer_remarks or '-' }}</dd>
+            <dt class="col-5 small text-muted">Verified</dt>
+            <dd class="col-7 small">{{ _dt(payment.verified_at) if payment.verified_at else '-' }}</dd>
+          </dl>
+          {% if screenshot %}
+          <div class="text-center border rounded p-2 my-2">
+            <a href="{{ url_for('admin.document_preview', doc_id=screenshot.id) }}" target="_blank">
+              {% if screenshot.mime_type == 'application/pdf' %}
+                <i class="bi bi-file-earmark-pdf fs-1"></i><div class="small">{{ screenshot.original_name }}</div>
+              {% else %}
+                <img src="{{ url_for('admin.document_preview', doc_id=screenshot.id) }}" class="img-fluid rounded" style="max-height:220px" alt="payment screenshot">
+              {% endif %}
+            </a>
+          </div>
+          {% endif %}
+          <a class="btn btn-primary btn-sm w-100" href="{{ url_for('admin.payment_review', payment_id=payment.id) }}">Review Payment</a>
+        {% else %}
+          <p class="text-muted small mb-0">No payment record.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Change order status -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Update Order Status</div>
+      <div class="card-body">
+        <form method="post" action="{{ url_for('admin.order_set_status', order_id=order.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <select class="form-select form-select-sm mb-2" name="status">
+            {% for s in ['submitted','awaiting_payment','payment_verification','confirmed','partially_completed','completed','cancelled'] %}
+            <option value="{{ s }}" {{ 'selected' if order.status == s }}>{{ status_label('order', s) }}</option>
+            {% endfor %}
+          </select>
+          <input class="form-control form-control-sm mb-2" name="customer_remark" placeholder="Customer-visible remark (optional)">
+          <input class="form-control form-control-sm mb-2" name="internal_note" placeholder="Internal note (never shown to customer)">
+          <button class="btn btn-warning btn-sm w-100">Save Status</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Pending uploads -->
+    {% if pending_docs %}
+    <div class="card mb-4 border-warning">
+      <div class="card-header fw-bold text-bg-warning">Pending Secure Uploads</div>
+      <div class="card-body">
+        {% for d in pending_docs %}
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="small">{{ d.original_name }} <span class="badge bg-warning text-dark">{{ d.retry_count }} retries</span></div>
+        </div>
+        {% endfor %}
+        <form method="post" action="{{ url_for('admin.documents_retry_pending') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-sm btn-warning w-100">Retry Pending Uploads</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Receipt -->
+    <div class="card">
+      <div class="card-header fw-bold">Receipt</div>
+      <div class="card-body d-grid">
+        <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('admin.receipt_pdf', order_id=order.id) }}" target="_blank">
+          <i class="bi bi-printer me-1"></i>Generate / Print Receipt PDF</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

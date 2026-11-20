@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% from "_form_macros.html" import render_field, render_requirement with context %}
+{% block title %}{{ _pick(service.name_en, service.name_hi) }} - {{ _t('Application Form', 'आवेदन फॉर्म') }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h1 class="h3 fw-bold mb-1">{{ _pick(service.name_en, service.name_hi) }}</h1>
+          <p class="text-muted small mb-0">{{ _t('Application form', 'आवेदन फॉर्म') }}</p>
+        </div>
+        <a href="{{ url_for('orders.cart') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>{{ _t('Back to My List', 'सूची पर वापस') }}</a>
+      </div>
+
+      {% if service.instructions %}
+      <div class="alert alert-info d-flex gap-2 py-2">
+        <i class="bi bi-info-circle"></i><div class="small">{{ service.instructions }}</div>
+      </div>
+      {% endif %}
+
+      {% if not fields and not requirements %}
+      <div class="alert alert-light border">
+        {{ _t('No form or documents needed for this service - just continue to checkout.', 'इस सेवा के लिए कोई फॉर्म/दस्तावेज़ नहीं - बस चेकआउट करें।') }}
+        <a href="{{ url_for('orders.cart') }}" class="btn btn-primary btn-sm ms-2">{{ _t('Continue', 'आगे बढ़ें') }}</a>
+      </div>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('applications.fill_form', item_key=item_key) }}" enctype="multipart/form-data" class="card">
+        <div class="card-body">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          {% if service.is_examination and service.has_cycles %}
+          <div class="alert alert-primary py-2">
+            <label class="form-label fw-semibold mb-1" for="examCycleSelect">
+              <i class="bi bi-megaphone me-1"></i>{{ _t('Examination cycle (notification) you are applying to', 'आप जिस परीक्षा चक्र (अधिसूचना) में आवेदन कर रहे हैं') }} <span class="text-danger">*</span>
+            </label>
+            <select class="form-select {% if errors.get('cycle') %}is-invalid{% endif %}" id="examCycleSelect" name="exam_cycle_id">
+              <option value="">{{ _t('-- Choose an open cycle --', '-- चालू चक्र चुनें --') }}</option>
+              {% for cycle in open_cycles %}
+              <option value="{{ cycle.id }}">
+                {{ cycle.display_name }}{% if cycle.advertisement_number %} ({{ cycle.advertisement_number }}){% endif %}
+                {% if cycle.application_last_date %} — {{ _t('last date', 'अंतिम तिथि') }}: {{ _d(cycle.application_last_date) }}{% endif %}
+              </option>
+              {% endfor %}
+            </select>
+            <div class="form-text">{{ _t('Only cycles verified as open are listed. Closed cycles cannot be selected.', 'केवल चालू पुष्ट चक्र ही सूचीबद्ध हैं। बंद चक्र चुना नहीं जा सकता।') }}</div>
+            {% if errors.get('cycle') %}<div class="invalid-feedback d-block">{{ _t('Please choose the examination cycle.', 'कृपया परीक्षा चक्र चुनें।') }}</div>{% endif %}
+          </div>
+          {% endif %}
+
+          {% for field in fields %}
+            {{ render_field(field, form_values=form_values or {}, errors=errors) }}
+          {% endfor %}
+
+          {% if requirements %}
+          <hr class="my-4">
+          <h5 class="fw-bold mb-3"><i class="bi bi-paperclip me-1"></i>{{ _t('Upload documents', 'दस्तावेज़ अपलोड करें') }}</h5>
+          {% for req in requirements %}
+            {{ render_requirement(req, errors=errors) }}
+          {% endfor %}
+          {% endif %}
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-secondary btn-sm" onclick="confirmReset('{{ url_for('applications.reset_form', item_key=item_key) }}')">{{ _t('Clear form', 'फॉर्म साफ़ करें') }}</button>
+          <button type="submit" class="btn btn-primary fw-semibold">{{ _t('Save & Continue', 'सुरक्षित करें और आगे बढ़ें') }} <i class="bi bi-arrow-right"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+function confirmReset(url) {
+  if (window.confirm({{ _t('"Clear this form? Entered data will be removed."', '"फॉर्म साफ़ करें? भरा डेटा हट जाएगा।"') }})) {
+    var f = document.createElement('form');
+    f.method = 'POST'; f.action = url;
+    var c = document.createElement('input'); c.name = 'csrf_token'; c.value = '{{ csrf_token() }}';
+    f.appendChild(c); document.body.appendChild(f); f.submit();
+  }
+}
+</script>
+{% endblock %}

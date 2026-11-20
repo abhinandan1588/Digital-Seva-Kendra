@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="{{ lang() }}" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site_settings.shop_name }}{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/css/bootstrap-icons.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark main-nav sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('public.home') }}">
+      {% set logo = site_settings.get('shop_logo_path') %}
+      {% if logo %}
+        <img src="{{ url_for('static', filename=logo) }}" alt="logo" class="brand-logo">
+      {% else %}
+        <i class="bi bi-shop fs-4"></i>
+      {% endif %}
+      <span class="fw-bold">{{ _pick(site_settings.shop_name, site_settings.shop_name_hi) }}</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('public.home') }}">{{ _t('Home', 'होम') }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('services.catalogue') }}">{{ _t('All Services', 'सभी सेवाएँ') }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('exams.exam_list') }}">{{ _t('Exams & Jobs', 'परीक्षा/भर्ती') }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('orders.track') }}">{{ _t('Track Application', 'आवेदन ट्रैक करें') }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('public.about') }}">{{ _t('About Us', 'हमारे बारे में') }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('public.contact') }}">{{ _t('Contact Us', 'संपर्क करें') }}</a></li>
+      </ul>
+      <form class="d-flex search-form" action="{{ url_for('services.catalogue') }}" method="get" role="search">
+        <input class="form-control form-control-sm me-2" type="search" name="q" placeholder="{{ _t('Search services…', 'सेवाएँ खोजें…') }}" value="{{ request.args.get('q','') }}">
+        <button class="btn btn-outline-light btn-sm" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+      <div class="d-flex align-items-center gap-2 ms-lg-3 mt-2 mt-lg-0">
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-translate"></i> {{ 'EN' if lang() == 'en' else 'हिं' }}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item {{ 'active' if lang()=='en' }}" href="{{ url_for('public.set_language', lang_code='en') }}">English</a></li>
+            <li><a class="dropdown-item {{ 'active' if lang()=='hi' }}" href="{{ url_for('public.set_language', lang_code='hi') }}">हिन्दी</a></li>
+          </ul>
+        </div>
+        <a class="btn btn-sm btn-cart position-relative" href="{{ url_for('orders.cart') }}">
+          <i class="bi bi-cart3"></i>
+          {% if cart_count() %}<span class="badge rounded-pill bg-success cart-badge">{{ cart_count() }}</span>{% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="container mt-3 flash-area">
+    {% for category, message in messages %}
+      <div class="alert alert-{{ 'danger' if category=='error' else category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer mt-5">
+  <div class="container py-4">
+    <div class="row g-4">
+      <div class="col-md-5">
+        <h6 class="fw-bold">{{ _pick(site_settings.shop_name, site_settings.shop_name_hi) }}</h6>
+        <p class="small mb-1">{{ _pick(site_settings.footer_text, site_settings.footer_text_hi) }}</p>
+      </div>
+      <div class="col-md-3">
+        <h6 class="fw-bold">{{ _t('Quick Links', 'त्वरित लिंक') }}</h6>
+        <ul class="list-unstyled small footer-links">
+          <li><a href="{{ url_for('services.catalogue') }}">{{ _t('All Services', 'सभी सेवाएँ') }}</a></li>
+          <li><a href="{{ url_for('orders.track') }}">{{ _t('Track Application', 'आवेदन ट्रैक करें') }}</a></li>
+          <li><a href="{{ url_for('public.faq') }}">{{ _t('FAQ', 'सामान्य प्रश्न') }}</a></li>
+          <li><a href="{{ url_for('public.privacy') }}">{{ _t('Privacy Policy', 'गोपनीयता नीति') }}</a></li>
+          <li><a href="{{ url_for('public.terms') }}">{{ _t('Terms & Conditions', 'नियम एवं शर्तें') }}</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6 class="fw-bold">{{ _t('Contact', 'संपर्क') }}</h6>
+        <ul class="list-unstyled small footer-links">
+          {% if site_settings.shop_address %}<li><i class="bi bi-geo-alt"></i> {{ site_settings.shop_address }}</li>{% endif %}
+          {% if site_settings.shop_mobile %}<li><i class="bi bi-telephone"></i> {{ site_settings.shop_mobile }}</li>{% endif %}
+          {% if site_settings.shop_email %}<li><i class="bi bi-envelope"></i> {{ site_settings.shop_email }}</li>{% endif %}
+          {% if site_settings.working_hours %}<li><i class="bi bi-clock"></i> {{ site_settings.working_hours }}</li>{% endif %}
+        </ul>
+        <div class="d-flex gap-3 mt-2">
+          {% if site_settings.social_facebook %}<a href="{{ site_settings.social_facebook }}" class="footer-social"><i class="bi bi-facebook"></i></a>{% endif %}
+          {% if site_settings.social_instagram %}<a href="{{ site_settings.social_instagram }}" class="footer-social"><i class="bi bi-instagram"></i></a>{% endif %}
+          {% if site_settings.social_youtube %}<a href="{{ site_settings.social_youtube }}" class="footer-social"><i class="bi bi-youtube"></i></a>{% endif %}
+        </div>
+      </div>
+    </div>
+    <hr class="border-secondary">
+    <div class="text-center small text-muted">
+      &copy; {{ current_year }} {{ _pick(site_settings.shop_name, site_settings.shop_name_hi) }}
+    </div>
+  </div>
+</footer>
+<script src="{{ url_for('static', filename='vendor/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

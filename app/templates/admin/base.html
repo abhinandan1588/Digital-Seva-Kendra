@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin{% endblock %} - DSK Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/css/bootstrap-icons.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+<div class="d-flex">
+  {% if current_user.is_authenticated %}
+  <nav class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-brand px-3 py-3 d-flex align-items-center gap-2">
+      <i class="bi bi-shop fs-4"></i>
+      <div>
+        <div class="fw-bold">{{ site_settings.shop_name }}</div>
+        <div class="small text-white-50">Admin Panel</div>
+      </div>
+    </div>
+    <ul class="nav flex-column px-2 pb-3">
+      {% set nav = [
+        ('bi-speedometer2', 'admin.dashboard', 'Dashboard'),
+        ('bi-bag-check', 'admin.orders_list', 'Orders'),
+        ('bi-journal-text', 'admin.applications_list', 'Applications'),
+        ('bi-cash-stack', 'admin.payments_queue', 'Payment Verification'),
+        ('bi-people', 'admin.customers_list', 'Customers'),
+        ('bi-journal-bookmark', 'admin.documents_list', 'Document Manager'),
+        ('bi-bell', 'admin.notifications_list', 'Notifications'),
+        ('bi-graph-up', 'admin.reports', 'Reports & Analytics'),
+        ('bi-shield-lock', 'admin.staff_list', 'Staff Management'),
+        ('bi-gear', 'admin.settings_website', 'Website Settings'),
+        ('bi-cloud-arrow-up', 'admin.settings_drive', 'Google Drive Settings'),
+        ('bi-qr-code', 'admin.settings_payment', 'Payment Settings'),
+        ('bi-bell-plus', 'admin.settings_notifications', 'Notification Templates'),
+        ('bi-list-check', 'admin.audit_logs', 'Audit Logs'),
+        ('bi-person-circle', 'admin.profile', 'Admin Profile'),
+      ] %}
+      {% set catalog_nav = [
+        ('bi-folder2-open', 'admin.categories_list', 'Service Categories'),
+        ('bi-diagram-2', 'admin.subcategories_list', 'Subcategories'),
+        ('bi-wrench-adjustable', 'admin.services_list', 'All Services'),
+        ('bi-fire', 'admin.services_popular', 'Popular Services'),
+        ('bi-star', 'admin.services_featured', 'Featured Services'),
+        ('bi-megaphone', 'admin.exams_hub', 'Examination Management'),
+        ('bi-broadcast-pin', 'admin.exam_cycles_list', 'Recruitment Notifications'),
+        ('bi-collection', 'admin.exam_templates', 'Examination Cycles'),
+        ('bi-prescription2', 'admin.services_scholarships', 'Scholarship Management'),
+        ('bi-heart-pulse', 'admin.services_schemes', 'Government Scheme Management'),
+        ('bi-files', 'admin.doc_templates_list', 'Document Templates'),
+        ('bi-globe2', 'admin.portals_list', 'Official Portal Directory'),
+        ('bi-tags', 'admin.services_pricing', 'Service Pricing'),
+        ('bi-toggle-on', 'admin.services_availability', 'Service Availability'),
+        ('bi-box-arrow-in-down', 'admin.import_export', 'Catalogue Import/Export'),
+      ] %}
+      {% set sections = [
+        ('CATALOGUE', catalog_nav),
+        ('OPERATIONS', nav),
+      ] %}
+      {% for section_title, items in sections %}
+      <li class="nav-item mt-2 px-2"><div class="small text-white-50 fw-bold">{{ section_title }}</div></li>
+      {% for item in items %}
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2 py-2 {{ 'active' if request.endpoint == item[1] }}"
+           href="{{ url_for(item[1]) }}">
+          <i class="bi {{ item[0] }}"></i> {{ item[2] }}
+          {% if item[1] == 'admin.payments_queue' and pending_payment_count %}
+            <span class="badge rounded-pill bg-danger ms-auto">{{ pending_payment_count }}</span>
+          {% endif %}
+          {% if item[1] == 'admin.documents_list' and pending_upload_count %}
+            <span class="badge rounded-pill bg-warning text-dark ms-auto">{{ pending_upload_count }}</span>
+          {% endif %}
+          {% if item[1] == 'admin.exam_cycles_list' and pending_review_count %}
+            <span class="badge rounded-pill bg-warning text-dark ms-auto">{{ pending_review_count }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+      {% endfor %}
+      <li class="nav-item mt-2 border-top pt-2">
+        <form method="post" action="{{ url_for('auth.logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="nav-link d-flex align-items-center gap-2 py-2 w-100 border-0 bg-transparent text-white-50" type="submit">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+  {% endif %}
+
+  <div class="flex-grow-1 admin-content">
+    {% if current_user.is_authenticated %}
+    <header class="admin-topbar d-flex align-items-center px-4 py-2">
+      <button class="btn btn-sm btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <h6 class="mb-0 flex-grow-1">{% block page_title %}{% endblock %}</h6>
+      <a class="btn btn-sm btn-outline-secondary me-2" href="{{ url_for('public.home') }}" target="_blank">
+        <i class="bi bi-box-arrow-up-right"></i> View Site</a>
+      <span class="text-muted small me-3 d-none d-md-inline">{{ current_user.email }}</span>
+      <div class="dropdown">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="bi bi-person-circle"></i> {{ current_user.name }}</button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="{{ url_for('admin.profile') }}">Profile</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('auth.change_password') }}">Change Password</a></li>
+        </ul>
+      </div>
+    </header>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="px-4 pt-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category=='error' else category }} alert-dismissible fade show">
+          {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
+    <main class="p-4">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='vendor/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

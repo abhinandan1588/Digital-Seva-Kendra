@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ _t('Track Application', 'आवेदन ट्रैक करें') }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body p-4">
+          <h1 class="h3 fw-bold mb-2 text-center"><i class="bi bi-search me-1"></i>{{ _t('Track Your Application', 'अपना आवेदन ट्रैक करें') }}</h1>
+          <p class="text-muted text-center small">{{ _t('No account needed. Enter your order number and the tracking code from your receipt.', 'खाता बनाने की ज़रूरत नहीं। अपना ऑर्डर नंबर और रसीद का ट्रैकिंग कोड दर्ज करें।') }}</p>
+          {% if error %}
+          <div class="alert alert-danger py-2">{{ error }}</div>
+          {% endif %}
+          <form method="post" action="{{ url_for('orders.track') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">{{ _t('Order Number', 'ऑर्डर नंबर') }}</label>
+              <input type="text" class="form-control" name="order_number" required placeholder="DSK-2026-000001">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">{{ _t('Tracking Token or PIN', 'ट्रैकिंग टोकन या पिन') }}</label>
+              <input type="text" class="form-control" name="token" required placeholder="{{ _t('from your receipt/confirmation', 'रसीद/पुष्टि से') }}">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 fw-semibold">{{ _t('Track Now', 'अभी ट्रैक करें') }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

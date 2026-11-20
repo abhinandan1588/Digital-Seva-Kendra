@@ -1,0 +1,87 @@
+/* Digital Seva Kendra - public site styles */
+:root {
+  --dsk-primary: #1B4B8F;
+  --dsk-primary-dark: #123566;
+  --dsk-accent: #0E9F6E;
+  --dsk-light: #EEF3FB;
+}
+
+body {
+  font-family: 'Segoe UI', 'Noto Sans', system-ui, -apple-system, sans-serif;
+  color: #212529;
+}
+
+.main-nav { background: var(--dsk-primary); }
+.main-nav .nav-link { color: rgba(255,255,255,.85); font-weight: 500; }
+.main-nav .nav-link:hover, .main-nav .nav-link:focus { color: #fff; }
+.brand-logo { height: 34px; width: auto; border-radius: 6px; }
+.btn-cart { color: #fff; border-color: rgba(255,255,255,.5); }
+.cart-badge { position: absolute; top: -6px; right: -8px; font-size: .65rem; }
+
+.hero-section { background: linear-gradient(135deg, var(--dsk-primary) 0%, var(--dsk-primary-dark) 100%); }
+.hero-icon { font-size: 9rem; opacity: .9; }
+
+.btn-accent { background: var(--dsk-accent); color: #fff; }
+.btn-accent:hover { background: #0B805A; color: #fff; }
+
+.service-card { transition: transform .15s ease, box-shadow .15s ease; border: 1px solid #e9ecef; }
+.service-card:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(27,75,143,.12); }
+.service-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: var(--dsk-light); color: var(--dsk-primary);
+  display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+}
+.category-card { transition: transform .15s ease; }
+.category-card:hover { transform: translateY(-2px); }
+.category-icon { font-size: 1.8rem; color: var(--dsk-primary); }
+
+.how-card { border: 1px dashed #c6d4ea; border-radius: 12px; background: #fff; }
+.how-icon { font-size: 2rem; color: var(--dsk-primary); }
+
+.contact-strip { background: var(--dsk-primary-dark); }
+
+.price-breakdown li { padding: 2px 0; }
+
+/* Stepper */
+.stepper { gap: .5rem; }
+.step { flex: 1; text-align: center; font-size: .8rem; color: #8a94a6; position: relative; }
+.step-circle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #e4e9f2; color: #66708a; font-weight: 700; margin-bottom: 4px;
+}
+.step.active { color: var(--dsk-primary); font-weight: 600; }
+.step.active .step-circle { background: var(--dsk-primary); color: #fff; }
+.step.done { color: var(--dsk-accent); font-weight: 600; }
+.step.done .step-circle { background: var(--dsk-accent); color: #fff; }
+
+/* QR */
+.qr-img { max-width: 300px; }
+
+/* Timeline */
+.timeline { list-style: none; padding-left: 0; margin: 0; }
+.timeline-item { position: relative; padding: 0 0 1.2rem 1.6rem; border-left: 2px solid #dbe4f0; }
+.timeline-item:last-child { padding-bottom: 0; border-left-color: transparent; }
+.timeline-dot {
+  position: absolute; left: -7px; top: 2px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--dsk-primary);
+}
+
+.faq-accordion { max-width: 860px; }
+
+footer.site-footer { background: #101d33; color: #c9d4e8; }
+footer.site-footer h6 { color: #fff; }
+.footer-links a { color: #c9d4e8; text-decoration: none; }
+.footer-links a:hover { color: #fff; }
+.footer-social { color: #c9d4e8; font-size: 1.2rem; text-decoration: none; }
+.footer-social:hover { color: #fff; }
+
+@media (max-width: 576px) {
+  .hero-icon { font-size: 5rem; }
+  .stepper { font-size: .7rem; }
+  .step-circle { width: 28px; height: 28px; }
+}
+
+/* Accessibility */
+:focus-visible { outline: 3px solid #7aa7e8; outline-offset: 2px; }

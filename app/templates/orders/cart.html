@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}{{ _t('My List', 'मेरी सूची') }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="stepper d-flex justify-content-between mb-4">
+    <div class="step active"><span class="step-circle">1</span>{{ _t('Select Services', 'सेवाएँ चुनें') }}</div>
+    <div class="step"><span class="step-circle">2</span>{{ _t('Fill Forms', 'फॉर्म भरें') }}</div>
+    <div class="step"><span class="step-circle">3</span>{{ _t('Checkout', 'चेकआउट') }}</div>
+    <div class="step"><span class="step-circle">4</span>{{ _t('Pay by UPI', 'UPI भुगतान') }}</div>
+  </div>
+
+  <h1 class="fw-bold mb-4">{{ _t('My Selected Services', 'मेरी चयनित सेवाएँ') }}</h1>
+
+  {% if not lines %}
+  <div class="text-center text-muted py-5">
+    <i class="bi bi-cart-x fs-1 d-block mb-3"></i>
+    <p>{{ _t('Your list is empty.', 'आपकी सूची खाली है।') }}</p>
+    <a href="{{ url_for('services.catalogue') }}" class="btn btn-primary">{{ _t('Browse Services', 'सेवाएँ देखें') }}</a>
+  </div>
+  {% else %}
+  <div class="row g-4">
+    <div class="col-lg-8">
+      {% for line in lines %}
+      {% set key = line.item.key %}
+      {% set service = line.service %}
+      <div class="card mb-3 cart-line">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="fw-bold mb-1">{{ _pick(service.name_en, service.name_hi) }}</h5>
+              <div class="small text-muted">{{ _t('Application', 'आवेदन') }} #{{ loop.index }}</div>
+              {% if line.cycle %}
+              <div class="small mt-1"><span class="badge bg-dark"><i class="bi bi-megaphone me-1"></i>{{ line.cycle.display_name }}</span>
+                {% if line.cycle.application_last_date %}<span class="text-muted ms-1">{{ _t('last date', 'अंतिम तिथि') }}: {{ _d(line.cycle.application_last_date) }}</span>{% endif %}
+              </div>
+              {% endif %}
+              {% if line.get('cycle_stale') %}
+              <div class="alert alert-danger py-1 px-2 small mt-1 mb-0">
+                {{ _t('The selected examination cycle is closed. Please choose an open cycle.', 'चयनित परीक्षा चक्र बंद हो गया है। कृपया चालू चक्र चुनें।') }}
+              </div>
+              {% endif %}
+            </div>
+            <form method="post" action="{{ url_for('orders.remove_from_cart', item_key=key) }}" onsubmit="return confirm('{{ _t('Remove this application?', 'यह आवेदन हटाएँ?') }}')">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-outline-danger" title="{{ _t('Remove', 'हटाएँ') }}"><i class="bi bi-trash"></i></button>
+            </form>
+          </div>
+          <ul class="list-unstyled small price-breakdown mt-2">
+            <li class="d-flex justify-content-between"><span>{{ _t('Service charge', 'सर्विस चार्ज') }}</span><span>{{ _inr(line.service_charge) }}</span></li>
+            {% if line.official_fee %}<li class="d-flex justify-content-between"><span>{{ _t('Official fee', 'सरकारी शुल्क') }}</span><span>{{ _inr(line.official_fee) }}</span></li>{% endif %}
+            {% if line.other_charge %}<li class="d-flex justify-content-between"><span>{{ _t('Other charges', 'अन्य शुल्क') }}</span><span>{{ _inr(line.other_charge) }}</span></li>{% endif %}
+            <li class="d-flex justify-content-between fw-bold"><span>{{ _t('Line total', 'कुल') }}</span><span>{{ _inr(line.line_total) }}</span></li>
+          </ul>
+          {% set filled = key not in missing_forms %}
+          {% if line.needs_cycle %}
+          <div class="alert alert-warning py-2 px-3 small d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-megaphone me-1"></i>{{ _t('Choose the examination cycle in the application form', 'आवेदन फॉर्म में परीक्षा चक्र चुनें') }}</span>
+            <a href="{{ url_for('applications.fill_form', item_key=key) }}">{{ _t('Choose cycle & fill form', 'चक्र चुनें और फॉर्म भरें') }}</a>
+          </div>
+          {% elif filled %}
+          <div class="alert alert-success py-2 px-3 small d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-check-circle me-1"></i>{{ _t('Form completed', 'फॉर्म पूरा हुआ') }}</span>
+            <a href="{{ url_for('applications.fill_form', item_key=key) }}">{{ _t('Edit details', 'विवरण बदलें') }}</a>
+          </div>
+          {% else %}
+          <a href="{{ url_for('applications.fill_form', item_key=key) }}" class="btn btn-warning btn-sm w-100 fw-semibold">
+            <i class="bi bi-pencil-square me-1"></i>{{ _t('Fill this application form & upload documents', 'यह फॉर्म भरें और दस्तावेज़ अपलोड करें') }}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="d-flex flex-wrap gap-2">
+        <a href="{{ url_for('services.catalogue') }}" class="btn btn-outline-primary">
+          <i class="bi bi-plus-lg me-1"></i>{{ _t('Add Another Service', 'और सेवा जोड़ें') }}
+        </a>
+        <form method="post" action="{{ url_for('orders.clear_cart_route') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-outline-danger">{{ _t('Clear All', 'सब हटाएँ') }}</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card price-box">
+        <div class="card-body">
+          <h5 class="fw-bold mb-3">{{ _t('Total', 'कुल राशि') }}</h5>
+          <ul class="list-unstyled price-breakdown">
+            <li class="d-flex justify-content-between"><span>{{ _t('Service charges', 'सर्विस चार्ज') }}</span><span>{{ _inr(totals.service_charges_total) }}</span></li>
+            <li class="d-flex justify-content-between"><span>{{ _t('Official fees', 'सरकारी शुल्क') }}</span><span>{{ _inr(totals.official_fees_total) }}</span></li>
+            <li class="d-flex justify-content-between"><span>{{ _t('Other charges', 'अन्य शुल्क') }}</span><span>{{ _inr(totals.other_charges_total) }}</span></li>
+            <li class="d-flex justify-content-between fw-bold fs-4 border-top pt-2 mt-2"><span>{{ _t('Total', 'कुल') }}</span><span class="text-primary">{{ _inr(totals.total) }}</span></li>
+          </ul>
+          <a href="{{ url_for('orders.checkout') }}" class="btn btn-primary w-100 btn-lg fw-semibold">
+            {{ _t('Proceed to Checkout', 'चेकआउट करें') }} <i class="bi bi-arrow-right"></i>
+          </a>
+          <p class="small text-muted mt-2 mb-0">
+            <i class="bi bi-shield-check me-1"></i>{{ _t('Prices are calculated on the server from the shop\'s current rates.', 'कीमत सर्वर पर दुकान की वर्तमान दरों से गणना होती है।') }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

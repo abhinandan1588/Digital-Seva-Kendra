@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<form class="d-flex gap-2 mb-3">
+  <input class="form-control form-control-sm" name="q" value="{{ q }}" placeholder="Search…">
+  <button class="btn btn-sm btn-outline-primary">Search</button>
+</form>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0 align-middle">
+      <thead><tr><th>Service</th><th>Prices</th><th>Scheme year / cycle</th><th>Active</th><th></th></tr></thead>
+      <tbody>
+        {% for s in services %}
+        {% set meta = s.meta or {} %}
+        <tr>
+          <td class="small"><strong>{{ s.name_en }}</strong>{% if s.name_hi %}<div class="text-muted">{{ s.name_hi }}</div>{% endif %}
+            <div class="text-muted">{{ s.category.name_en if s.category }}</div></td>
+          <td class="small">₹{{ s.service_charge }} + ₹{{ s.official_fee }} official</td>
+          <td>
+            <form method="post" action="{{ url_for('admin.service_meta_year', service_id=s.id) }}" class="d-flex gap-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input class="form-control form-control-sm" style="max-width:90px" name="year" placeholder="2026-27" value="{{ meta.get('year') or '' }}">
+              <input class="form-control form-control-sm" style="max-width:130px" name="cycle" placeholder="Cycle (e.g. FY 26-27)" value="{{ meta.get('cycle') or '' }}">
+              <button class="btn btn-sm btn-outline-primary">Save</button>
+            </form>
+            {% if meta.get('status_note') %}<div class="small text-muted mt-1">{{ meta.get('status_note') }}</div>{% endif %}
+          </td>
+          <td>{% if s.is_active %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</td>
+          <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.service_edit', service_id=s.id) }}">Edit</a></td>
+        </tr>
+        {% endfor %}
+        {% if not services %}<tr><td colspan="5" class="text-center text-muted py-4">No services in this group yet.</td></tr>{% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="alert alert-light border small mt-3">
+  <strong>Compliance:</strong> never advertise a scholarship/scheme as open without checking the official portal. Use the "cycle" field to record which application window this service targets.
+</div>
+{% endblock %}

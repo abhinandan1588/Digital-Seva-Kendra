@@ -1,0 +1,35 @@
+{% macro pagination_nav(pagination, endpoint) %}
+{% if pagination.pages > 1 %}
+<nav>
+  <ul class="pagination pagination-sm">
+    <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+      <a class="page-link" href="{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}">&laquo;</a>
+    </li>
+    {% for p in pagination.iter_pages(left_edge=1, left_current=2, right_current=2, right_edge=1) %}
+      {% if p %}
+        <li class="page-item {% if p == pagination.page %}active{% endif %}">
+          <a class="page-link" href="{{ url_for(endpoint, page=p, **kwargs) }}">{{ p }}</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">…</span></li>
+      {% endif %}
+    {% endfor %}
+    <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+      <a class="page-link" href="{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}">&raquo;</a>
+    </li>
+  </ul>
+</nav>
+{% endif %}
+{% endmacro %}
+
+{% macro status_badge(kind, value) %}
+{% set colors = {
+  'draft': 'secondary', 'submitted': 'primary', 'awaiting_payment': 'warning',
+  'payment_verification': 'info', 'confirmed': 'success', 'partially_completed': 'primary',
+  'completed': 'success', 'cancelled': 'dark',
+  'pending_verification': 'info', 'verified': 'success', 'rejected': 'danger', 'refunded': 'dark',
+  'under_processing': 'info', 'documents_required': 'warning', 'resubmission_required': 'warning',
+  'payment_verified': 'success'
+} %}
+<span class="badge rounded-pill bg-{{ colors.get(value, 'secondary') }}">{{ status_label(kind, value) }}</span>
+{% endmacro %}

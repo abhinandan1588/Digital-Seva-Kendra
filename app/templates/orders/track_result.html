@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% from "_macros.html" import status_badge with context %}
+{% block title %}{{ _t('Status', 'स्थिति') }} {{ order.order_number }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+              <h1 class="h4 fw-bold mb-1">{{ _t('Order', 'ऑर्डर') }} {{ order.order_number }}</h1>
+              <div class="small text-muted">{{ _t('Submitted', 'जमा किया') }}: {{ _dt(order.submitted_at) }}</div>
+            </div>
+            <div class="text-end">
+              <div class="small text-muted">{{ _t('Payment', 'भुगतान') }}</div>
+              {{ status_badge('payment', order.payment_status) }}
+              <div class="mt-1 small text-muted">{{ _t('Order', 'ऑर्डर') }}</div>
+              {{ status_badge('order', order.status) }}
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="{{ url_for('payments.pay', order_number=order.order_number, token=token) }}"
+               class="btn btn-primary btn-sm {% if order.payment_status == 'verified' %}d-none{% endif %}">
+              <i class="bi bi-qr-code me-1"></i>{{ _t('Pay / Submit Payment Proof', 'भुगतान / प्रमाण जमा करें') }}
+            </a>
+            <a href="{{ url_for('orders.receipt_pdf', order_number=order.order_number, token=token) }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+              <i class="bi bi-file-earmark-pdf me-1"></i>{{ _t('Receipt', 'रसीद') }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services & applications (public-safe info only) -->
+      <div class="card mb-4">
+        <div class="card-header fw-bold">{{ _t('Applications', 'आवेदन') }}</div>
+        <ul class="list-group list-group-flush">
+          {% for app in order.applications %}
+          <li class="list-group-item">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <div>
+                <span class="fw-semibold">{{ app.service_name_snapshot }}</span>
+                <span class="small text-muted ms-2">{{ app.application_number }}</span>
+              </div>
+              {{ status_badge('application', app.status) }}
+            </div>
+            {% if app.status == 'documents_required' and app.customer_visible_remark %}
+            <div class="alert alert-warning py-2 px-3 mt-2 mb-0 small">
+              <i class="bi bi-exclamation-triangle me-1"></i>{{ app.customer_visible_remark }}
+            </div>
+            {% endif %}
+            {% if app.status == 'completed' and app.output_documents %}
+            <div class="mt-2">
+              {% for doc in app.output_documents %}
+              <a class="btn btn-success btn-sm me-1" href="{{ url_for('orders.track_document_download', order_number=order.order_number, doc_id=doc.id, token=token) }}">
+                <i class="bi bi-download me-1"></i>{{ doc.label_snapshot }}
+              </a>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card mb-4">
+        <div class="card-header fw-bold">{{ _t('Latest updates', 'नवीनतम अपडेट') }}</div>
+        <div class="card-body">
+          {% if history %}
+          <ul class="timeline">
+            {% for h in history %}
+            <li class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div class="d-flex flex-wrap justify-content-between">
+                <strong>{{ h.previous_status or '•' }} → {{ status_label(h.entity_type, h.new_status) }}</strong>
+                <small class="text-muted">{{ _dt(h.created_at) }}</small>
+              </div>
+              {% if h.customer_remark %}<div class="small text-muted">{{ h.customer_remark }}</div>{% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="text-muted small mb-0">{{ _t('No updates yet.', 'अभी कोई अपडेट नहीं।') }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="small text-muted text-center">
+        {{ _t('Lost your code? Call the shop with your order number and mobile number.',
+        'कोड खो गया? ऑर्डर नंबर और मोबाइल नंबर के साथ दुकान पर कॉल करें।') }}
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

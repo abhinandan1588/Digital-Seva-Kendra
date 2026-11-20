@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}{{ _t('Contact Us', 'संपर्क करें') }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="fw-bold mb-4">{{ _t('Contact Us', 'संपर्क करें') }}</h1>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card h-100"><div class="card-body d-flex gap-3">
+            <i class="bi bi-geo-alt fs-3 text-primary"></i>
+            <div>
+              <h6 class="fw-bold mb-1">{{ _t('Address', 'पता') }}</h6>
+              <p class="small text-muted mb-0">{{ site_settings.shop_address }}</p>
+            </div>
+          </div></div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100"><div class="card-body d-flex gap-3">
+            <i class="bi bi-telephone fs-3 text-primary"></i>
+            <div>
+              <h6 class="fw-bold mb-1">{{ _t('Phone / WhatsApp', 'फोन / व्हाट्सएप') }}</h6>
+              <p class="small mb-0">
+                <a href="tel:+91{{ site_settings.shop_mobile }}">{{ site_settings.shop_mobile }}</a>
+                {% if site_settings.shop_whatsapp %}
+                &nbsp;|&nbsp; <a href="https://wa.me/91{{ site_settings.shop_whatsapp }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                {% endif %}
+              </p>
+            </div>
+          </div></div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100"><div class="card-body d-flex gap-3">
+            <i class="bi bi-envelope fs-3 text-primary"></i>
+            <div>
+              <h6 class="fw-bold mb-1">{{ _t('Email', 'ईमेल') }}</h6>
+              <p class="small text-muted mb-0"><a href="mailto:{{ site_settings.shop_email }}">{{ site_settings.shop_email }}</a></p>
+            </div>
+          </div></div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100"><div class="card-body d-flex gap-3">
+            <i class="bi bi-clock fs-3 text-primary"></i>
+            <div>
+              <h6 class="fw-bold mb-1">{{ _t('Working Hours', 'कार्य समय') }}</h6>
+              <p class="small text-muted mb-0">{{ site_settings.working_hours }}</p>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <div class="alert alert-info mt-4">
+        <i class="bi bi-lightbulb me-1"></i>
+        {{ _t('For questions about a submitted order, use the Track Application page with your order number and tracking code - the status and updates are shown there.',
+        'जमा किए ऑर्डर के प्रश्नों के लिए Track Application पेज का उपयोग करें - वहाँ ऑर्डर नंबर और ट्रैकिंग कोड से स्थिति और अपडेट दिखते हैं।') }}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

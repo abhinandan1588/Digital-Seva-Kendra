@@ -1,0 +1,113 @@
+{# Renders one dynamic form field configured by the admin (Jinja macro).
+   `form_values` is a dict of previously submitted values for redisplay. #}
+
+{% macro render_field(field, form_values=None, errors=None) %}
+  {% set value = (form_values or {}).get(field.field_key) or {} %}
+  {% set err = (errors or {}).get('field:' ~ field.field_key) %}
+  <div class="mb-3 {% if err %}is-invalid-group{% endif %}">
+    <label class="form-label fw-semibold" for="field-{{ field.field_key }}">
+      {{ _pick(field.label_en, field.label_hi) }}
+      {% if field.is_required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+
+    {% if field.field_type == 'text' %}
+      <input type="text" class="form-control {% if err %}is-invalid{% endif %}" id="field-{{ field.field_key }}"
+             name="{{ field.field_key }}" value="{{ value.get('value_text','') }}"
+             placeholder="{{ field.placeholder or '' }}"
+             {% if field.max_length %}maxlength="{{ field.max_length }}"{% endif %}>
+    {% elif field.field_type == 'number' %}
+      <input type="number" step="any" class="form-control {% if err %}is-invalid{% endif %}" id="field-{{ field.field_key }}"
+             name="{{ field.field_key }}" value="{{ value.get('value_text','') }}"
+             placeholder="{{ field.placeholder or '' }}"
+             {% if field.min_value is not none %}min="{{ field.min_value }}"{% endif %}
+             {% if field.max_value is not none %}max="{{ field.max_value }}"{% endif %}>
+    {% elif field.field_type == 'email' %}
+      <input type="email" class="form-control {% if err %}is-invalid{% endif %}" id="field-{{ field.field_key }}"
+             name="{{ field.field_key }}" value="{{ value.get('value_text','') }}"
+             placeholder="{{ field.placeholder or '' }}">
+    {% elif field.field_type == 'mobile' %}
+      <input type="tel" inputmode="numeric" class="form-control {% if err %}is-invalid{% endif %}" id="field-{{ field.field_key }}"
+             name="{{ field.field_key }}" value="{{ value.get('value_text','') }}"
+             placeholder="{{ field.placeholder or '10-digit mobile' }}" pattern="[0-9+\- ]{10,13}">
+    {% elif field.field_type == 'date' %}
+      <input type="date" class="form-control {% if err %}is-invalid{% endif %}" id="field-{{ field.field_key }}"
+             name="{{ field.field_key }}" value="{{ value.get('value_text','') }}">
+    {% elif field.field_type == 'textarea' %}
+      <textarea class="form-control {% if err %}is-invalid{% endif %}" id="field-{{ field.field_key }}"
+                name="{{ field.field_key }}" rows="3"
+                {% if field.max_length %}maxlength="{{ field.max_length }}"{% endif %}>{{ value.get('value_text','') }}</textarea>
+    {% elif field.field_type in ('select', 'radio') %}
+      {% if field.field_type == 'select' %}
+        <select class="form-select {% if err %}is-invalid{% endif %}" id="field-{{ field.field_key }}" name="{{ field.field_key }}">
+          <option value="">{{ _t('-- Choose --', '-- चुनें --') }}</option>
+          {% for opt in field.options or [] %}
+            <option value="{{ _pick(opt.en, opt.hi) }}" {% if value.get('value_text') == _pick(opt.en, opt.hi) %}selected{% endif %}>{{ _pick(opt.en, opt.hi) }}</option>
+          {% endfor %}
+        </select>
+      {% else %}
+        {% for opt in field.options or [] %}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="{{ field.field_key }}" id="field-{{ field.field_key }}-{{ loop.index }}"
+                   value="{{ _pick(opt.en, opt.hi) }}" {% if value.get('value_text') == _pick(opt.en, opt.hi) %}checked{% endif %}>
+            <label class="form-check-label" for="field-{{ field.field_key }}-{{ loop.index }}">{{ _pick(opt.en, opt.hi) }}</label>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% elif field.field_type == 'checkbox' %}
+      {% set selected = value.get('value_json') or [] %}
+      {% for opt in field.options or [] %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="{{ field.field_key }}" id="field-{{ field.field_key }}-{{ loop.index }}"
+                 value="{{ _pick(opt.en, opt.hi) }}" {% if _pick(opt.en, opt.hi) in selected %}checked{% endif %}>
+          <label class="form-check-label" for="field-{{ field.field_key }}-{{ loop.index }}">{{ _pick(opt.en, opt.hi) }}</label>
+        </div>
+      {% endfor %}
+    {% elif field.field_type in ('file', 'file_multi', 'image') %}
+      {% set accept = (field.allowed_extensions or ['pdf','jpg','jpeg','png']) | join(',') %}
+      {% set existing = value.get('files') or [] %}
+      {% if existing %}
+        <div class="small text-success mb-1">
+          <i class="bi bi-check-circle"></i> {{ _t('Attached:', 'संलग्न:') }}
+          {% for f in existing %} {{ f.filename }}{% if not loop.last %},{% endif %}{% endfor %}
+          <span class="text-muted">({{ _t('choose files again to replace', 'बदलने के लिए दोबारा चुनें') }})</span>
+        </div>
+      {% endif %}
+      <input type="file" class="form-control {% if err %}is-invalid{% endif %}" id="field-{{ field.field_key }}"
+             name="file_{{ field.field_key }}"
+             {% if field.field_type == 'file_multi' %}multiple{% endif %} accept=".{{ accept | replace(',', ',.') }}">
+    {% endif %}
+
+    {% if field.help_text_en or field.help_text_hi %}
+      <div class="form-text">{{ _pick(field.help_text_en, field.help_text_hi) }}</div>
+    {% endif %}
+    {% if err %}
+      <div class="invalid-feedback d-block">{{ err }}</div>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{# Document requirement upload block #}
+{% macro render_requirement(req, errors=None) %}
+  {% set err = (errors or {}).get('req:' ~ req.id) %}
+  <div class="mb-3 req-block">
+    <label class="form-label fw-semibold" for="req-{{ req.id }}">
+      <i class="bi bi-file-earmark-arrow-up me-1"></i>{{ _pick(req.label_en, req.label_hi) }}
+      {% if req.is_required %}<span class="text-danger">*</span>{% else %}<span class="text-muted small">({{ _t('optional', 'वैकल्पिक') }})</span>{% endif %}
+    </label>
+    {% if req.description_en or req.description_hi %}
+      <div class="form-text mb-1">{{ _pick(req.description_en, req.description_hi) }}</div>
+    {% endif %}
+    <input type="file" class="form-control {% if err %}is-invalid{% endif %}" id="req-{{ req.id }}"
+           name="req_{{ req.id }}"
+           {% if req.allow_multiple %}multiple{% endif %}
+           accept=".{{ (req.allowed_extensions or ['pdf','jpg','jpeg','png']) | join(',.') }}">
+    <div class="form-text">
+      {{ _t('Allowed', 'अनुमत') }}: {{ (req.allowed_extensions or ['pdf','jpg','jpeg','png']) | join(', ') | upper }}
+      &middot; {{ _t('Max', 'अधिकतम') }} {{ req.max_file_mb }} MB
+      {% if req.allow_multiple %} &middot; {{ _t('Multiple files allowed', 'एकाधिक फ़ाइलें अनुमत') }}{% endif %}
+    </div>
+    {% if err %}
+      <div class="invalid-feedback d-block">{{ err }}</div>
+    {% endif %}
+  </div>
+{% endmacro %}

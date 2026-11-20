@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% from "_macros.html" import status_badge with context %}
+{% block title %}{{ _t('Order Confirmed', 'ऑर्डर पुष्ट') }} {{ order.order_number }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 receipt-page">
+      <div class="card border-success">
+        <div class="card-body text-center p-4">
+          <i class="bi bi-check-circle-fill text-success display-3"></i>
+          <h2 class="fw-bold mt-3">{{ _t('Order Submitted Successfully!', 'ऑर्डर सफलतापूर्वक जमा हुआ!') }}</h2>
+          <p class="text-muted">{{ _t('Now pay the amount below by UPI to start processing.', 'प्रक्रिया शुरू करने के लिए अब नीचे दी गई राशि UPI से चुकाएँ।') }}</p>
+          <div class="row justify-content-center g-3 mt-2">
+            <div class="col-md-4">
+              <div class="p-3 border rounded-3">
+                <div class="small text-muted">{{ _t('Order Number', 'ऑर्डर नंबर') }}</div>
+                <div class="fw-bold fs-5">{{ order.order_number }}</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 border rounded-3">
+                <div class="small text-muted">{{ _t('Amount', 'राशि') }}</div>
+                <div class="fw-bold fs-5 text-primary">{{ _inr(order.total_amount) }}</div>
+              </div>
+            </div>
+            {% if pin %}
+            <div class="col-md-4">
+              <div class="p-3 border rounded-3 bg-warning-subtle">
+                <div class="small text-muted">{{ _t('Tracking PIN (shown once)', 'ट्रैकिंग पिन (एक बार दिखेगा)') }}</div>
+                <div class="fw-bold fs-5 tracking-secret">{{ pin }}</div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="alert alert-warning text-start mt-4">
+            <strong><i class="bi bi-shield-lock me-1"></i>{{ _t('Save your tracking details', 'अपनी ट्रैकिंग जानकारी सुरक्षित रखें') }}</strong>
+            <div class="small mt-1">
+              {{ _t('This page shows your tracking token only once. Save this page, download the receipt, or note the PIN above. You can always track with the order number + PIN.',
+              'यह पेज आपका ट्रैकिंग टोकन केवल एक बार दिखाता है। इस पेज को सुरक्षित करें, रसीद डाउनलोड करें या ऊपर का पिन नोट करें। ऑर्डर नंबर + पिन से आप हमेशा ट्रैक कर सकते हैं।') }}
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+            <a href="{{ url_for('payments.pay', order_number=order.order_number, token=token) }}" class="btn btn-primary btn-lg fw-semibold">
+              <i class="bi bi-qr-code me-1"></i>{{ _t('Pay by UPI Now', 'अभी UPI से भुगतान करें') }} {{ _inr(order.total_amount) }}
+            </a>
+            <a href="{{ url_for('orders.receipt_pdf', order_number=order.order_number, token=token) }}" target="_blank" class="btn btn-outline-secondary btn-lg">
+              <i class="bi bi-file-earmark-pdf me-1"></i>{{ _t('Download Receipt', 'रसीद डाउनलोड करें') }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Applications in this order -->
+      <div class="card mt-4">
+        <div class="card-header fw-bold">{{ _t('Applications in this order', 'इस ऑर्डर के आवेदन') }}</div>
+        <ul class="list-group list-group-flush">
+          {% for app in order.applications %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-semibold">{{ app.service_name_snapshot }}</div>
+              <div class="small text-muted">{{ app.application_number }}</div>
+            </div>
+            {{ status_badge('application', app.status) }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "admin/base.html" %}
+{% block title %}Document Template{% endblock %}
+{% block page_title %}{{ 'Edit template' if template else 'New document template' }}{% endblock %}
+{% block content %}
+<div class="card col-lg-8">
+  <div class="card-body">
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="row">
+        <div class="col-md-6 mb-2"><label class="form-label small">Name (English) *</label>
+          <input class="form-control form-control-sm" name="name_en" required value="{{ template.name_en if template else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">नाम (हिन्दी)</label>
+          <input class="form-control form-control-sm" name="name_hi" value="{{ template.name_hi or '' if template else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">Description (English)</label>
+          <input class="form-control form-control-sm" name="description_en" value="{{ template.description_en or '' if template else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">विवरण (हिन्दी)</label>
+          <input class="form-control form-control-sm" name="description_hi" value="{{ template.description_hi or '' if template else '' }}"></div>
+        <div class="col-md-3 mb-2"><label class="form-label small">Allowed extensions</label>
+          <input class="form-control form-control-sm" name="allowed_extensions" value="{{ ((template.allowed_extensions or ['pdf','jpg','jpeg','png']) | join(', ')) if template else 'pdf, jpg, jpeg, png' }}"></div>
+        <div class="col-md-3 mb-2"><label class="form-label small">Max file size (MB)</label>
+          <input type="number" class="form-control form-control-sm" name="max_file_mb" value="{{ template.max_file_mb if template else 5 }}"></div>
+        <div class="col-md-3 mb-2"><label class="form-label small">Group</label>
+          <select class="form-select form-select-sm" name="template_group">
+            {% for g in ['general', 'exam', 'certificate', 'identity', 'vehicle', 'other'] %}
+            <option value="{{ g }}" {{ 'selected' if template and template.template_group == g }}>{{ g }}</option>
+            {% endfor %}
+          </select></div>
+        <div class="col-md-3 mb-2"><label class="form-label small">Expires after (days, blank = none)</label>
+          <input type="number" class="form-control form-control-sm" name="expires_after_days" value="{{ template.expires_after_days if template and template.expires_after_days else '' }}"></div>
+        <div class="col-md-3 mb-2"><label class="form-label small">Min width (px)</label>
+          <input type="number" class="form-control form-control-sm" name="min_width" value="{{ template.min_width if template and template.min_width else '' }}"></div>
+        <div class="col-md-3 mb-2"><label class="form-label small">Max width (px)</label>
+          <input type="number" class="form-control form-control-sm" name="max_width" value="{{ template.max_width if template and template.max_width else '' }}"></div>
+        <div class="col-md-3 mb-2"><label class="form-label small">Min height (px)</label>
+          <input type="number" class="form-control form-control-sm" name="min_height" value="{{ template.min_height if template and template.min_height else '' }}"></div>
+        <div class="col-md-3 mb-2"><label class="form-label small">Max height (px)</label>
+          <input type="number" class="form-control form-control-sm" name="max_height" value="{{ template.max_height if template and template.max_height else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">Compression instructions (EN)</label>
+          <input class="form-control form-control-sm" name="compression_note_en" value="{{ template.compression_note_en or '' if template else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">कंप्रेशन निर्देश (हिन्दी)</label>
+          <input class="form-control form-control-sm" name="compression_note_hi" value="{{ template.compression_note_hi or '' if template else '' }}"></div>
+      </div>
+      <div class="d-flex gap-4 my-2">
+        <div class="form-check"><input class="form-check-input" type="checkbox" name="is_required" id="dtReq" {{ 'checked' if not template or template.is_required }}><label class="form-check-label small" for="dtReq">Required by default</label></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox" name="allow_multiple" id="dtMulti" {{ 'checked' if template and template.allow_multiple }}><label class="form-check-label small" for="dtMulti">Allow multiple files</label></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox" name="is_active" id="dtActive" {{ 'checked' if not template or template.is_active }}><label class="form-check-label small" for="dtActive">Active</label></div>
+      </div>
+      <button class="btn btn-primary btn-sm">{{ 'Save' if template else 'Create' }}</button>
+      <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('admin.doc_templates_list') }}">Back</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

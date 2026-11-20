@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block title %}Portal{% endblock %}
+{% block page_title %}{{ 'Edit portal' if portal else 'New official portal' }}{% endblock %}
+{% block content %}
+<div class="card col-lg-8">
+  <div class="card-body">
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="row">
+        <div class="col-md-6 mb-2"><label class="form-label small">Name (English) *</label>
+          <input class="form-control form-control-sm" name="name_en" required value="{{ portal.name_en if portal else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">नाम (हिन्दी)</label>
+          <input class="form-control form-control-sm" name="name_hi" value="{{ portal.name_hi or '' if portal else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">URL *</label>
+          <input class="form-control form-control-sm" name="url" required placeholder="https://…" value="{{ portal.url if portal else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">State</label>
+          <input class="form-control form-control-sm" name="state" value="{{ portal.state if portal else 'All India' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">Department</label>
+          <input class="form-control form-control-sm" name="department" value="{{ portal.department or '' if portal else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">Official RSS/Atom feed (optional, permitted monitoring)</label>
+          <input class="form-control form-control-sm" name="official_feed_url" placeholder="https://…/feed.xml" value="{{ portal.official_feed_url or '' if portal else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">Description (EN)</label>
+          <input class="form-control form-control-sm" name="description_en" value="{{ portal.description_en or '' if portal else '' }}"></div>
+        <div class="col-md-6 mb-2"><label class="form-label small">विवरण (हिन्दी)</label>
+          <input class="form-control form-control-sm" name="description_hi" value="{{ portal.description_hi or '' if portal else '' }}"></div>
+      </div>
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" name="is_active" id="pActive" {{ 'checked' if not portal or portal.is_active }}>
+        <label class="form-check-label small" for="pActive">Active</label>
+      </div>
+      <button class="btn btn-primary btn-sm">{{ 'Save' if portal else 'Create' }}</button>
+      <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('admin.portals_list') }}">Back</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

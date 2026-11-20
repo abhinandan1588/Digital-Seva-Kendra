@@ -1,0 +1,175 @@
+{% extends "admin/base.html" %}
+{% block title %}Examination Cycle{% endblock %}
+{% block page_title %}{{ 'Edit Cycle: ' ~ cycle.display_name if cycle else 'New Examination Cycle' }}{% endblock %}
+{% block content %}
+{% set D = cycle if cycle else None %}
+<form method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header fw-bold">Cycle identity</div>
+        <div class="card-body row g-2">
+          <div class="col-md-6"><label class="form-label small">Exam service *</label>
+            <select class="form-select form-select-sm" name="service_id" required>
+              {% for s in services %}<option value="{{ s.id }}" {{ 'selected' if D and D.service_id == s.id }}>{{ s.name_en }}</option>{% endfor %}
+            </select></div>
+          <div class="col-md-6"><label class="form-label small">Display name (e.g. SSC CGL 2027) *</label>
+            <input class="form-control form-control-sm" name="display_name" required value="{{ D.display_name if D else '' }}"></div>
+          <div class="col-md-4"><label class="form-label small">Organization</label>
+            <input class="form-control form-control-sm" name="organization" value="{{ D.organization if D else '' }}" placeholder="SSC / UPSC / BPSC"></div>
+          <div class="col-md-4"><label class="form-label small">Advertisement number</label>
+            <input class="form-control form-control-sm" name="advertisement_number" value="{{ D.advertisement_number if D else '' }}"></div>
+          <div class="col-md-4"><label class="form-label small">Examination year</label>
+            <input type="number" class="form-control form-control-sm" name="exam_year" value="{{ D.exam_year if D else '' }}"></div>
+          <div class="col-md-4"><label class="form-label small">State</label>
+            <input class="form-control form-control-sm" name="state" value="{{ D.state if D else 'All India' }}"></div>
+          <div class="col-md-4"><label class="form-label small">Exam status</label>
+            <select class="form-select form-select-sm" name="exam_status">
+              {% for s in ['upcoming', 'open', 'closed', 'cancelled'] %}
+              <option value="{{ s }}" {{ 'selected' if D and D.exam_status == s }}>{{ s }}</option>
+              {% endfor %}
+            </select>
+            <div class="form-text">upcoming/open/closed auto-update from verified dates.</div></div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header fw-bold">Official dates (verify from the notification first)</div>
+        <div class="card-body row g-2">
+          {% set date_fields = [
+            ('notification_date', 'Notification date'),
+            ('application_start_date', 'Application start'),
+            ('application_last_date', 'Application last date'),
+            ('late_fee_last_date', 'Late fee last date'),
+            ('correction_window_start', 'Correction window start'),
+            ('correction_window_end', 'Correction window end'),
+            ('exam_date', 'Examination date'),
+            ('admit_card_date', 'Admit card date'),
+            ('result_date', 'Result date'),
+          ] %}
+          {% for field, label in date_fields %}
+          <div class="col-md-4"><label class="form-label small">{{ label }}</label>
+            <input type="date" class="form-control form-control-sm" name="{{ field }}" value="{{ (D[field] | string) if D and D[field] else '' }}"></div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header fw-bold">Eligibility & fees (from the notification)</div>
+        <div class="card-body row g-2">
+          <div class="col-md-6"><label class="form-label small">Qualification</label>
+            <input class="form-control form-control-sm" name="qualification" value="{{ D.qualification if D else '' }}"></div>
+          <div class="col-md-6"><label class="form-label small">Education level</label>
+            <input class="form-control form-control-sm" name="education_level" value="{{ D.education_level if D else '' }}" placeholder="10th / 12th / Graduation"></div>
+          <div class="col-md-3"><label class="form-label small">Min age</label>
+            <input type="number" class="form-control form-control-sm" name="min_age" value="{{ D.min_age if D and D.min_age is not none else '' }}"></div>
+          <div class="col-md-3"><label class="form-label small">Max age</label>
+            <input type="number" class="form-control form-control-sm" name="max_age" value="{{ D.max_age if D and D.max_age is not none else '' }}"></div>
+          <div class="col-md-6"><label class="form-label small">Gender eligibility (if officially specified)</label>
+            <input class="form-control form-control-sm" name="gender_eligibility" value="{{ D.gender_eligibility if D else '' }}"></div>
+          <div class="col-12"><label class="form-label small">Age relaxation information</label>
+            <textarea class="form-control form-control-sm" name="age_relaxation_info" rows="2">{{ D.age_relaxation_info or '' if D else '' }}</textarea></div>
+          <div class="col-md-2"><label class="form-label small">Fee General ₹</label>
+            <input type="number" step="0.01" class="form-control form-control-sm" name="fee_general" value="{{ D.application_fees.general if D and D.application_fees and D.application_fees.get('general') is not none else '' }}"></div>
+          <div class="col-md-2"><label class="form-label small">OBC/EBC ₹</label>
+            <input type="number" step="0.01" class="form-control form-control-sm" name="fee_obc" value="{{ D.application_fees.obc if D and D.application_fees and D.application_fees.get('obc') is not none else '' }}"></div>
+          <div class="col-md-2"><label class="form-label small">SC/ST ₹</label>
+            <input type="number" step="0.01" class="form-control form-control-sm" name="fee_sc_st" value="{{ D.application_fees.sc_st if D and D.application_fees and D.application_fees.get('sc_st') is not none else '' }}"></div>
+          <div class="col-md-2"><label class="form-label small">Female ₹</label>
+            <input type="number" step="0.01" class="form-control form-control-sm" name="fee_female" value="{{ D.application_fees.female if D and D.application_fees and D.application_fees.get('female') is not none else '' }}"></div>
+          <div class="col-md-2"><label class="form-label small">Other ₹</label>
+            <input type="number" step="0.01" class="form-control form-control-sm" name="fee_other" value="{{ D.application_fees.other if D and D.application_fees and D.application_fees.get('other') is not none else '' }}"></div>
+          <div class="col-md-2"><label class="form-label small">Fee note</label>
+            <input class="form-control form-control-sm" name="fee_note" value="{{ D.application_fees.note if D and D.application_fees else '' }}"></div>
+          <div class="col-12"><label class="form-label small">Extra documents demanded by THIS notification (one per line)</label>
+            <textarea class="form-control form-control-sm" name="required_documents_extra" rows="2" placeholder="Domestic certificate&#10;NOC from employer">{% if D and D.required_documents_extra %}{{ D.required_documents_extra | join('\n') }}{% endif %}</textarea></div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header fw-bold">Official links & notification PDF</div>
+        <div class="card-body row g-2">
+          <div class="col-md-6"><label class="form-label small">Official notification URL</label>
+            <input class="form-control form-control-sm" name="official_notification_url" value="{{ D.official_notification_url or '' if D else '' }}" placeholder="https://…"></div>
+          <div class="col-md-6"><label class="form-label small">Official application URL</label>
+            <input class="form-control form-control-sm" name="official_application_url" value="{{ D.official_application_url or '' if D else '' }}" placeholder="https://…"></div>
+          <div class="col-md-6"><label class="form-label small">Notification PDF (upload)</label>
+            <input type="file" class="form-control form-control-sm" name="notification_pdf" accept=".pdf">
+            {% if D and D.notification_pdf_path %}<div class="small text-muted mt-1">Current: <a href="{{ url_for('static', filename=D.notification_pdf_path) }}" target="_blank">view PDF</a></div>{% endif %}</div>
+          <div class="col-md-6"><label class="form-label small">Verification source (where did you verify?)</label>
+            <input class="form-control form-control-sm" name="verification_source" value="{{ D.verification_source or '' if D else '' }}" placeholder="e.g. ssc.gov.in notification PDF, visited 2026-11-19"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm"><i class="bi bi-save me-1"></i>Save cycle</button>
+    </div>
+
+    <div class="col-lg-4">
+      {% if cycle %}
+      <div class="card mb-3">
+        <div class="card-header fw-bold">Publishing & lifecycle</div>
+        <div class="card-body d-grid gap-2">
+          <div class="small text-muted">Status: <strong>{{ cycle.exam_status }}</strong> ·
+            Published: <strong>{{ 'yes' if cycle.is_published else 'no' }}</strong> ·
+            Last verified: <strong>{{ cycle.last_verified_at | dtdate or 'never' }}</strong>
+            {% if cycle.needs_review %}<span class="badge bg-warning text-dark">needs review</span>{% endif %}
+          </div>
+          {% if cycle.review_note %}<div class="small alert alert-warning py-1 px-2">{{ cycle.review_note }}</div>{% endif %}
+          <form method="post" action="{{ url_for('admin.exam_cycle_publish', cycle_id=cycle.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="verify">
+            <button class="btn btn-success btn-sm w-100" onclick="return confirm('Confirm you verified this cycle against the official notification.')"><i class="bi bi-shield-check me-1"></i>Mark verified (against official source)</button>
+          </form>
+          <form method="post" action="{{ url_for('admin.exam_cycle_publish', cycle_id=cycle.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="{{ 'unpublish' if cycle.is_published else 'publish' }}">
+            <button class="btn btn-outline-primary btn-sm w-100">{{ 'Unpublish' if cycle.is_published else 'Publish to customers' }}</button>
+          </form>
+          <form method="post" action="{{ url_for('admin.exam_cycle_publish', cycle_id=cycle.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="close">
+            <button class="btn btn-outline-secondary btn-sm w-100">Mark closed</button>
+          </form>
+          <form method="post" action="{{ url_for('admin.exam_cycle_publish', cycle_id=cycle.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="archive">
+            <button class="btn btn-outline-warning btn-sm w-100">Archive (previous cycle)</button>
+          </form>
+          <form method="post" action="{{ url_for('admin.exam_cycle_publish', cycle_id=cycle.id) }}" onsubmit="return confirm('Flag this cycle for review? It stays published until you change it.')">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="flag-review">
+            <input class="form-control form-control-sm mb-1" name="review_note" placeholder="Why flag for review?">
+            <button class="btn btn-outline-danger btn-sm w-100">Flag for admin review</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-header fw-bold">Extend deadline (official confirmation required)</div>
+        <div class="card-body">
+          <form method="post" action="{{ url_for('admin.exam_cycle_extend', cycle_id=cycle.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="date" class="form-control form-control-sm mb-1" name="new_application_last_date" required>
+            <input class="form-control form-control-sm mb-1" name="extension_note" placeholder="Note (e.g. official notice link)">
+            <div class="form-check small mb-2">
+              <input class="form-check-input" type="checkbox" name="official_confirmation" id="extConfirm">
+              <label class="form-check-label" for="extConfirm">I confirm the official notification/portal extends the deadline.</label>
+            </div>
+            <button class="btn btn-warning btn-sm w-100">Extend deadline</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="alert alert-light border small">
+        <strong>Compliance:</strong> customers can only order against published cycles that are open. Closed cycles are shown for reference only. Never publish a cycle without verified dates.
+      </div>
+      <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('exams.exam_detail', cycle_slug=cycle.cycle_slug) }}" target="_blank"><i class="bi bi-eye me-1"></i>View public page</a>
+      {% else %}
+      <div class="alert alert-info small">
+        Create the cycle first; publishing, verification and deadline extension appear after saving.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</form>
+{% endblock %}

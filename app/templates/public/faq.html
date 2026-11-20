@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ _t('FAQ', 'सामान्य प्रश्न') }} - {{ site_settings.shop_name }}{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="fw-bold mb-4">{{ _t('Frequently Asked Questions', 'अक्सर पूछे जाने वाले प्रश्न') }}</h1>
+      <div class="accordion" id="faqPage">
+        {% set faqs = [
+        (_t('Do I need to create an account?', 'क्या खाता बनाना ज़रूरी है?'),
+         _t('No. Just give your name and mobile number at checkout. Your order number and tracking code let you track the application.', 'नहीं। चेकआउट पर अपना नाम और मोबाइल नंबर दें। ऑर्डर नंबर और ट्रैकिंग कोड से आवेदन ट्रैक करें।')),
+        (_t('Can I apply for multiple services in one order?', 'क्या एक ऑर्डर में कई सेवाएँ ले सकते हैं?'),
+         _t('Yes. Add as many services as you need; each application gets its own form, documents and status inside one parent order.', 'हाँ। जितनी चाहें सेवाएँ जोड़ें; एक ही ऑर्डर में हर आवेदन का अपना फॉर्म, दस्तावेज़ और स्थिति होती है।')),
+        (_t('How do I pay?', 'भुगतान कैसे करें?'),
+         _t('Scan the UPI QR generated for your order with any UPI app, then submit the UPI transaction ID and a payment screenshot for verification.', 'अपने ऑर्डर का UPI QR किसी भी UPI ऐप से स्कैन करें, फिर UPI ट्रांज़ैक्शन आईडी और भुगतान का स्क्रीनशॉट जमा करें।')),
+        (_t('When does processing start?', 'प्रक्रिया कब शुरू होती है?'),
+         _t('After the shop verifies your payment (usually within a few working hours).', 'दुकान द्वारा भुगतान सत्यापन के बाद (आमतौर पर कुछ कार्य-घंटों में)।')),
+        (_t('What documents can I upload?', 'कौन-से दस्तावेज़ अपलोड कर सकते हैं?'),
+         _t('PDF, JPG and PNG files are accepted. Each service lists exactly what it needs and the size limit.', 'PDF, JPG और PNG फ़ाइलें स्वीकार हैं। हर सेवा सटीक आवश्यकता और आकार सीमा दिखाती है।')),
+        (_t('What if I lost my tracking code?', 'ट्रैकिंग कोड खो गया तो?'),
+         _t('Call the shop with your order number and mobile number; the owner can verify you and help.', 'अपने ऑर्डर नंबर और मोबाइल नंबर के साथ दुकान पर कॉल करें; मालिक पुष्टि करके सहायता करेंगे।'))
+        ] %}
+        {% for q, a in faqs %}
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faqp-{{ loop.index }}">{{ q }}</button>
+          </h2>
+          <div id="faqp-{{ loop.index }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" data-bs-parent="#faqPage">
+            <div class="accordion-body text-muted">{{ a }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

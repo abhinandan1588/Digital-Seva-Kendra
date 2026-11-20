@@ -1,0 +1,71 @@
+{% extends "admin/base.html" %}
+{% block title %}Document Requirements{% endblock %}
+{% block page_title %}Document Requirements - {{ service.name_en }}{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card">
+      <div class="card-header fw-bold">Required Documents ({{ requirements | length }})</div>
+      <div class="card-body p-0">
+        {% if requirements %}
+        <table class="table admin-table align-middle mb-0">
+          <thead><tr><th>#</th><th>Document</th><th>Rules</th><th></th></tr></thead>
+          <tbody>
+            {% for r in requirements %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>
+                <div class="fw-semibold">{{ r.label_en }}</div>
+                {% if r.label_hi %}<div class="small text-muted">{{ r.label_hi }}</div>{% endif %}
+                {% if r.description_en %}<div class="small text-muted">{{ r.description_en }}</div>{% endif %}
+              </td>
+              <td class="small">
+                {% if r.is_required %}<span class="badge bg-danger-subtle text-danger-emphasis">required</span>{% else %}<span class="badge bg-secondary-subtle">optional</span>{% endif %}
+                {% if r.allow_multiple %}<span class="badge bg-info-subtle text-info-emphasis">multiple</span>{% endif %}
+                <div class="text-muted">{{ (r.allowed_extensions or []) | join(', ') | upper }} &middot; max {{ r.max_file_mb }} MB</div>
+              </td>
+              <td class="text-nowrap">
+                <form method="post" action="{{ url_for('admin.doc_requirement_move', service_id=service.id, req_id=r.id, direction='up') }}" class="d-inline"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-up"></i></button></form>
+                <form method="post" action="{{ url_for('admin.doc_requirement_move', service_id=service.id, req_id=r.id, direction='down') }}" class="d-inline"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-down"></i></button></form>
+                <form method="post" action="{{ url_for('admin.doc_requirement_delete', service_id=service.id, req_id=r.id) }}" class="d-inline" data-confirm="Remove this document requirement?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="p-5 text-center text-muted">No document requirements configured.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-header fw-bold">Add Document Requirement</div>
+      <div class="card-body">
+        <form method="post" action="{{ url_for('admin.doc_requirement_add', service_id=service.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-2"><label class="form-label small">Label (English) *</label>
+            <input class="form-control form-control-sm" name="label_en" required placeholder="Aadhaar Document"></div>
+          <div class="mb-2"><label class="form-label small">लेबल (हिन्दी)</label>
+            <input class="form-control form-control-sm" name="label_hi" placeholder="आधार दस्तावेज़"></div>
+          <div class="mb-2"><label class="form-label small">Description (English)</label>
+            <input class="form-control form-control-sm" name="description_en"></div>
+          <div class="mb-2"><label class="form-label small">विवरण (हिन्दी)</label>
+            <input class="form-control form-control-sm" name="description_hi"></div>
+          <div class="row">
+            <div class="col-7 mb-2"><label class="form-label small">Allowed extensions</label>
+              <input class="form-control form-control-sm" name="allowed_extensions" value="pdf, jpg, jpeg, png"></div>
+            <div class="col-5 mb-2"><label class="form-label small">Max MB</label>
+              <input type="number" class="form-control form-control-sm" name="max_file_mb" value="5"></div>
+          </div>
+          <div class="form-check mb-1"><input class="form-check-input" type="checkbox" name="is_required" id="rReq" checked><label class="form-check-label small" for="rReq">Required</label></div>
+          <div class="form-check mb-3"><input class="form-check-input" type="checkbox" name="allow_multiple" id="rMulti"><label class="form-check-label small" for="rMulti">Allow multiple files</label></div>
+          <button class="btn btn-primary btn-sm">Add Requirement</button>
+          <a class="btn btn-link btn-sm" href="{{ url_for('admin.service_edit', service_id=service.id) }}">Back to service</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

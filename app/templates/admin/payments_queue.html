@@ -1,0 +1,51 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import pagination_nav, status_badge with context %}
+{% block title %}Payment Verification{% endblock %}
+{% block page_title %}Payment Verification{% endblock %}
+{% block content %}
+<div class="btn-group mb-3">
+  {% for s, label in [('pending_verification','Pending'), ('submitted','Submitted'), ('verified','Verified'), ('rejected','Rejected'), ('all','All')] %}
+  <a class="btn btn-sm {{ 'btn-primary' if status_filter == s else 'btn-outline-primary' }}"
+     href="{{ url_for('admin.payments_queue', status=s) }}">{{ label }}</a>
+  {% endfor %}
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    {% if pagination.items %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table align-middle">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Expected</th><th>Transaction ID</th><th>Proof</th><th>Status</th><th>Date</th><th></th></tr></thead>
+        <tbody>
+          {% for p in pagination.items %}
+          <tr>
+            <td class="fw-semibold">{{ p.order.order_number }}</td>
+            <td>{{ p.order.customer.name }}</td>
+            <td>{{ _inr(p.amount_expected) }}</td>
+            <td><code class="small">{{ p.upi_transaction_id or '-' }}</code></td>
+            <td>
+              {% if p.screenshot %}
+                {% if p.screenshot.mime_type == 'application/pdf' %}
+                  <i class="bi bi-file-earmark-pdf fs-5"></i>
+                {% else %}
+                  <a href="{{ url_for('admin.document_preview', doc_id=p.screenshot.id) }}" target="_blank">
+                    <img src="{{ url_for('admin.document_preview', doc_id=p.screenshot.id) }}" style="height:42px" class="rounded border" alt="proof">
+                  </a>
+                {% endif %}
+              {% else %}-{% endif %}
+            </td>
+            <td>{{ status_badge('payment', p.status) }}</td>
+            <td class="small">{{ _dt(p.updated_at) }}</td>
+            <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.payment_review', payment_id=p.id) }}">Review</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3">{{ pagination_nav(pagination, 'admin.payments_queue', status=status_filter) }}</div>
+    {% else %}
+    <div class="p-5 text-center text-muted">Nothing here. Payments appear when customers submit proof.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

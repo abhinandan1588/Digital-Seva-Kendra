@@ -1,0 +1,1031 @@
+{
+  "categories": [
+    {
+      "slug": "government-certificates-documents",
+      "name_en": "Government Certificates & Documents",
+      "name_hi": "सरकारी प्रमाणपत्र एवं दस्तावेज़",
+      "icon": "bi-award",
+      "group": "documents",
+      "description_en": "RTPS certificates issued by the Bihar government: caste, income, residential, EWS, non-creamy layer and civil-registration documents. We prepare, verify and submit your application on the official ServicePlus/RTPS portal.",
+      "description_hi": "बिहार सरकार द्वारा जारी आरटीपीएस प्रमाणपत्र: जाति, आय, निवास, ईडब्ल्यूएस, नॉन-क्रीमी लेयर तथा जन्म-मृत्यु आदि दस्तावेज़। हम आपका आवेदन सरकारी पोर्टल पर तैयार, जाँच और जमा करते हैं।",
+      "subcategories": [
+        {
+          "slug": "caste-certificate",
+          "name_en": "Caste Certificate",
+          "name_hi": "जाति प्रमाणपत्र",
+          "services": [
+            {
+              "n": "SC Caste Certificate",
+              "hi": "अनुसूचित जाति (एससी) प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "sc jaati jat praman patra sc caste",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "caste-certificate-doc"
+              ],
+              "pop": true
+            },
+            {
+              "n": "ST Caste Certificate",
+              "hi": "अनुसूचित जनजाति (एसटी) प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "st janjati praman patra",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "caste-certificate-doc"
+              ]
+            },
+            {
+              "n": "BC Caste Certificate",
+              "hi": "पिछड़ा वर्ग (बीसी) प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "bc picchda varg praman",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "caste-certificate-doc"
+              ]
+            },
+            {
+              "n": "EBC Caste Certificate",
+              "hi": "अति पिछड़ा वर्ग (ईबीसी) प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "ebc ati picchda praman",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "caste-certificate-doc"
+              ]
+            },
+            {
+              "n": "OBC Caste Certificate",
+              "hi": "अन्य पिछड़ा वर्ग (ओबीसी) प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "obc praman patra",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "caste-certificate-doc"
+              ]
+            },
+            {
+              "n": "Caste Certificate Correction Assistance",
+              "hi": "जाति प्रमाणपत्र सुधार सहायता",
+              "c": 80,
+              "p": "bihar-serviceplus",
+              "kw": "caste sudhaar correction"
+            },
+            {
+              "n": "Caste Certificate Download Assistance",
+              "hi": "जाति प्रमाणपत्र डाउनलोड सहायता",
+              "c": 50,
+              "p": "bihar-serviceplus",
+              "kw": "caste download"
+            }
+          ]
+        },
+        {
+          "slug": "income-certificate",
+          "name_en": "Income Certificate",
+          "name_hi": "आय प्रमाणपत्र",
+          "services": [
+            {
+              "n": "Income Certificate (New)",
+              "hi": "आय प्रमाणपत्र (नया)",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "aay ay praman patra income",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "income-certificate-doc"
+              ],
+              "pop": true,
+              "fx": [
+                {
+                  "key": "annual_income",
+                  "en": "Annual Family Income (₹)",
+                  "hi": "वार्षिक पारिवारिक आय (₹)",
+                  "type": "number",
+                  "req": true
+                }
+              ]
+            },
+            {
+              "n": "Income Certificate Reapplication",
+              "hi": "आय प्रमाणपत्र पुनर्आवेदन",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "income reapply"
+            },
+            {
+              "n": "Income Certificate Correction Assistance",
+              "hi": "आय प्रमाणपत्र सुधार सहायता",
+              "c": 80,
+              "p": "bihar-serviceplus",
+              "kw": "income correction sudhaar"
+            },
+            {
+              "n": "Income Certificate Download Assistance",
+              "hi": "आय प्रमाणपत्र डाउनलोड सहायता",
+              "c": 50,
+              "p": "bihar-serviceplus",
+              "kw": "income download"
+            }
+          ]
+        },
+        {
+          "slug": "residential-certificate",
+          "name_en": "Residential Certificate",
+          "name_hi": "निवास प्रमाणपत्र",
+          "services": [
+            {
+              "n": "Residential Certificate (Circle/Block Level)",
+              "hi": "निवास प्रमाणपत्र (अंचल/प्रखंड स्तर)",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "nivas niwasi praman anchal block",
+              "docs": [
+                "identity-proof",
+                "address-proof"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Residential Certificate (Subdivision Level)",
+              "hi": "निवास प्रमाणपत्र (अनुमंडल स्तर)",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "nivas anumandal subdivision",
+              "docs": [
+                "identity-proof",
+                "address-proof"
+              ]
+            },
+            {
+              "n": "Residential Certificate (District Level)",
+              "hi": "निवास प्रमाणपत्र (जिला स्तर)",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "nivas jila district",
+              "docs": [
+                "identity-proof",
+                "address-proof"
+              ]
+            },
+            {
+              "n": "Residential Certificate Download Assistance",
+              "hi": "निवास प्रमाणपत्र डाउनलोड सहायता",
+              "c": 50,
+              "p": "bihar-serviceplus",
+              "kw": "nivas download"
+            }
+          ]
+        },
+        {
+          "slug": "other-certificates",
+          "name_en": "Other Certificates",
+          "name_hi": "अन्य प्रमाणपत्र",
+          "services": [
+            {
+              "n": "EWS Certificate",
+              "hi": "ईडब्ल्यूएस प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "ews arthik kamzor varg",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "ews-certificate-doc"
+              ],
+              "pop": true,
+              "fx": [
+                {
+                  "key": "annual_income",
+                  "en": "Annual Family Income (₹)",
+                  "hi": "वार्षिक पारिवारिक आय (₹)",
+                  "type": "number",
+                  "req": true
+                }
+              ]
+            },
+            {
+              "n": "Bihar Non-Creamy Layer Certificate",
+              "hi": "बिहार नॉन-क्रीमी लेयर प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "non creamy layer bihar ncl",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "caste-certificate-doc"
+              ]
+            },
+            {
+              "n": "Central Non-Creamy Layer Certificate",
+              "hi": "केंद्रीय नॉन-क्रीमी लेयर प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "central ncl non creamy",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "caste-certificate-doc"
+              ]
+            },
+            {
+              "n": "Birth Certificate Assistance",
+              "hi": "जन्म प्रमाणपत्र सहायता",
+              "c": 100,
+              "p": "crsorgi",
+              "kw": "birth janm praman",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "dob-proof"
+              ]
+            },
+            {
+              "n": "Death Certificate Assistance",
+              "hi": "मृत्यु प्रमाणपत्र सहायता",
+              "c": 100,
+              "p": "crsorgi",
+              "kw": "death mrityu praman",
+              "docs": [
+                "identity-proof"
+              ]
+            },
+            {
+              "n": "Marriage Certificate Assistance",
+              "hi": "विवाह प्रमाणपत्र सहायता",
+              "c": 100,
+              "p": "bihar-regd",
+              "kw": "marriage vivah praman",
+              "docs": [
+                "identity-proof",
+                "address-proof",
+                "marriage-photo"
+              ]
+            },
+            {
+              "n": "Character Certificate Assistance",
+              "hi": "चरित्र प्रमाणपत्र सहायता",
+              "c": 80,
+              "p": "bihar-serviceplus",
+              "kw": "character charitra praman",
+              "docs": [
+                "identity-proof"
+              ]
+            },
+            {
+              "n": "Disability Certificate / UDID Assistance",
+              "hi": "दिव्यांग प्रमाणपत्र / यूडीआईडी सहायता",
+              "c": 80,
+              "p": "swavlamban",
+              "kw": "disability udid divyang",
+              "docs": [
+                "identity-proof",
+                "medical-certificate"
+              ]
+            },
+            {
+              "n": "Senior Citizen Certificate Assistance",
+              "hi": "वरिष्ठ नागरिक प्रमाणपत्र सहायता",
+              "c": 80,
+              "p": "bihar-serviceplus",
+              "kw": "senior varishtha nagrik",
+              "docs": [
+                "identity-proof",
+                "dob-proof"
+              ]
+            },
+            {
+              "n": "Land Record (Jamabandi) Copy Assistance",
+              "hi": "भू-अभिलेख (जमाबंदी) प्रतिलिपि सहायता",
+              "c": 80,
+              "p": "bihar-biharbhumi",
+              "kw": "land jamabandi bhulekh khatiyan",
+              "docs": [
+                "identity-proof"
+              ]
+            },
+            {
+              "n": "Other RTPS Certificates",
+              "hi": "अन्य आरटीपीएस प्रमाणपत्र",
+              "c": 100,
+              "p": "bihar-serviceplus",
+              "kw": "rtps other anya praman"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "identity-card-services",
+      "name_en": "Identity Card Services",
+      "name_hi": "पहचान पत्र सेवाएँ",
+      "icon": "bi-person-vcard",
+      "group": "identity",
+      "description_en": "PAN, Aadhaar, Voter ID, Passport and Driving Licence assistance. OTP and biometric steps are always completed by you personally - we never ask for your portal passwords.",
+      "description_hi": "पैन, आधार, वोटर आईडी, पासपोर्ट और ड्राइविंग लाइसेंस सहायता। ओटीपी और बायोमेट्रिक सत्यापन सदैव आपके द्वारा व्यक्तिगत रूप से किया जाता है - हम पोर्टल पासवर्ड नहीं मांगते।",
+      "subcategories": [
+        {
+          "slug": "pan-card-services",
+          "name_en": "PAN Card",
+          "name_hi": "पैन कार्ड",
+          "services": [
+            {
+              "n": "New PAN Card Application",
+              "hi": "नया पैन कार्ड आवेदन",
+              "c": 150,
+              "p": "protean-pan",
+              "kw": "pan naya new protean nsdl",
+              "docs": [
+                "photograph",
+                "signature",
+                "aadhaar"
+              ],
+              "pop": true
+            },
+            {
+              "n": "PAN Card Correction",
+              "hi": "पैन कार्ड सुधार",
+              "c": 130,
+              "p": "protean-pan",
+              "kw": "pan correction sudhaar",
+              "docs": [
+                "identity-proof",
+                "signature"
+              ]
+            },
+            {
+              "n": "PAN Card Reprint",
+              "hi": "पैन कार्ड रीप्रिंट",
+              "c": 120,
+              "p": "protean-pan",
+              "kw": "pan reprint"
+            },
+            {
+              "n": "e-PAN Download Assistance",
+              "hi": "ई-पैन डाउनलोड सहायता",
+              "c": 50,
+              "p": "protean-pan",
+              "kw": "epan download"
+            },
+            {
+              "n": "PAN Status Check Assistance",
+              "hi": "पैन स्थिति जाँच सहायता",
+              "c": 30,
+              "p": "protean-pan",
+              "kw": "pan status"
+            }
+          ]
+        },
+        {
+          "slug": "aadhaar-services",
+          "name_en": "Aadhaar Services",
+          "name_hi": "आधार सेवाएँ",
+          "services": [
+            {
+              "n": "e-Aadhaar Download Assistance",
+              "hi": "ई-आधार डाउनलोड सहायता",
+              "c": 30,
+              "p": "uidai",
+              "kw": "eaadhaar download aadhar",
+              "note": "OTP is entered by you personally."
+            },
+            {
+              "n": "Aadhaar PVC Card Order Assistance",
+              "hi": "आधार पीवीसी कार्ड ऑर्डर सहायता",
+              "c": 50,
+              "p": "uidai",
+              "kw": "aadhaar pvc card"
+            },
+            {
+              "n": "Aadhaar Document Update Guidance",
+              "hi": "आधार दस्तावेज़ अपडेट मार्गदर्शन",
+              "c": 50,
+              "p": "uidai",
+              "kw": "aadhaar document update"
+            },
+            {
+              "n": "Aadhaar Address Update Assistance",
+              "hi": "आधार पता अपडेट सहायता",
+              "c": 50,
+              "p": "uidai",
+              "kw": "aadhaar address pata update"
+            },
+            {
+              "n": "Aadhaar Enrolment Appointment Assistance",
+              "hi": "आधार नामांकन अपॉइंटमेंट सहायता",
+              "c": 50,
+              "p": "uidai",
+              "kw": "aadhaar appointment biometric enrolment",
+              "note": "Biometric updates happen only at authorised centres with your personal presence."
+            },
+            {
+              "n": "Aadhaar Status Check Assistance",
+              "hi": "आधार स्थिति जाँच सहायता",
+              "c": 30,
+              "p": "uidai",
+              "kw": "aadhaar status"
+            }
+          ]
+        },
+        {
+          "slug": "voter-id-services",
+          "name_en": "Voter ID (EPIC)",
+          "name_hi": "वोटर आईडी",
+          "services": [
+            {
+              "n": "Voter ID New Registration (Form 6)",
+              "hi": "नया वोटर पंजीकरण (फॉर्म 6)",
+              "c": 80,
+              "p": "eci-voters",
+              "kw": "voter matdata new form6",
+              "docs": [
+                "photograph",
+                "aadhaar",
+                "dob-proof",
+                "address-proof"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Voter ID Correction (Form 8)",
+              "hi": "वोटर आईडी सुधार (फॉर्म 8)",
+              "c": 80,
+              "p": "eci-voters",
+              "kw": "voter correction form8 sudhaar"
+            },
+            {
+              "n": "Voter ID Address Change",
+              "hi": "वोटर आईडी पता परिवर्तन",
+              "c": 80,
+              "p": "eci-voters",
+              "kw": "voter address shift"
+            },
+            {
+              "n": "Voter ID Replacement (Lost/Damaged)",
+              "hi": "वोटर आईडी प्रतिस्थापन (खोया/क्षतिग्रस्त)",
+              "c": 80,
+              "p": "eci-voters",
+              "kw": "voter replacement"
+            },
+            {
+              "n": "e-EPIC Voter Card Download",
+              "hi": "ई-ईपीआईसी डाउनलोड",
+              "c": 30,
+              "p": "eci-voters",
+              "kw": "eepic voter download"
+            },
+            {
+              "n": "Electoral Roll Search Assistance",
+              "hi": "मतदाता सूची खोज सहायता",
+              "c": 30,
+              "p": "eci-voters",
+              "kw": "electoral roll search",
+              "cap": "external_portal",
+              "note": "Search runs on the official Election Commission portal; we guide you through it."
+            }
+          ]
+        },
+        {
+          "slug": "passport-services",
+          "name_en": "Passport Services",
+          "name_hi": "पासपोर्ट सेवाएँ",
+          "services": [
+            {
+              "n": "Fresh Passport Application Assistance",
+              "hi": "नया पासपोर्ट आवेदन सहायता",
+              "c": 300,
+              "p": "passport",
+              "kw": "passport naya fresh",
+              "docs": [
+                "photograph",
+                "aadhaar",
+                "address-proof",
+                "dob-proof"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Passport Reissue Assistance",
+              "hi": "पासपोर्ट री-इश्यू सहायता",
+              "c": 300,
+              "p": "passport",
+              "kw": "passport reissue renew"
+            },
+            {
+              "n": "Tatkaal Passport Assistance",
+              "hi": "तत्काल पासपोर्ट सहायता",
+              "c": 300,
+              "p": "passport",
+              "kw": "tatkaal urgent passport"
+            },
+            {
+              "n": "Passport Correction Assistance",
+              "hi": "पासपोर्ट सुधार सहायता",
+              "c": 250,
+              "p": "passport",
+              "kw": "passport correction"
+            },
+            {
+              "n": "Passport Appointment Booking Assistance",
+              "hi": "पासपोर्ट अपॉइंटमेंट बुकिंग सहायता",
+              "c": 150,
+              "p": "passport",
+              "kw": "passport appointment psk"
+            },
+            {
+              "n": "Police Clearance Certificate (PCC)",
+              "hi": "पुलिस क्लियरेंस सर्टिफिकेट (पीसीसी)",
+              "c": 250,
+              "p": "passport",
+              "kw": "pcc police clearance"
+            }
+          ]
+        },
+        {
+          "slug": "driving-licence-services",
+          "name_en": "Driving Licence (Sarathi)",
+          "name_hi": "ड्राइविंग लाइसेंस",
+          "services": [
+            {
+              "n": "Learner Licence Application",
+              "hi": "लर्नर लाइसेंस आवेदन",
+              "c": 150,
+              "p": "sarathi",
+              "kw": "learner licence ll",
+              "docs": [
+                "photograph",
+                "signature",
+                "aadhaar",
+                "dob-proof",
+                "address-proof"
+              ],
+              "pop": true
+            },
+            {
+              "n": "New Driving Licence Application",
+              "hi": "नया ड्राइविंग लाइसेंस आवेदन",
+              "c": 200,
+              "p": "sarathi",
+              "kw": "driving licence dl naya",
+              "docs": [
+                "driving-licence-doc",
+                "photograph",
+                "signature",
+                "aadhaar"
+              ]
+            },
+            {
+              "n": "Driving Licence Renewal",
+              "hi": "ड्राइविंग लाइसेंस नवीनीकरण",
+              "c": 150,
+              "p": "sarathi",
+              "kw": "dl renewal navikaran",
+              "docs": [
+                "driving-licence-doc",
+                "photograph",
+                "signature"
+              ]
+            },
+            {
+              "n": "Duplicate Driving Licence",
+              "hi": "डुप्लीकेट ड्राइविंग लाइसेंस",
+              "c": 150,
+              "p": "sarathi",
+              "kw": "duplicate dl"
+            },
+            {
+              "n": "Driving Licence Address Change",
+              "hi": "ड्राइविंग लाइसेंस पता परिवर्तन",
+              "c": 120,
+              "p": "sarathi",
+              "kw": "dl address"
+            },
+            {
+              "n": "Driving Licence Status Check",
+              "hi": "ड्राइविंग लाइसेंस स्थिति जाँच",
+              "c": 30,
+              "p": "sarathi",
+              "kw": "dl status"
+            }
+          ]
+        },
+        {
+          "slug": "other-identity-documents",
+          "name_en": "Other Identity Documents",
+          "name_hi": "अन्य पहचान पत्र",
+          "services": [
+            {
+              "n": "Other Identity Document Assistance",
+              "hi": "अन्य पहचान पत्र सहायता",
+              "c": 80,
+              "kw": "identity card anya",
+              "docs": [
+                "identity-proof"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "education-admission-services",
+      "name_en": "Education & Admission Services",
+      "name_hi": "शिक्षा एवं प्रवेश सेवाएँ",
+      "icon": "bi-mortarboard",
+      "group": "education",
+      "description_en": "School to university admissions, examination forms, revaluation, scrutiny and duplicate certificate assistance - all handled with your documents and consent.",
+      "description_hi": "स्कूल से विश्वविद्यालय तक प्रवेश, परीक्षा फॉर्म, पुनर्मूल्यांकन, स्क्रूटनी तथा प्रमाणपत्र की प्रतिलिपि सहायता - आपके दस्तावेज़ और सहमति से।",
+      "subcategories": [
+        {
+          "slug": "admissions",
+          "name_en": "Admissions",
+          "name_hi": "प्रवेश",
+          "services": [
+            {
+              "n": "School Admission Assistance",
+              "hi": "स्कूल प्रवेश सहायता",
+              "c": 80,
+              "kw": "school admission",
+              "docs": [
+                "photograph",
+                "dob-proof",
+                "aadhaar",
+                "marksheet"
+              ]
+            },
+            {
+              "n": "College Admission Assistance",
+              "hi": "कॉलेज प्रवेश सहायता",
+              "c": 100,
+              "kw": "college admission",
+              "docs": [
+                "photograph",
+                "marksheet",
+                "class12-certificate",
+                "caste-certificate-doc"
+              ]
+            },
+            {
+              "n": "University Admission Assistance",
+              "hi": "विश्वविद्यालय प्रवेश सहायता",
+              "c": 100,
+              "kw": "university admission"
+            },
+            {
+              "n": "Undergraduate (UG) Admission Assistance",
+              "hi": "स्नातक (यूजी) प्रवेश सहायता",
+              "c": 100,
+              "kw": "ug admission",
+              "docs": [
+                "class12-certificate",
+                "marksheet"
+              ]
+            },
+            {
+              "n": "Postgraduate (PG) Admission Assistance",
+              "hi": "स्नातकोत्तर (पीजी) प्रवेश सहायता",
+              "c": 100,
+              "kw": "pg admission",
+              "docs": [
+                "graduation-certificate",
+                "marksheet"
+              ]
+            },
+            {
+              "n": "Engineering Admission Assistance",
+              "hi": "इंजीनियरिंग प्रवेश सहायता",
+              "c": 150,
+              "kw": "engineering admission jee ubeac"
+            },
+            {
+              "n": "Medical Admission Assistance",
+              "hi": "मेडिकल प्रवेश सहायता",
+              "c": 150,
+              "kw": "medical admission neet"
+            },
+            {
+              "n": "Nursing Admission Assistance",
+              "hi": "नर्सिंग प्रवेश सहायता",
+              "c": 120,
+              "kw": "nursing admission"
+            },
+            {
+              "n": "Pharmacy Admission Assistance",
+              "hi": "फार्मेसी प्रवेश सहायता",
+              "c": 120,
+              "kw": "pharmacy admission"
+            },
+            {
+              "n": "Polytechnic Admission Assistance",
+              "hi": "पॉलिटेक्निक प्रवेश सहायता",
+              "c": 100,
+              "kw": "polytechnic diploma"
+            },
+            {
+              "n": "ITI Admission Assistance",
+              "hi": "आईटीआई प्रवेश सहायता",
+              "c": 100,
+              "kw": "iti admission"
+            },
+            {
+              "n": "B.Ed Admission Assistance",
+              "hi": "बी.एड प्रवेश सहायता",
+              "c": 120,
+              "kw": "b.ed bed admission"
+            },
+            {
+              "n": "D.El.Ed Admission Assistance",
+              "hi": "डी.एल.एड प्रवेश सहायता",
+              "c": 120,
+              "kw": "deled d.el.ed"
+            },
+            {
+              "n": "Diploma Admission Assistance",
+              "hi": "डिप्लोमा प्रवेश सहायता",
+              "c": 100,
+              "kw": "diploma admission"
+            },
+            {
+              "n": "Law Admission Assistance",
+              "hi": "लॉ प्रवेश सहायता",
+              "c": 120,
+              "kw": "law clat admission"
+            },
+            {
+              "n": "NIOS Admission Assistance",
+              "hi": "एनआईओएस प्रवेश सहायता",
+              "c": 120,
+              "p": "nios",
+              "kw": "nios open school"
+            },
+            {
+              "n": "IGNOU Admission Assistance",
+              "hi": "इग्नू प्रवेश सहायता",
+              "c": 120,
+              "p": "ignou",
+              "kw": "ignou distance"
+            }
+          ]
+        },
+        {
+          "slug": "university-exam-forms",
+          "name_en": "University Examination Forms",
+          "name_hi": "विश्वविद्यालय परीक्षा फॉर्म",
+          "services": [
+            {
+              "n": "University Examination Form Assistance",
+              "hi": "विश्वविद्यालय परीक्षा फॉर्म सहायता",
+              "c": 80,
+              "kw": "exam form university"
+            },
+            {
+              "n": "Backlog Examination Form Assistance",
+              "hi": "बैकलॉग परीक्षा फॉर्म सहायता",
+              "c": 80,
+              "kw": "backlog purak"
+            },
+            {
+              "n": "Revaluation Form Assistance",
+              "hi": "पुनर्मूल्यांकन फॉर्म सहायता",
+              "c": 80,
+              "kw": "revaluation punarmulyankan"
+            },
+            {
+              "n": "Scrutiny Form Assistance",
+              "hi": "स्क्रूटनी फॉर्म सहायता",
+              "c": 80,
+              "kw": "scrutiny"
+            }
+          ]
+        },
+        {
+          "slug": "certificate-assistance-education",
+          "name_en": "Certificate Assistance",
+          "name_hi": "प्रमाणपत्र सहायता",
+          "services": [
+            {
+              "n": "Migration Certificate Assistance",
+              "hi": "माइग्रेशन प्रमाणपत्र सहायता",
+              "c": 80,
+              "kw": "migration"
+            },
+            {
+              "n": "Duplicate Marksheet Assistance",
+              "hi": "डुप्लीकेट मार्कशीट सहायता",
+              "c": 80,
+              "kw": "duplicate marksheet"
+            },
+            {
+              "n": "Degree Certificate Assistance",
+              "hi": "डिग्री प्रमाणपत्र सहायता",
+              "c": 80,
+              "kw": "degree"
+            },
+            {
+              "n": "Provisional Certificate Assistance",
+              "hi": "अस्थायी प्रमाणपत्र सहायता",
+              "c": 80,
+              "kw": "provisional"
+            },
+            {
+              "n": "Transfer Certificate Assistance",
+              "hi": "ट्रांसफर प्रमाणपत्र सहायता",
+              "c": 80,
+              "kw": "transfer tc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "scholarship-applications",
+      "name_en": "Scholarship Applications",
+      "name_hi": "छात्रवृत्ति आवेदन",
+      "icon": "bi-prescription2",
+      "group": "scholarship",
+      "description_en": "Central and Bihar scholarship applications with scheme year and application cycle recorded on each service. Application windows are confirmed on the official portal before every cycle - no scholarship is listed as open without verification.",
+      "description_hi": "केंद्रीय और बिहार छात्रवृत्ति आवेदन, प्रत्येक सेवा पर योजना वर्ष और आवेदन चक्र दर्ज रहता है। हर चक्र से पहले आवेदन विंडो सरकारी पोर्टल पर पुष्ट की जाती है - बिना पुष्टि कोई छात्रवृत्ति चालू नहीं दिखाई जाती।",
+      "subcategories": [
+        {
+          "slug": "nsp-scholarships",
+          "name_en": "National Scholarship Portal",
+          "name_hi": "राष्ट्रीय छात्रवृत्ति पोर्टल",
+          "services": [
+            {
+              "n": "National Scholarship Portal (NSP) Application",
+              "hi": "एनएसपी छात्रवृत्ति आवेदन",
+              "c": 120,
+              "p": "nsp",
+              "kw": "nsp scholarship chatravriti",
+              "docs": [
+                "photograph",
+                "aadhaar",
+                "class12-certificate",
+                "bank-passbook",
+                "income-certificate-doc",
+                "caste-certificate-doc"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Pre-Matric Scholarship Application",
+              "hi": "प्री-मैट्रिक छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "nsp",
+              "kw": "pre matric scholarship"
+            },
+            {
+              "n": "Post-Matric Scholarship Application",
+              "hi": "पोस्ट-मैट्रिक छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "nsp",
+              "kw": "post matric scholarship"
+            },
+            {
+              "n": "Minority Scholarship Application",
+              "hi": "अल्पसंख्यक छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "nsp",
+              "kw": "minority alpasankhyak scholarship"
+            },
+            {
+              "n": "Merit Scholarship Application",
+              "hi": "मेरिट छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "nsp",
+              "kw": "merit scholarship"
+            },
+            {
+              "n": "Central Sector Scholarship Application",
+              "hi": "केंद्रीय क्षेत्र छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "nsp",
+              "kw": "central sector"
+            },
+            {
+              "n": "AICTE Scholarship Application",
+              "hi": "एआईसीटीई छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "aicte-scholarship",
+              "kw": "aicte pragati saksham"
+            }
+          ]
+        },
+        {
+          "slug": "bihar-scholarships",
+          "name_en": "Bihar Scholarships (MedhaSoft)",
+          "name_hi": "बिहार छात्रवृत्ति (मेधासॉफ्ट)",
+          "services": [
+            {
+              "n": "Bihar Matric Scholarship Application",
+              "hi": "बिहार मैट्रिक छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "bihar-medhasoft",
+              "kw": "bihar matric medhasoft",
+              "docs": [
+                "photograph",
+                "aadhaar",
+                "bank-passbook",
+                "income-certificate-doc",
+                "caste-certificate-doc"
+              ],
+              "pop": true
+            },
+            {
+              "n": "Bihar Inter Scholarship Application",
+              "hi": "बिहार इंटर छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "bihar-medhasoft",
+              "kw": "bihar inter scholarship"
+            },
+            {
+              "n": "Bihar Post-Matric Scholarship Application",
+              "hi": "बिहार पोस्ट-मैट्रिक छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "bihar-medhasoft",
+              "kw": "bihar post matric"
+            },
+            {
+              "n": "Chief Minister Student Incentive Schemes",
+              "hi": "मुख्यमंत्री छात्र प्रोत्साहन योजना",
+              "c": 100,
+              "p": "bihar-medhasoft",
+              "kw": "mukhyamantri protsahan yojana"
+            }
+          ]
+        },
+        {
+          "slug": "category-scholarships",
+          "name_en": "Category-based Scholarships",
+          "name_hi": "वर्ग आधारित छात्रवृत्ति",
+          "services": [
+            {
+              "n": "SC/ST Scholarship Application",
+              "hi": "एससी/एसटी छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "nsp",
+              "kw": "sc st scholarship"
+            },
+            {
+              "n": "OBC/EBC Scholarship Application",
+              "hi": "ओबीसी/ईबीसी छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "nsp",
+              "kw": "obc ebc scholarship"
+            },
+            {
+              "n": "Disability Scholarship Application",
+              "hi": "दिव्यांग छात्रवृत्ति आवेदन",
+              "c": 100,
+              "p": "nsp",
+              "kw": "disability scholarship",
+              "docs": [
+                "disability-certificate-doc"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "scholarship-support",
+          "name_en": "Scholarship Support",
+          "name_hi": "छात्रवृत्ति सहायता",
+          "services": [
+            {
+              "n": "Scholarship Renewal Application",
+              "hi": "छात्रवृत्ति नवीनीकरण आवेदन",
+              "c": 80,
+              "p": "nsp",
+              "kw": "renewal navikaran"
+            },
+            {
+              "n": "Scholarship Correction Assistance",
+              "hi": "छात्रवृत्ति सुधार सहायता",
+              "c": 80,
+              "p": "nsp",
+              "kw": "correction sudhaar"
+            },
+            {
+              "n": "Scholarship Status Checking",
+              "hi": "छात्रवृत्ति स्थिति जाँच",
+              "c": 40,
+              "p": "nsp",
+              "kw": "status check"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import pagination_nav with context %}
+{% block title %}Customers{% endblock %}
+{% block page_title %}Customers (from orders - no accounts){% endblock %}
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body row g-2 align-items-end">
+    <div class="col-md-4"><label class="form-label small">Search name / mobile</label>
+      <input class="form-control form-control-sm" id="custQ" value="{{ q }}"></div>
+    <div class="col-md-2"><button class="btn btn-sm btn-primary" onclick="goCustomers()">Search</button></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    {% if pagination.items %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table align-middle">
+        <thead><tr><th>Name</th><th>Mobile</th><th>Orders</th><th>Last Order</th><th>Consent</th><th></th></tr></thead>
+        <tbody>
+          {% for c in pagination.items %}
+          {% set order_count = c.orders | length %}
+          <tr>
+            <td class="fw-semibold">{{ c.name }}</td>
+            <td>{{ c.masked_mobile }}</td>
+            <td>{{ order_count }}</td>
+            <td class="small">{% if order_count %}<a href="{{ url_for('admin.orders_list', q=c.orders[0].order_number) }}">{{ c.orders[0].order_number }}</a> &middot; {{ _d(c.orders[0].submitted_at) }}{% else %}-{% endif %}</td>
+            <td>{% if c.consent_given %}<span class="badge bg-success-subtle text-success-emphasis">yes</span>{% else %}<span class="badge bg-secondary-subtle">no</span>{% endif %}</td>
+            <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.orders_list', q=c.mobile) }}">Orders</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3">{{ pagination_nav(pagination, 'admin.customers_list', q=q) }}</div>
+    {% else %}
+    <div class="p-5 text-center text-muted">No customers yet.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function goCustomers() {
+  const q = document.getElementById('custQ').value;
+  window.location = '/admin/customers' + (q ? '?q=' + encodeURIComponent(q) : '');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Environment & secrets - NEVER commit
+.env
+*.env
+!*.env.example
+client_secret*.json
+credentials*.json
+token*.json
+
+# Local app data
+instance/
+app/static/uploads/
+*.sqlite3
+*.db
+
+# Logs & OS
+*.log
+.DS_Store
+
+# Node / frontend
+node_modules/
+frontend/node_modules/

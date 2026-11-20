@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block title %}Form Builder{% endblock %}
+{% block page_title %}Form Builder - {{ service.name_en }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <a class="btn btn-sm btn-link" href="{{ url_for('admin.service_edit', service_id=service.id) }}"><i class="bi bi-arrow-left"></i> Back to service</a>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.form_preview', service_id=service.id) }}" target="_blank"><i class="bi bi-eye me-1"></i>Preview Form</a>
+    <a class="btn btn-sm btn-success" href="{{ url_for('admin.form_field_add', service_id=service.id) }}"><i class="bi bi-plus-lg me-1"></i>Add Field</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header fw-bold">Form Fields ({{ fields | length }}) - order shown here is the customer's order</div>
+  <div class="card-body p-0">
+    {% if fields %}
+    <table class="table admin-table align-middle mb-0">
+      <thead><tr><th>#</th><th>Label</th><th>Type</th><th>Required</th><th>Options / Limits</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        {% for f in fields %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>
+            <div class="fw-semibold">{{ f.label_en }}</div>
+            {% if f.label_hi %}<div class="small text-muted">{{ f.label_hi }}</div>{% endif %}
+          </td>
+          <td><span class="badge bg-info-subtle text-info-emphasis">{{ f.field_type }}</span></td>
+          <td>{% if f.is_required %}<span class="badge bg-danger-subtle text-danger-emphasis">required</span>{% else %}<span class="badge bg-secondary-subtle">optional</span>{% endif %}</td>
+          <td class="small">
+            {% if f.options %}{{ f.options | length }} option(s){% endif %}
+            {% if f.min_length %} &middot; min {{ f.min_length }}{% endif %}
+            {% if f.max_length %} &middot; max {{ f.max_length }}{% endif %}
+            {% if f.allowed_extensions %} &middot; {{ f.allowed_extensions | join(',') | upper }}{% endif %}
+            {% if f.max_file_mb %} &middot; {{ f.max_file_mb }}MB{% endif %}
+          </td>
+          <td>{% if f.is_active %}<span class="badge bg-success-subtle text-success-emphasis">active</span>{% else %}<span class="badge bg-secondary-subtle">inactive</span>{% endif %}</td>
+          <td class="text-nowrap">
+            <form method="post" action="{{ url_for('admin.form_field_move', service_id=service.id, field_id=f.id, direction='up') }}" class="d-inline"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-up"></i></button></form>
+            <form method="post" action="{{ url_for('admin.form_field_move', service_id=service.id, field_id=f.id, direction='down') }}" class="d-inline"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-down"></i></button></form>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.form_field_edit', service_id=service.id, field_id=f.id) }}"><i class="bi bi-pencil"></i></a>
+            <form method="post" action="{{ url_for('admin.form_field_delete', service_id=service.id, field_id=f.id) }}" class="d-inline" data-confirm="Delete this field? Past applications keep their stored answers."><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="p-5 text-center text-muted">No fields yet. Add the first field of this service's application form.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

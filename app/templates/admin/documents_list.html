@@ -1,0 +1,87 @@
+{% extends "admin/base.html" %}
+{% from "_macros.html" import pagination_nav with context %}
+{% block title %}Document Manager{% endblock %}
+{% block page_title %}Document Manager{% endblock %}
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body row g-2 align-items-end">
+    <div class="col-md-3"><label class="form-label small">Search file / label</label>
+      <input class="form-control form-control-sm" id="docQ" value="{{ q }}"></div>
+    <div class="col-md-3"><label class="form-label small">Purpose</label>
+      <select class="form-select form-select-sm" id="docPurpose">
+        <option value="">All</option>
+        {% for p, l in [('application_document','Application documents'), ('form_field_file','Form field files'), ('payment_proof','Payment proofs'), ('output_document','Output documents')] %}
+        <option value="{{ p }}" {{ 'selected' if purpose == p }}>{{ l }}</option>
+        {% endfor %}
+      </select></div>
+    <div class="col-md-3"><label class="form-label small">Upload status</label>
+      <select class="form-select form-select-sm" id="docStatus">
+        <option value="">All</option>
+        {% for s, l in [('uploaded','Uploaded'), ('pending','Pending retry'), ('failed','Failed')] %}
+        <option value="{{ s }}" {{ 'selected' if upload_status == s }}>{{ l }}</option>
+        {% endfor %}
+      </select></div>
+    <div class="col-md-2"><button class="btn btn-sm btn-primary" onclick="goDocs()">Filter</button></div>
+    <div class="col-md-1">
+      <form method="post" action="{{ url_for('admin.documents_retry_pending') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-sm btn-warning w-100" title="Retry pending secure uploads">Retry</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    {% if pagination.items %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table align-middle">
+        <thead><tr><th>Document</th><th>Order / Application</th><th>Purpose</th><th>Size</th><th>Storage</th><th>Uploaded</th><th></th></tr></thead>
+        <tbody>
+          {% for d in pagination.items %}
+          <tr>
+            <td>
+              <div class="fw-semibold text-truncate" style="max-width:220px">{{ d.label_snapshot }}</div>
+              <div class="small text-muted text-truncate" style="max-width:220px">{{ d.original_name }}</div>
+            </td>
+            <td class="small">
+              {% if d.order %}<a href="{{ url_for('admin.order_detail', order_id=d.order_id) }}">{{ d.order.order_number }}</a>{% endif %}
+              {% if d.application %}<div class="text-muted">{{ d.application.application_number }}</div>{% endif %}
+            </td>
+            <td><span class="badge bg-secondary-subtle text-secondary-emphasis">{{ d.doc_purpose | replace('_',' ') }}</span>
+              {% if d.upload_status != 'uploaded' %}<span class="badge bg-warning text-dark">{{ d.upload_status }}</span>{% endif %}</td>
+            <td class="small">{{ d.size_display }}</td>
+            <td class="small">{{ d.storage_provider }}</td>
+            <td class="small">{{ _d(d.created_at) }}<div class="text-muted">{{ d.uploaded_by }}</div></td>
+            <td class="text-nowrap">
+              <a class="btn btn-sm btn-outline-secondary" target="_blank" href="{{ url_for('admin.document_preview', doc_id=d.id) }}" title="Preview"><i class="bi bi-eye"></i></a>
+              <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.document_download', doc_id=d.id) }}" title="Download"><i class="bi bi-download"></i></a>
+              {% if d.web_view_link %}<a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.document_open_drive', doc_id=d.id) }}" target="_blank" title="Open in Google Drive"><i class="bi bi-google"></i></a>{% endif %}
+              <form method="post" action="{{ url_for('admin.document_delete', doc_id=d.id) }}" class="d-inline" data-confirm="Delete this document (record + stored file)?">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3">{{ pagination_nav(pagination, 'admin.documents_list', q=q, purpose=purpose, upload_status=upload_status) }}</div>
+    {% else %}
+    <div class="p-5 text-center text-muted">No documents found.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function goDocs() {
+  const params = new URLSearchParams();
+  if (document.getElementById('docQ').value) params.set('q', document.getElementById('docQ').value);
+  if (document.getElementById('docPurpose').value) params.set('purpose', document.getElementById('docPurpose').value);
+  if (document.getElementById('docStatus').value) params.set('upload_status', document.getElementById('docStatus').value);
+  window.location = '/admin/documents?' + params.toString();
+}
+</script>
+{% endblock %}

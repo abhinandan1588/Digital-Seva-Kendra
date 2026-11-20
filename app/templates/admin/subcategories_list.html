@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+{% block title %}Subcategories{% endblock %}
+{% block page_title %}Subcategories{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <form class="d-flex gap-2">
+    <select name="category_id" class="form-select form-select-sm" onchange="this.form.submit()">
+      <option value="">All categories</option>
+      {% for c in categories %}<option value="{{ c.id }}" {{ 'selected' if selected == c.id }}>{{ c.name_en }}</option>{% endfor %}
+    </select>
+  </form>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('admin.subcategory_create') }}"><i class="bi bi-plus-lg"></i> New Subcategory</a>
+</div>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0 align-middle">
+      <thead><tr><th>#</th><th>Category</th><th>Name (EN / HI)</th><th>Slug</th><th>Services</th><th>Active</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for sub in subcategories %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td class="small text-muted">{{ sub.category.name_en if sub.category }}</td>
+          <td><strong>{{ sub.name_en }}</strong>{% if sub.name_hi %}<div class="small text-muted">{{ sub.name_hi }}</div>{% endif %}</td>
+          <td class="small">{{ sub.slug }}</td>
+          <td>{{ counts[sub.id] or 0 }}</td>
+          <td>{% if sub.is_active %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</td>
+          <td class="d-flex gap-1">
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.subcategory_edit', sub_id=sub.id) }}"><i class="bi bi-pencil"></i></a>
+            <form method="post" action="{{ url_for('admin.subcategory_move', sub_id=sub.id, direction='up') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-outline-secondary" title="Up"><i class="bi bi-arrow-up"></i></button>
+            </form>
+            <form method="post" action="{{ url_for('admin.subcategory_move', sub_id=sub.id, direction='down') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-outline-secondary" title="Down"><i class="bi bi-arrow-down"></i></button>
+            </form>
+            <form method="post" action="{{ url_for('admin.subcategory_delete', sub_id=sub.id) }}"
+                  onsubmit="return confirm('Delete this subcategory? Only possible when it has no services.')">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container py-5 text-center">
+  <h1 class="display-3 fw-bold">404</h1>
+  <p class="lead">{{ _t('Page not found. Check the link or track your application from the home page.', 'पेज नहीं मिला। लिंक जाँचें या होम पेज से अपना आवेदन ट्रैक करें।') }}</p>
+  <a href="{{ url_for('public.home') }}" class="btn btn-primary">{{ _t('Go Home', 'होम पर जाएँ') }}</a>
+</section>
+{% endblock %}

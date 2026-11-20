@@ -1,0 +1,64 @@
+{% extends "admin/base.html" %}
+{% block title %}Google Drive Settings{% endblock %}
+{% block page_title %}Google Drive Settings{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-header fw-bold">Connection status</div>
+      <div class="card-body">
+        {% if connected %}
+          <div class="alert alert-success d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-cloud-check me-1"></i>Google Drive connected. Documents are stored in your private
+              <code>{{ 'Digital Seva Kendra' }}</code> folder tree (root/<em>year</em>/<em>order number</em>/...).</span>
+            <form method="post">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="action" value="disconnect">
+              <button class="btn btn-sm btn-outline-danger">Disconnect</button>
+            </form>
+          </div>
+        {% else %}
+          <div class="alert alert-warning">
+            <i class="bi bi-cloud-slash me-1"></i>Not connected. Documents are being stored with the <strong>secure local fallback</strong>
+            (private files on the server) until Drive is connected. Nothing is lost - when you connect, use the retry button below to push pending files.
+          </div>
+        {% endif %}
+        <div class="d-flex flex-wrap gap-2">
+          <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="start_connect">
+            <button class="btn btn-primary"><i class="bi bi-google me-1"></i>{{ 'Reconnect Google Drive' if connected else 'Connect Google Drive' }}</button>
+          </form>
+          <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="test">
+            <button class="btn btn-outline-secondary">Test Connection</button>
+          </form>
+          {% if pending_count %}
+          <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="retry_uploads">
+            <button class="btn btn-warning">Retry {{ pending_count }} Pending Upload(s)</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header fw-bold">First-time Google Cloud setup (one time)</div>
+      <div class="card-body small">
+        <ol class="ps-3 mb-2">
+          <li>Create a project at <code>console.cloud.google.com</code> and enable the <strong>Google Drive API</strong>.</li>
+          <li>OAuth consent screen: External, add your shop's Google account as test user; scope <code>.../auth/drive</code>.</li>
+          <li>Credentials &rarr; <strong>OAuth client ID &rarr; Web application</strong>. Add authorized redirect URI:
+            <code>{{ url_for('admin.drive_callback', _external=True) }}</code></li>
+          <li>Download the client secret JSON, save it on the server and set <code>GOOGLE_CLIENT_SECRETS_FILE</code> in the .env file.</li>
+          <li>Restart the app, then press <strong>Connect Google Drive</strong> above and sign in with the shop's Google account.</li>
+        </ol>
+        <div class="text-muted">Tokens are stored encrypted server-side and never exposed to the browser. Full guide: <code>docs/GOOGLE_DRIVE_SETUP.md</code></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

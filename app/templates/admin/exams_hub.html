@@ -1,0 +1,71 @@
+{% extends "admin/base.html" %}
+{% block title %}Examination Management{% endblock %}
+{% block page_title %}Examination Management{% endblock %}
+{% block content %}
+<div class="row g-4 mb-4">
+  <div class="col-6 col-lg-3"><div class="card text-center p-3"><div class="fs-3 fw-bold">{{ total_cycles }}</div><div class="small text-muted">Total cycles</div></div></div>
+  <div class="col-6 col-lg-3"><div class="card text-center p-3"><div class="fs-3 fw-bold text-success">{{ open_count }}</div><div class="small text-muted">Open (accepting applications)</div></div></div>
+  <div class="col-6 col-lg-3"><div class="card text-center p-3"><div class="fs-3 fw-bold">{{ published }}</div><div class="small text-muted">Published</div></div></div>
+  <div class="col-6 col-lg-3"><div class="card text-center p-3"><div class="fs-3 fw-bold {{ 'text-danger' if needs_review }}">{{ needs_review }}</div><div class="small text-muted">Flagged for review</div></div></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Recruitment Notifications</div>
+      <div class="card-body d-grid gap-2">
+        <a class="btn btn-outline-primary" href="{{ url_for('admin.exam_cycles_list') }}"><i class="bi bi-megaphone me-1"></i>All examination cycles</a>
+        <a class="btn btn-outline-warning" href="{{ url_for('admin.exam_cycles_list', review=1) }}"><i class="bi bi-exclamation-triangle me-1"></i>Verification queue ({{ needs_review }})</a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('admin.exam_cycles_list', status='archived') }}"><i class="bi bi-archive me-1"></i>Archive</a>
+        <a class="btn btn-primary" href="{{ url_for('admin.exam_cycle_new') }}"><i class="bi bi-plus-lg me-1"></i>Add a new examination cycle</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Exam service templates</div>
+      <div class="card-body d-grid gap-2">
+        <a class="btn btn-outline-primary" href="{{ url_for('admin.exam_templates') }}"><i class="bi bi-collection me-1"></i>{{ templates | length }} examination service templates</a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('admin.service_create') }}"><i class="bi bi-plus-lg me-1"></i>New service (tick "Examination service")</a>
+      </div>
+      <div class="card-footer small text-muted">
+        A service template is the exam TYPE (e.g. SSC CGL); each notification is a CYCLE (e.g. SSC CGL 2027).
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-header fw-bold">Compliance reminders</div>
+      <div class="card-body small text-muted">
+        <ul class="mb-0 ps-3">
+          <li>Publish a cycle only after verifying the official notification (set <em>Last verified</em>).</li>
+          <li>Closed cycles are hidden from ordering automatically - never guess extensions.</li>
+          <li>Extend deadlines only with official confirmation (the form requires it).</li>
+          <li>Flag unverifiable listings for review instead of editing them silently.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mt-4">
+  <div class="card-header fw-bold">Exam service templates ({{ templates | length }})</div>
+  <div class="table-responsive">
+    <table class="table table-sm mb-0 align-middle">
+      <thead><tr><th>Service</th><th>Cycles</th><th></th></tr></thead>
+      <tbody>
+        {% for t in templates %}
+        <tr>
+          <td>{{ t.name_en }}</td>
+          <td>{{ t.exam_cycles | length }}</td>
+          <td class="text-end">
+            <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.service_edit', service_id=t.id) }}">Service</a>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.exam_cycle_new', service_id=t.id) }}">Add cycle</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
